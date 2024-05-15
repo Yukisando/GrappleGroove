@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: dd62ce41c64a21145ab68612621b346e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Scripts/FPC/Flashlight.cs
+  uploadId: 542059

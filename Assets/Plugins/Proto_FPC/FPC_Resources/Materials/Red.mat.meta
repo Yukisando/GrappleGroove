@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4bff2382039161d468ddf0360afa762c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Red.mat
+  uploadId: 542059

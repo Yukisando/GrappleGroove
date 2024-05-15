@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cf4d29366835b4a48b31b72cd58d7f1d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Animations/HookPop.anim
+  uploadId: 542059

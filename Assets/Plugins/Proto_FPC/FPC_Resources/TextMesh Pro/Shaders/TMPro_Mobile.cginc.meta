@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c334973cef89a9840b0b0c507e0377ab
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/TextMesh Pro/Shaders/TMPro_Mobile.cginc
+  uploadId: 542059

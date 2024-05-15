@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 936304324b294244ea2a241b568298d5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Skybox/Sky.mat
+  uploadId: 542059

@@ -1,0 +1,40 @@
+{
+    "showMainIconOfGameObject": true,
+    "showComponentIcons": true,
+    "showTransformComponent": false,
+    "showComponentIconsForFolders": true,
+    "showTag": false,
+    "showLayer": false,
+    "showHierarchyTree": true,
+    "showHierarchyButtons": false,
+    "disableHierarchyDesignerDuringPlayMode": false,
+    "excludedTags": [],
+    "excludedLayers": [],
+    "tagTextColor": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5,
+        "a": 1.0
+    },
+    "tagFontStyle": 0,
+    "tagFontSize": 10,
+    "layerTextColor": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5,
+        "a": 1.0
+    },
+    "layerFontStyle": 0,
+    "layerFontSize": 10,
+    "treeColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 0.1411764770746231
+    },
+    "buttonsPosition": 0,
+    "enableDisableShortcut": 325,
+    "lockUnlockShortcut": 282,
+    "changeTagAndLayerShortcut": 283,
+    "renameGameObjectsShortcut": 284
+}

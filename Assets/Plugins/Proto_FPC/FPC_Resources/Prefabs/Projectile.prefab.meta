@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 717a044a18ac7434fab4ef2a82a7c6c9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Prefabs/Projectile.prefab
+  uploadId: 542059

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c96aecf21a6c7c64aadf470d0e3f9674
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Blue.mat
+  uploadId: 542059

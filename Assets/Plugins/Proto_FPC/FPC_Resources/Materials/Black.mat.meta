@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 26a4414db0bc5cc458c2ef147320d10e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Black.mat
+  uploadId: 542059

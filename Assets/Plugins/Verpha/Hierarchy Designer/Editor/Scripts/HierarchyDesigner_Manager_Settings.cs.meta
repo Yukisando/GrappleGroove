@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 08f769b7f7daf984a8be2b2356a0dbb1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273928
+  packageName: Hierarchy Designer
+  packageVersion: 1.1.0.2f
+  assetPath: Assets/Verpha/Hierarchy Designer/Editor/Scripts/HierarchyDesigner_Manager_Settings.cs
+  uploadId: 662177

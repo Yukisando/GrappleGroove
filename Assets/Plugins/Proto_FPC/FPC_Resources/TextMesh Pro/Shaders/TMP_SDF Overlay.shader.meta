@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dd89cf5b9246416f84610a006f916af7
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/TextMesh Pro/Shaders/TMP_SDF Overlay.shader
+  uploadId: 542059

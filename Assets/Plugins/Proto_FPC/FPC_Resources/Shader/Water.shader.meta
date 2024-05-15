@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 0a8e9b0f8711c6844a62fd57f5a8d1fc
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Shader/Water.shader
+  uploadId: 542059

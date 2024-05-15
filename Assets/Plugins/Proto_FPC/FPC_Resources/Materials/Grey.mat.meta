@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b187ca1648243764796276f0330ec42f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Grey.mat
+  uploadId: 542059

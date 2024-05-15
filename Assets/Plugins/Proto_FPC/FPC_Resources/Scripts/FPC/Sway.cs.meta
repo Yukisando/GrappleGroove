@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7c77f0d538c20f24e9bc44cc29e1168f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Proto_FPC/FPC_Resources/Scripts/FPC/Sway.cs
+  uploadId: 542059
