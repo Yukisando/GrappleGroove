@@ -2060,7 +2060,7 @@ GameObject:
   - component: {fileID: 5561527052524631112}
   - component: {fileID: 6115142363874158539}
   m_Layer: 0
-  m_Name: Prototype_FPC
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
