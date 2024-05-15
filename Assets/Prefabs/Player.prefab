@@ -881,10 +881,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dependencies: {fileID: 5561527051434680992}
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
+  cutRopeKey: 114
   holdDelayToSwing: 0.2
   playerRetractStrength: 1000
-  retractStrength: 500
-  latchOnImpulse: 200
+  retractStrength: 300
+  latchOnImpulse: 50
   ropeMaterial: {fileID: 2100000, guid: c96aecf21a6c7c64aadf470d0e3f9674, type: 2}
   startThickness: 0.02
   endThickness: 0.06
@@ -895,7 +896,7 @@ MonoBehaviour:
   deflateSpeed: 2.5
   segments: 50
   damper: 12
-  springStrength: 800
+  springStrength: 1300
   speed: 12
   waveCount: 5
   waveHeight: 4
@@ -967,14 +968,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051434680986}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd5d2afa52daab489680620822affd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dependencies: {fileID: 5561527051434680992}
   addToListKey: 105
-  inspectKey: 101
+  inspectKey: 102
   inspectIcon: {fileID: 5561527051538624974}
   aimDot: {fileID: 5561527051328177717}
   maxPickupDistance: 6
@@ -2058,7 +2059,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5561527052524631115}
   - component: {fileID: 5561527052524631112}
-  - component: {fileID: 6115142363874158539}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2095,29 +2095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158753e7d5bc5db49973ba33382438b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &6115142363874158539
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5561527052524631114}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5561527052543656952
 GameObject:
   m_ObjectHideFlags: 0

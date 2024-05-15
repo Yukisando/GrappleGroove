@@ -18,6 +18,7 @@ namespace PrototypeFPC
         //Hook properties
         [Header("Hook Properties")]
         [SerializeField] GameObject hookModel;
+        [SerializeField] KeyCode cutRopeKey = KeyCode.R;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float playerRetractStrength = 1000f;
         [SerializeField] float retractStrength = 500f;
@@ -96,7 +97,7 @@ namespace PrototypeFPC
         void Update() {
             InputCheck(); //- Line 141
             CreateHooks(); //- Line 172
-            CreateBalloons(); //- Line 421
+            // CreateBalloons(); //- Line 421
             RetractHooks(); //- Line 590
             CutRopes(); //- Line 625
         }
@@ -144,7 +145,7 @@ namespace PrototypeFPC
             }
             
             //Check input for hook to latch
-            if (Input.GetMouseButtonUp(1) && !Input.GetKey(KeyCode.LeftControl) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
+            if (Input.GetMouseButtonUp(1) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
             }
@@ -313,7 +314,7 @@ namespace PrototypeFPC
                                 hooks[^1].GetComponent<SpringJoint>().minDistance = 0;
                                 
                                 //Knock back when hooked
-                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * latchOnImpulse * 0.2f, ForceMode.Impulse);
+                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
                                 
                                 //Set rope width
                                 ropes[^1].startWidth = endThickness;
@@ -354,7 +355,7 @@ namespace PrototypeFPC
                                 ropes[^1].endWidth = endThickness;
                                 
                                 //Knock back when hooked
-                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * latchOnImpulse * 0.2f, ForceMode.Impulse);
+                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
                                 
                                 isOptimizing = true;
                                 
@@ -590,7 +591,7 @@ namespace PrototypeFPC
             }
             
             //Remove specific hooks
-            if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+            if (Input.GetKey(cutRopeKey) && !dependencies.isInspecting) {
                 //If attached to player
                 if (hooked) {
                     if (hooks.Count > 0) {
