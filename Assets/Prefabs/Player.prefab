@@ -455,14 +455,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051324714435}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.021258906, y: -0.99824935, z: 0.055181615, w: -0.0011751581}
+  m_LocalRotation: {x: -0.00625247, y: -0.96453893, z: 0.05880355, w: 0.25723088}
   m_LocalPosition: {x: -3.16, y: 0.71, z: -4.4}
   m_LocalScale: {x: 11.95115, y: 10.000001, z: 9.738823}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5561527051366757539}
   m_Father: {fileID: 5561527052543656953}
-  m_LocalEulerAnglesHint: {x: 6.328, y: -180, z: 2.44}
+  m_LocalEulerAnglesHint: {x: 6.328, y: -150, z: 2.44}
 --- !u!1 &5561527051328177717
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,8 +644,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5561527052145966905}
+  m_Children: []
   m_Father: {fileID: 5561527052524631115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5561527051434680992
@@ -835,7 +834,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051434680986}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86e28c338f50c4948a1b090903b9342a, type: 3}
   m_Name: 
@@ -862,7 +861,7 @@ MonoBehaviour:
   dependencies: {fileID: 5561527051434680992}
   projectile: {fileID: 4708602188485205762, guid: 717a044a18ac7434fab4ef2a82a7c6c9, type: 3}
   size: 0.12
-  force: 550
+  force: 220
   projectRate: 0.2
   projectingSound: {fileID: 8300000, guid: 9a32620284457ff4baa7fae29abd1a63, type: 3}
   scrollSound: {fileID: 8300000, guid: b2c8d8abfb35a4c4c8e29d59104dec12, type: 3}
@@ -881,7 +880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dependencies: {fileID: 5561527051434680992}
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
-  cutRopeKey: 114
+  cutRopeKey: 120
   holdDelayToSwing: 0.2
   playerRetractStrength: 1000
   retractStrength: 300
@@ -895,7 +894,7 @@ MonoBehaviour:
   inflateSpeed: 5
   deflateSpeed: 2.5
   segments: 50
-  damper: 12
+  damper: 5
   springStrength: 1300
   speed: 12
   waveCount: 5
@@ -986,6 +985,8 @@ MonoBehaviour:
   putDownSound: {fileID: 8300000, guid: 1f7b3d64aed71054cb5ca513cbf3ae95, type: 3}
   zoomSound: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
   objectsToInspect:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   objectsToIgnore: []
@@ -1839,7 +1840,7 @@ GameObject:
   - component: {fileID: 5561527052145966910}
   m_Layer: 2
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1852,13 +1853,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527052145966904}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5561527052999468792}
-  m_Father: {fileID: 5561527051434680988}
+  m_Father: {fileID: 5561527052524631115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5561527052145966911
 CapsuleCollider:
@@ -2080,6 +2081,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5561527051738409564}
+  - {fileID: 5561527052145966905}
   - {fileID: 5561527051434680988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

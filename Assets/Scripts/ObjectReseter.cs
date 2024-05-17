@@ -7,8 +7,10 @@ using UnityEngine;
 public class ObjectReseter : MonoBehaviour
 {
     public Transform respawnPoint;
+    public string tagMask = "Player";
     
     void OnTriggerEnter(Collider other) {
-        other.gameObject.transform.position = respawnPoint.position;
+        if (other.gameObject.CompareTag(tagMask))
+            other.gameObject.transform.position = respawnPoint.position;
     }
 }

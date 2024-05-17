@@ -97,6 +97,7 @@ namespace PrototypeFPC
         void Update() {
             InputCheck(); //- Line 141
             CreateHooks(); //- Line 172
+            
             // CreateBalloons(); //- Line 421
             RetractHooks(); //- Line 590
             CutRopes(); //- Line 625
@@ -229,7 +230,7 @@ namespace PrototypeFPC
                             
                             //The distance to keep from hook point for player swing
                             float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, hooks[^1].transform.position);
-                            player.GetComponent<SpringJoint>().maxDistance = distanceFromHook * 0.85f;
+                            player.GetComponent<SpringJoint>().maxDistance = distanceFromHook * .001f;
                             player.GetComponent<SpringJoint>().minDistance = distanceFromHook * 0.2f;
                             player.GetComponent<SpringJoint>().spring = 0;
                             
