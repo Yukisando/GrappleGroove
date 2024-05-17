@@ -18,7 +18,7 @@ namespace PrototypeFPC
         //Hook properties
         [Header("Hook Properties")]
         [SerializeField] GameObject hookModel;
-        [SerializeField] KeyCode cutRopeKey = KeyCode.R;
+        [SerializeField] float hookDistance = 50f;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float playerRetractStrength = 1000f;
         [SerializeField] float retractStrength = 500f;
@@ -104,7 +104,7 @@ namespace PrototypeFPC
         }
         
         void FixedUpdate() {
-            InflateDeflateBalloons(); //- Line 537
+            // InflateDeflateBalloons(); //- Line 537
         }
         
         void LateUpdate() {
@@ -146,7 +146,7 @@ namespace PrototypeFPC
             }
             
             //Check input for hook to latch
-            if (Input.GetMouseButtonUp(1) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
+            if (Input.GetMouseButtonUp(1) && !Input.GetKey(KeyCode.LeftControl) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
             }
@@ -158,7 +158,7 @@ namespace PrototypeFPC
             
             if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 //Check and set target rigidbody if none
-                if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
+                if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
                     if (hit.transform.gameObject.GetComponent<Rigidbody>() == null) {
                         //Add and set to kinematic/Static if not manually created/specified
                         hit.transform.gameObject.AddComponent<Rigidbody>().isKinematic = true;
@@ -167,7 +167,7 @@ namespace PrototypeFPC
                 
                 //Create first hook
                 if (!hooked) {
-                    if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
+                    if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
                         if (!hit.collider.isTrigger && hit.collider.gameObject.GetComponent<Rigidbody>() != player) {
                             hooked = true;
                             
@@ -225,14 +225,15 @@ namespace PrototypeFPC
                             }
                             
                             player.gameObject.AddComponent<SpringJoint>().connectedBody = hooks[^1].GetComponent<Rigidbody>();
-                            player.GetComponent<SpringJoint>().autoConfigureConnectedAnchor = false;
-                            player.GetComponent<SpringJoint>().connectedAnchor = Vector3.zero;
+                            var sj = player.GetComponent<SpringJoint>();
+                            sj.autoConfigureConnectedAnchor = false;
+                            sj.connectedAnchor = Vector3.zero;
                             
                             //The distance to keep from hook point for player swing
                             float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, hooks[^1].transform.position);
-                            player.GetComponent<SpringJoint>().maxDistance = distanceFromHook * .001f;
-                            player.GetComponent<SpringJoint>().minDistance = distanceFromHook * 0.2f;
-                            player.GetComponent<SpringJoint>().spring = 0;
+                            sj.maxDistance = distanceFromHook * 0.85f;
+                            sj.minDistance = distanceFromHook * 0.2f;
+                            sj.spring = 500;
                             
                             //Add collider for rope cutting
                             ropeColliders.Add(new GameObject("RopeCollider"));
@@ -242,7 +243,7 @@ namespace PrototypeFPC
                             ropeColliders[^1].GetComponent<BoxCollider>().enabled = false;
                             
                             //Knock back when hooked
-                            hooks[^1].GetComponent<Rigidbody>().AddForce(ray.direction * latchOnImpulse * 0.2f, ForceMode.Impulse);
+                            hooks[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
                             
                             //Set previous rope quality to 2 if not already
                             if (ropes.Count > 1) {
@@ -315,7 +316,7 @@ namespace PrototypeFPC
                                 hooks[^1].GetComponent<SpringJoint>().minDistance = 0;
                                 
                                 //Knock back when hooked
-                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
+                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * latchOnImpulse * 0.2f, ForceMode.Impulse);
                                 
                                 //Set rope width
                                 ropes[^1].startWidth = endThickness;
@@ -356,7 +357,7 @@ namespace PrototypeFPC
                                 ropes[^1].endWidth = endThickness;
                                 
                                 //Knock back when hooked
-                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
+                                hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * latchOnImpulse * 0.2f, ForceMode.Impulse);
                                 
                                 isOptimizing = true;
                                 
@@ -378,7 +379,7 @@ namespace PrototypeFPC
                 if (hooked && !holdingBalloon) {
                     //Create new hook latch and balloon object
                     hookLatches.Add(new GameObject("HookLatch"));
-                    balloons.Add(Instantiate(balloonModel, hookLatches[^1].transform.position, Quaternion.identity));
+                    balloons.Add(Instantiate(balloonModel, hookLatches[hooks.Count - 1].transform.position, Quaternion.identity));
                     balloons[^1].AddComponent<Rigidbody>().mass = 5f;
                     balloons[^1].GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
                     balloons[^1].transform.localScale = Vector3.zero;
@@ -592,7 +593,7 @@ namespace PrototypeFPC
             }
             
             //Remove specific hooks
-            if (Input.GetKey(cutRopeKey) && !dependencies.isInspecting) {
+            if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 //If attached to player
                 if (hooked) {
                     if (hooks.Count > 0) {
@@ -670,49 +671,53 @@ namespace PrototypeFPC
             
             //Destroy everything created and clear all lists
             if (Input.GetKeyDown("r") && !dependencies.isInspecting) {
-                hooked = false;
-                
-                //Destroy joints and objects
-                if (hooks.Count > 0) {
-                    if (player.GetComponent<SpringJoint>()) {
-                        Destroy(player.GetComponent<SpringJoint>());
-                    }
-                    
-                    foreach (var hookObjects in hooks) {
-                        Destroy(hookObjects);
-                    }
-                    
-                    foreach (var hookLatchObjects in hookLatches) {
-                        Destroy(hookLatchObjects);
-                    }
-                    
-                    foreach (var ropeColliderObjects in ropeColliders) {
-                        Destroy(ropeColliderObjects);
-                    }
-                    
-                    foreach (var balloonObjects in balloons) {
-                        Destroy(balloonObjects);
-                    }
-                    
-                    foreach (var hookModelObjects in hookModels) {
-                        Destroy(hookModelObjects);
-                    }
-                    
-                    //Clear all lists
-                    hooks.Clear();
-                    hookModels.Clear();
-                    hookLatches.Clear();
-                    ropes.Clear();
-                    ropeColliders.Clear();
-                    balloons.Clear();
-                    
-                    if (holdingBalloon) {
-                        holdingBalloon = false;
-                    }
-                    
-                    //Audio
-                    audioSource.PlayOneShot(releaseSound);
+                ResetHook();
+            }
+        }
+        
+        public void ResetHook() {
+            hooked = false;
+            
+            //Destroy joints and objects
+            if (hooks.Count > 0) {
+                if (player.GetComponent<SpringJoint>()) {
+                    Destroy(player.GetComponent<SpringJoint>());
                 }
+                
+                foreach (var hookObjects in hooks) {
+                    Destroy(hookObjects);
+                }
+                
+                foreach (var hookLatchObjects in hookLatches) {
+                    Destroy(hookLatchObjects);
+                }
+                
+                foreach (var ropeColliderObjects in ropeColliders) {
+                    Destroy(ropeColliderObjects);
+                }
+                
+                foreach (var balloonObjects in balloons) {
+                    Destroy(balloonObjects);
+                }
+                
+                foreach (var hookModelObjects in hookModels) {
+                    Destroy(hookModelObjects);
+                }
+                
+                //Clear all lists
+                hooks.Clear();
+                hookModels.Clear();
+                hookLatches.Clear();
+                ropes.Clear();
+                ropeColliders.Clear();
+                balloons.Clear();
+                
+                if (holdingBalloon) {
+                    holdingBalloon = false;
+                }
+                
+                //Audio
+                audioSource.PlayOneShot(releaseSound);
             }
         }
         

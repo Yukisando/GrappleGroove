@@ -10,7 +10,8 @@ public class ObjectReseter : MonoBehaviour
     public string tagMask = "Player";
     
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag(tagMask))
+        if (other.CompareTag(tagMask)) {
             other.gameObject.transform.position = respawnPoint.position;
+        }
     }
 }

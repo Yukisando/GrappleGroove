@@ -37,6 +37,7 @@ namespace PrototypeFPC
         
         //Ground detection
         [Header("Ground Detection Properties")]
+        [SerializeField] LayerMask groundLayer;
         [SerializeField] Transform groundCheck;
         [SerializeField] float groundCheckRadius = 0.2f;
         
@@ -54,6 +55,7 @@ namespace PrototypeFPC
         List<int>
             playedRandom,
             randomFilter;
+        readonly float playerHeight = 2f;
         AudioSource audioSource;
         
         Camera cam;
@@ -66,7 +68,6 @@ namespace PrototypeFPC
         
         Vector3 moveDirection;
         Transform orientation;
-        readonly float playerHeight = 2f;
         int randomNum;
         Rigidbody rb;
         
@@ -94,8 +95,6 @@ namespace PrototypeFPC
         }
         
         void FixedUpdate() {
-            if (!Application.isFocused) return;
-            
             Move(); //- Line 158
         }
         
@@ -119,7 +118,7 @@ namespace PrototypeFPC
         
         //Check if grounded
         void GroundCheck() {
-            dependencies.isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius);
+            dependencies.isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
         }
         
         //Calculate input direction
@@ -151,7 +150,7 @@ namespace PrototypeFPC
             
             //Not grounded & in the air
             if (!dependencies.isGrounded) {
-                rb.AddForce(moveDirection.normalized * moveAmount * multiplier * airMultiplier, ForceMode.Acceleration);
+                // rb.AddForce(moveDirection.normalized * moveAmount * multiplier * airMultiplier, ForceMode.Acceleration);
             }
         }
         
