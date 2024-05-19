@@ -150,7 +150,7 @@ namespace PrototypeFPC
             
             //Not grounded & in the air
             if (!dependencies.isGrounded) {
-                // rb.AddForce(moveDirection.normalized * moveAmount * multiplier * airMultiplier, ForceMode.Acceleration);
+                rb.AddForce(moveDirection.normalized * moveAmount * multiplier * airMultiplier, ForceMode.Acceleration);
             }
         }
         
