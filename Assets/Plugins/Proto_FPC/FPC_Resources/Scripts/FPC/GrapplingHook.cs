@@ -597,7 +597,7 @@ namespace PrototypeFPC
             }
             
             //Remove specific hooks
-            if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+            if (Input.GetKey(KeyCode.X) && !dependencies.isInspecting) {
                 //If attached to player
                 if (hooked) {
                     if (hooks.Count > 0) {
