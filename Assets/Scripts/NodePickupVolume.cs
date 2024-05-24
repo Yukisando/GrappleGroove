@@ -11,7 +11,6 @@ public class NodePickupVolume : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
         
-        Debug.Log($"Picked up {nodeData.id}!");
         ScratchManager.I.AddNode(nodeData);
     }
 }

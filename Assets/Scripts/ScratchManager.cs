@@ -1,5 +1,6 @@
 #region
 
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class ScratchManager : MonoBehaviour
     [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
     Camera cam;
+    
+    public Action<NodeData> onNewNode;
     
     void Awake() {
         I = this;
@@ -57,5 +60,7 @@ public class ScratchManager : MonoBehaviour
         nodes.Add(nodeData);
         var node = Instantiate(nodePrefab, nodeListParent);
         node.Populate(nodeData);
+        Debug.Log($"Picked up {nodeData.id}!");
+        onNewNode?.Invoke(nodeData);
     }
 }

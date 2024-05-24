@@ -19,6 +19,7 @@ namespace PrototypeFPC
         [Header("Hook Properties")]
         [SerializeField] GameObject hookModel;
         [SerializeField] float hookDistance = 50f;
+        [SerializeField] float releaseImpulseFactor = 50f;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float playerRetractStrength = 1000f;
         [SerializeField] float retractStrength = 500f;
@@ -149,6 +150,15 @@ namespace PrototypeFPC
             if (Input.GetMouseButtonUp(1) && !Input.GetKey(KeyCode.LeftControl) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
+                
+                // Get the player's current velocity
+                var playerVelocity = player.linearVelocity;
+                float speedFactor = playerVelocity.magnitude;
+                
+                // Apply an impulse based on the speed at release
+                // You might want to adjust the multiplier to get the feel right
+                var releaseImpulse = playerVelocity.normalized * speedFactor * releaseImpulseFactor;
+                player.AddForce(releaseImpulse, ForceMode.Impulse);
             }
         }
         
