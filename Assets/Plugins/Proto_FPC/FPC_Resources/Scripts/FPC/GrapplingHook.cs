@@ -155,7 +155,6 @@ namespace PrototypeFPC
         //Create Hooks
         void CreateHooks() {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
             if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 // Check and set target rigidbody if none
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
@@ -196,7 +195,8 @@ namespace PrototypeFPC
                             
                             // Add and set joint parameters
                             spring.Reset();
-                            spring.SetVelocity(speed);
+                            
+                            // spring.SetVelocity(speed);
                             ropes[hooks.Count - 1].positionCount = segments + 1;
                             
                             // Check if collider hit is balloon
@@ -233,10 +233,10 @@ namespace PrototypeFPC
                             float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, hooks[^1].transform.position);
                             
                             // Set the maxDistance and minDistance to the initial distance from the hook point
-                            sj.maxDistance = distanceFromHook;
-                            sj.minDistance = distanceFromHook * 0.95f; // Adjust to ensure it's not too loose
-                            sj.spring = 1000f; // Increase spring strength to make it tighter
-                            sj.damper = 10f; // Adjust damper to control oscillation
+                            sj.maxDistance = distanceFromHook * .95f;
+                            sj.minDistance = distanceFromHook * .9f; // Adjust to ensure it's not too loose
+                            sj.spring = 10000f; // Increase spring strength to make it tighter
+                            sj.damper = 1000f; // Adjust damper to control oscillation
                             
                             // Add collider for rope cutting
                             ropeColliders.Add(new GameObject("RopeCollider"));
@@ -679,7 +679,7 @@ namespace PrototypeFPC
             }
         }
         
-        void ResetHook() {
+        public void ResetHook() {
             hooked = false;
             
             //Destroy joints and objects if any

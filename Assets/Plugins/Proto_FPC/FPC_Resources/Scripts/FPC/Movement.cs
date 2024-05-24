@@ -98,6 +98,10 @@ namespace PrototypeFPC
             Move(); //- Line 158
         }
         
+        public void ResetPosition(Transform _t) {
+            dependencies.rb.transform.position = _t.position;
+        }
+        
         //---------------------------
         
         void Setup() {
