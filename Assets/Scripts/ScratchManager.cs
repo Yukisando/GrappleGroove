@@ -21,13 +21,11 @@ public class ScratchManager : MonoBehaviour
     [Title(" ")]
     [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
-    Camera cam;
     
     public Action<NodeData> onNewNode;
     
     void Awake() {
         I = this;
-        cam = Camera.main;
         scratchpad.enabled = false;
     }
     
@@ -50,7 +48,7 @@ public class ScratchManager : MonoBehaviour
     void ToggleScratchpad() {
         scratchpad.enabled = !scratchpad.enabled;
         player.SetActive(!scratchpad.enabled);
-        AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, cam.transform.position);
+        AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, transform.position);
         Cursor.lockState = scratchpad.enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = scratchpad.enabled;
     }

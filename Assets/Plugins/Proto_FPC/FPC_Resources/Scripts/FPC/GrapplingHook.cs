@@ -13,12 +13,13 @@ namespace PrototypeFPC
     {
         //Dependencies
         [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
+        [SerializeField]
+        public Dependencies dependencies;
         
         //Hook properties
         [Header("Hook Properties")]
         [SerializeField] GameObject hookModel;
-        [SerializeField] float hookDistance = 50f;
+        public float hookDistance = 50f;
         [SerializeField] float releaseImpulseFactor = 50f;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float playerRetractStrength = 1000f;
@@ -243,10 +244,10 @@ namespace PrototypeFPC
                             float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, hooks[^1].transform.position);
                             
                             // Set the maxDistance and minDistance to the initial distance from the hook point
-                            sj.maxDistance = distanceFromHook * .95f;
-                            sj.minDistance = distanceFromHook * .9f; // Adjust to ensure it's not too loose
-                            sj.spring = 10000f; // Increase spring strength to make it tighter
-                            sj.damper = 1000f; // Adjust damper to control oscillation
+                            sj.maxDistance = distanceFromHook;
+                            sj.minDistance = distanceFromHook * .95f; // Adjust to ensure it's not too loose
+                            sj.spring = 20000f; // Increase spring strength to make it tighter
+                            sj.damper = 10000f; // Adjust damper to control oscillation
                             
                             // Add collider for rope cutting
                             ropeColliders.Add(new GameObject("RopeCollider"));

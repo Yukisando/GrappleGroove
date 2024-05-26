@@ -1,10 +1,8 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
+
+#endregion
 
 namespace PrototypeFPC
 {
@@ -14,6 +12,8 @@ namespace PrototypeFPC
         [SerializeField] public float worldGravity = -20f;
         [SerializeField] public int physicsIterations = 12;
         [SerializeField] public float timeStep = 0.003f;
+        public float grappleDistance;
+        public float interactableDistance;
         
         [SerializeField] public Rigidbody rb;
         [SerializeField] public CapsuleCollider cc;
@@ -26,7 +26,7 @@ namespace PrototypeFPC
         [SerializeField] public Transform swayPivot;
         [SerializeField] public AudioSource audioSourceTop;
         [SerializeField] public AudioSource audioSourceBottom;
-
+        
         [SerializeField] public bool isGrounded { get; set; }
         [SerializeField] public bool isSliding { get; set; }
         [SerializeField] public bool isWallRunning { get; set; }
@@ -34,10 +34,9 @@ namespace PrototypeFPC
         [SerializeField] public bool isGrabbing { get; set; }
         [SerializeField] public bool isVaulting { get; set; }
         [SerializeField] public float tilt { get; set; }
-
+        
         //----------
-        void Awake()
-        {
+        void Awake() {
             //Physics & Timestep setup
             Physics.gravity = new Vector3(0, worldGravity, 0);
             Physics.defaultSolverIterations = physicsIterations;

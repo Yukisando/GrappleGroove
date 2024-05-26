@@ -421,7 +421,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 7, y: 7}
+  m_SizeDelta: {x: 15, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5561527051328177720
 CanvasRenderer:
@@ -586,6 +586,8 @@ MonoBehaviour:
   worldGravity: -20
   physicsIterations: 12
   timeStep: 0.003
+  grappleDistance: 0
+  interactableDistance: 0
   rb: {fileID: 5561527052145966910}
   cc: {fileID: 5561527052145966911}
   cam: {fileID: 5561527052464464600}
@@ -761,13 +763,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051434680986}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86e28c338f50c4948a1b090903b9342a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dependencies: {fileID: 5561527051434680992}
-  vaultKey: 32
+  vaultKey: 304
   speed: 8
   duration: 1
   vaultTilt: 10
@@ -808,6 +810,7 @@ MonoBehaviour:
   dependencies: {fileID: 5561527051434680992}
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   hookDistance: 35
+  releaseImpulseFactor: 50
   holdDelayToSwing: 0.2
   playerRetractStrength: 1000
   retractStrength: 300
@@ -1110,6 +1113,7 @@ GameObject:
   - component: {fileID: 5561527051738409567}
   - component: {fileID: 5561527051738409566}
   - component: {fileID: 5561527051738409561}
+  - component: {fileID: 4494625252672213375}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -1202,6 +1206,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 55
+--- !u!114 &4494625252672213375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5561527051738409560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d91b227dfddaee643a798f5bf67876de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hook: {fileID: 5561527051434680998}
+  inspect: {fileID: 5561527051434681002}
+  crossair: {fileID: 5561527051328177723}
+  grapple: {fileID: 7096138885364736195, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  interactable: {fileID: 1853125249586873685, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  normal: {fileID: 21300000, guid: 5506810b24f13dc42a03623d5c98f455, type: 3}
 --- !u!1 &5561527051857173134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,8 +1283,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527052145966904}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0011367183, y: 0.9984856, z: -0.02277968, w: 0.050062735}
+  m_LocalPosition: {x: -7.3009057, y: 0.0014238358, z: 470.293}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1332,7 +1354,7 @@ GameObject:
   - component: {fileID: 5561527052464464601}
   - component: {fileID: 4929137361849841640}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: PlayerCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

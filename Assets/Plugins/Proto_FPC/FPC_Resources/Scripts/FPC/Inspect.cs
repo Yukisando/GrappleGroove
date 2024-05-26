@@ -11,7 +11,8 @@ namespace PrototypeFPC
     {
         //Dependencies
         [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
+        [SerializeField]
+        public Dependencies dependencies;
         
         //Input properties
         [Header("Input Properties")]
@@ -22,7 +23,7 @@ namespace PrototypeFPC
         [Header("Inspection Properties")]
         [SerializeField] GameObject inspectIcon;
         [SerializeField] GameObject aimDot;
-        [SerializeField] float maxPickupDistance = 6;
+        public float maxPickupDistance = 6;
         [SerializeField] float pickupSpeed = 5f;
         [SerializeField] float rotateSpeed = 2f;
         [SerializeField] float zoomSpeed = 0.2f;
