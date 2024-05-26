@@ -22,7 +22,7 @@ public class ScratchManager : MonoBehaviour
     [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
     
-    public Action<NodeData> onNewNode;
+    public Action<string> onNewNode;
     
     void Awake() {
         I = this;
@@ -59,6 +59,6 @@ public class ScratchManager : MonoBehaviour
         var node = Instantiate(nodePrefab, nodeListParent);
         node.Populate(nodeData);
         Debug.Log($"Picked up {nodeData.id}!");
-        onNewNode?.Invoke(nodeData);
+        onNewNode?.Invoke($"{nodeData.id} added to scratchpad!");
     }
 }
