@@ -17,6 +17,7 @@ public class PickupPopup : MonoBehaviour
     
     void Awake() {
         rectTransform = GetComponent<RectTransform>();
+        text = GetComponent<TMP_Text>();
     }
     
     void Reset() {
