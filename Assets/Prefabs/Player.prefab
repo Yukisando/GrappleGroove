@@ -1221,9 +1221,6 @@ MonoBehaviour:
   hook: {fileID: 5561527051434680998}
   inspect: {fileID: 5561527051434681002}
   crossair: {fileID: 5561527051328177723}
-  grapple: {fileID: 7096138885364736195, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  interactable: {fileID: 1853125249586873685, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  normal: {fileID: 21300000, guid: 5506810b24f13dc42a03623d5c98f455, type: 3}
 --- !u!1 &5561527051857173134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,8 +1280,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527052145966904}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0011367183, y: 0.9984856, z: -0.02277968, w: 0.050062735}
-  m_LocalPosition: {x: -7.3009057, y: 0.0014238358, z: 470.293}
+  m_LocalRotation: {x: -0.085695565, y: -0.014352899, z: 0.0012127762, w: -0.99621725}
+  m_LocalPosition: {x: -0.43358034, y: 225.05249, z: -27.772217}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1459,8 +1456,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0

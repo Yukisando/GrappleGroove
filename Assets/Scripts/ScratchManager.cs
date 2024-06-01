@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using PrototypeFPC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,8 +11,6 @@ using UnityEngine;
 public class ScratchManager : MonoBehaviour
 {
     public static ScratchManager I;
-    [Title("Dependencies")]
-    public GameObject player;
     public Canvas scratchpad;
     public Node nodePrefab;
     public Transform nodeListParent;
@@ -24,9 +23,12 @@ public class ScratchManager : MonoBehaviour
     
     public Action<string> onNewNode;
     
+    Movement playerMovement;
+    
     void Awake() {
         I = this;
         scratchpad.enabled = false;
+        playerMovement = FindAnyObjectByType<Movement>();
     }
     
     void Start() {
@@ -47,7 +49,7 @@ public class ScratchManager : MonoBehaviour
     
     void ToggleScratchpad() {
         scratchpad.enabled = !scratchpad.enabled;
-        player.SetActive(!scratchpad.enabled);
+        playerMovement.enabled = !scratchpad.enabled;
         AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, transform.position);
         Cursor.lockState = scratchpad.enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = scratchpad.enabled;

@@ -29,6 +29,8 @@ namespace PrototypeFPC
         //Rope properties
         [Header("Rope Properties")]
         [SerializeField] Material ropeMaterial;
+        [SerializeField] Color leftClickRopeColor = Color.red;
+        [SerializeField] Color rightClickRopeColor = Color.blue;
         [SerializeField] float startThickness = 0.02f;
         [SerializeField] float endThickness = 0.06f;
         
@@ -98,7 +100,8 @@ namespace PrototypeFPC
         
         void Update() {
             InputCheck(); //- Line 141
-            CreateHooks(); //- Line 172
+            CreateHooks(0); //- Line 172 (Left Click Grapple)
+            CreateHooks(1); //- Line 172 (Right Click Grapple)
             
             // CreateBalloons(); //- Line 421
             RetractHooks(); //- Line 590
@@ -132,14 +135,14 @@ namespace PrototypeFPC
         //Input
         void InputCheck() {
             //Reset checker
-            if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+            if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 mouseDownTimer = 0;
                 hookRelease = false;
                 executeHookSwing = false;
             }
             
             //Check input for hook to swing
-            if (Input.GetMouseButton(1) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+            if ((Input.GetMouseButton(1) || Input.GetMouseButton(0)) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 mouseDownTimer += Time.deltaTime;
                 
                 if (hooked && mouseDownTimer >= holdDelayToSwing && !executeHookSwing) {
@@ -148,7 +151,7 @@ namespace PrototypeFPC
             }
             
             //Check input for hook to latch
-            if (Input.GetMouseButtonUp(1) && !Input.GetKey(KeyCode.LeftControl) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
+            if ((Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0)) && !Input.GetKey(KeyCode.LeftControl) && mouseDownTimer >= holdDelayToSwing && executeHookSwing && !dependencies.isInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
                 
@@ -164,9 +167,9 @@ namespace PrototypeFPC
         }
         
         //Create Hooks
-        void CreateHooks() {
+        void CreateHooks(int mouseButton) {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+            if (Input.GetMouseButtonDown(mouseButton) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 // Check and set target rigidbody if none
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore)) {
                     if (hit.transform.gameObject.GetComponent<Rigidbody>() == null) {
@@ -195,7 +198,7 @@ namespace PrototypeFPC
                             
                             // Set hook rope values
                             ropes.Add(hooks[^1].AddComponent<LineRenderer>());
-                            ropes[^1].material = ropeMaterial;
+                            ropes[^1].material = new Material(ropeMaterial); // Create a new instance of the material to modify the color
                             ropes[^1].startWidth = startThickness;
                             ropes[^1].endWidth = endThickness;
                             ropes[^1].numCornerVertices = 2;
@@ -203,6 +206,14 @@ namespace PrototypeFPC
                             ropes[^1].textureMode = LineTextureMode.Tile;
                             ropes[^1].shadowCastingMode = ShadowCastingMode.On;
                             ropes[^1].receiveShadows = false;
+                            
+                            // Set rope color based on mouse button
+                            if (mouseButton == 0) {
+                                ropes[^1].material.color = leftClickRopeColor;
+                            }
+                            else if (mouseButton == 1) {
+                                ropes[^1].material.color = rightClickRopeColor;
+                            }
                             
                             // Add and set joint parameters
                             spring.Reset();
@@ -245,7 +256,15 @@ namespace PrototypeFPC
                             
                             // Set the maxDistance and minDistance to the initial distance from the hook point
                             sj.maxDistance = distanceFromHook;
-                            sj.minDistance = distanceFromHook * .95f; // Adjust to ensure it's not too loose
+                            
+                            // Set minDistance based on mouse button
+                            if (mouseButton == 0) {
+                                sj.minDistance = distanceFromHook * 1.05f; // Min distance for left click (more loose)
+                            }
+                            else if (mouseButton == 1) {
+                                sj.minDistance = distanceFromHook * 0.95f; // Min distance for right click (tighter)
+                            }
+                            
                             sj.spring = 20000f; // Increase spring strength to make it tighter
                             sj.damper = 10000f; // Adjust damper to control oscillation
                             
