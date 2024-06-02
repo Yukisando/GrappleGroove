@@ -161,7 +161,7 @@ namespace PrototypeFPC
                 
                 // Apply an impulse based on the speed at release
                 // You might want to adjust the multiplier to get the feel right
-                var releaseImpulse = playerVelocity.normalized * speedFactor * releaseImpulseFactor;
+                var releaseImpulse = playerVelocity.normalized * (speedFactor * releaseImpulseFactor);
                 player.AddForce(releaseImpulse, ForceMode.Impulse);
             }
         }
@@ -770,7 +770,7 @@ namespace PrototypeFPC
                         var up = Quaternion.LookRotation((hooks[i].transform.position - spawnPoint.position).normalized) * Vector3.up;
                         
                         var currentGrapplePosition = Vector3.zero;
-                        currentGrapplePosition = Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
+                        Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
                         
                         for (int t = 0; t < segments + 1; t++) {
                             float delta = t / (float)segments;
@@ -795,7 +795,7 @@ namespace PrototypeFPC
                         var up = Quaternion.LookRotation((hookLatches[i].transform.position - spawnPoint.position + new Vector3(0, 1, 0)).normalized) * Vector3.up;
                         
                         var currentGrapplePosition = Vector3.zero;
-                        currentGrapplePosition = Vector3.Lerp(currentGrapplePosition, hookLatches[i].transform.position, 12f * Time.deltaTime);
+                        Vector3.Lerp(currentGrapplePosition, hookLatches[i].transform.position, 12f * Time.deltaTime);
                         
                         for (int t = 0; t < segments + 1; t++) {
                             float delta = t / (float)segments;
@@ -820,7 +820,7 @@ namespace PrototypeFPC
                         var up = Quaternion.LookRotation((hooks[i].transform.position - hookLatches[i].transform.position).normalized) * Vector3.up;
                         
                         var currentGrapplePosition = Vector3.zero;
-                        currentGrapplePosition = Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
+                        Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
                         
                         for (int t = 0; t < segments + 1; t++) {
                             float delta = t / (float)segments;
