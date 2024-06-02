@@ -1,102 +1,101 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
     public class Sway : MonoBehaviour
     {
-        //Dependencies
+        // Dependencies
         [Header("Dependencies")]
         [SerializeField] Dependencies dependencies;
-
-        //Sway properties
+        
+        // Sway properties
         [Header("Sway Properties")]
         [SerializeField] float amount = 25f;
         [SerializeField] float maxAmount = 30f;
         [SerializeField] float positionDelay = 0.05f;
         [SerializeField] float smoothness = 3f;
-
-        //Helpers
-        float y, z;
-
-        Transform swayPivot;
-        Quaternion localRotation;
-        Quaternion newRotation;
-
-        Vector3 localPosition;
         Vector3 drag;
-
-
+        
+        Vector3 localPosition;
+        
+        Vector3 localPositionLeft; // Position for left hand
+        Quaternion localRotation;
+        Quaternion localRotationLeft; // Rotation for left hand
+        Quaternion newRotation;
+        Quaternion newRotationLeft; // New rotation for left hand
+        Transform swayPivotLeft; // Add second sway pivot
+        
+        Transform swayPivotRight;
+        
+        // Helpers
+        float y, z;
+        
         //-----------------------
-
-
-        //Functions
+        
+        // Functions
         ///////////////
-
-        void Start()
-        {
-            Setup(); //- Line 57
+        
+        void Start() {
+            Setup();
         }
-
-        void LateUpdate()
-        {
-            ControlSway(); //- Line 70
-            ControlPositionDelay(); //- Line 90
+        
+        void LateUpdate() {
+            ControlSway();
+            ControlPositionDelay();
         }
-
-
+        
         //-----------------------
-
-
-        void Setup()
-        {
-            //Setup dependencies
-            swayPivot = dependencies.swayPivot;
-
-            //Set local rotation
-            localRotation = swayPivot.localRotation;
-
-            //Set local position
-            localPosition = swayPivot.localPosition;
+        
+        void Setup() {
+            // Setup dependencies
+            swayPivotRight = dependencies.swayPivotRight;
+            swayPivotLeft = dependencies.swayPivotLeft; // Initialize second sway pivot
+            
+            // Set local rotation
+            localRotation = swayPivotRight.localRotation;
+            localRotationLeft = swayPivotLeft.localRotation; // Initialize left hand rotation
+            
+            // Set local position
+            localPosition = swayPivotRight.localPosition;
+            localPositionLeft = swayPivotLeft.localPosition; // Initialize left hand position
         }
-
-
-        void ControlSway()
-        {
-            if(!dependencies.isInspecting)
-            {
-                //Record input axis
+        
+        void ControlSway() {
+            if (!dependencies.isInspecting) {
+                // Record input axis
                 y = Input.GetAxis("Mouse Y") * amount;
                 z = -Input.GetAxis("Mouse X") * amount;
-
-                //Clamp input value
+                
+                // Clamp input value
                 y = Mathf.Clamp(y, -maxAmount, maxAmount);
                 z = Mathf.Clamp(z, -maxAmount, maxAmount);
-
-                //Apply rotation
-                var smooth = smoothness * Time.deltaTime;
+                
+                // Apply rotation for right hand
+                float smooth = smoothness * Time.deltaTime;
                 newRotation = Quaternion.Euler(localRotation.x, localRotation.y + y, localRotation.z + z);
-                swayPivot.localRotation = Quaternion.Lerp(swayPivot.localRotation, newRotation, smooth);
+                swayPivotRight.localRotation = Quaternion.Lerp(swayPivotRight.localRotation, newRotation, smooth);
+                
+                // Apply rotation for left hand
+                newRotationLeft = Quaternion.Euler(localRotationLeft.x, localRotationLeft.y + y, localRotationLeft.z + z);
+                swayPivotLeft.localRotation = Quaternion.Lerp(swayPivotLeft.localRotation, newRotationLeft, smooth);
             }
         }
-
-
-        void ControlPositionDelay()
-        {
-            if(!dependencies.isInspecting)
-            {
-                //Calculate drag when moving
+        
+        void ControlPositionDelay() {
+            if (!dependencies.isInspecting) {
+                // Calculate drag when moving
                 drag = new Vector3(-Input.GetAxisRaw("Horizontal") * positionDelay, 0f, -Input.GetAxisRaw("Vertical") * positionDelay);
-
-                //Apply position drag
-                var smooth = smoothness * Time.deltaTime;
-                swayPivot.localPosition = Vector3.Lerp(swayPivot.localPosition, localPosition + drag, smooth);
+                
+                // Apply position drag for right hand
+                float smooth = smoothness * Time.deltaTime;
+                swayPivotRight.localPosition = Vector3.Lerp(swayPivotRight.localPosition, localPosition + drag, smooth);
+                
+                // Apply position drag for left hand
+                swayPivotLeft.localPosition = Vector3.Lerp(swayPivotLeft.localPosition, localPositionLeft + drag, smooth);
             }
         }
     }

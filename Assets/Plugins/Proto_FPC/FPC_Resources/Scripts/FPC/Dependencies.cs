@@ -1,6 +1,7 @@
 #region
 
 using UnityEngine;
+using UnityEngine.Serialization;
 
 #endregion
 
@@ -23,7 +24,8 @@ namespace PrototypeFPC
         [SerializeField] public Transform spawnPoint;
         [SerializeField] public Transform inspectPoint;
         [SerializeField] public Transform grabPoint;
-        [SerializeField] public Transform swayPivot;
+        [FormerlySerializedAs("swayPivot")] public Transform swayPivotRight;
+        public Transform swayPivotLeft;
         [SerializeField] public AudioSource audioSourceTop;
         [SerializeField] public AudioSource audioSourceBottom;
         
