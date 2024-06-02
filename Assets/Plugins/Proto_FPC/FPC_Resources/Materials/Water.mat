@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
   m_Shader: {fileID: 4800000, guid: 0a8e9b0f8711c6844a62fd57f5a8d1fc, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -84,7 +87,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SurfaceDistortionAmount: 0.345
-    - _SurfaceNoiseCutoff: 0.859
+    - _SurfaceNoiseCutoff: 0.599
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
@@ -95,3 +98,4 @@ Material:
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

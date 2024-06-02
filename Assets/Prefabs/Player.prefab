@@ -657,7 +657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1974701204330918298}
   m_Layer: 0
-  m_Name: SwayPivot (1)
+  m_Name: SwayPivotLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1179,7 +1179,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 5561527051324714432}
   inspectPoint: {fileID: 5561527052848734007}
   grabPoint: {fileID: 5561527052574295972}
-  swayPivot: {fileID: 5561527051857173135}
+  swayPivotRight: {fileID: 5561527051857173135}
+  swayPivotLeft: {fileID: 1974701204330918298}
   audioSourceTop: {fileID: 5561527051302356790}
   audioSourceBottom: {fileID: 5561527052591306809}
 --- !u!114 &5561527051434680994
@@ -1303,7 +1304,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051434680986}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7892c34f19c5b049bddbd2ad1e55185, type: 3}
   m_Name: 
@@ -1816,7 +1817,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5561527051857173135}
   m_Layer: 0
-  m_Name: SwayPivot
+  m_Name: SwayPivotRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
