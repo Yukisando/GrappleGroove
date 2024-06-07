@@ -14,12 +14,12 @@ public class Crossair : MonoBehaviour
     
     void Update() {
 //If the raycast distance from the playMovement to the object is less than the grapple distance, change the crossair to the grapple sprite and the layer is default
-        if (Physics.Raycast(hook.dependencies.cam.transform.position, hook.dependencies.cam.transform.forward, out var hit, hook.hookDistance, 1 << 0)) {
+        if (Physics.Raycast(hook.dependencies.cam.transform.position, hook.dependencies.cam.transform.forward, out var _, hook.hookDistance, hook.grappleLayerMask)) {
             crossair.color = Color.blue;
         }
         
 //If the raycast distance from the playMovement to the object is less than the interactable distance, change the crossair to the interactable sprite
-        else if (Physics.Raycast(inspect.dependencies.cam.transform.position, inspect.dependencies.cam.transform.forward, out var hit2, inspect.maxPickupDistance, 1 << 0)) {
+        else if (Physics.Raycast(inspect.dependencies.cam.transform.position, inspect.dependencies.cam.transform.forward, out var _, inspect.maxPickupDistance, hook.grappleLayerMask)) {
             crossair.color = Color.green;
         }
         

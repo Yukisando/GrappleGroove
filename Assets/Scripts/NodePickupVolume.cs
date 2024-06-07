@@ -1,5 +1,6 @@
 #region
 
+using System;
 using UnityEngine;
 
 #endregion
@@ -7,10 +8,10 @@ using UnityEngine;
 public class NodePickupVolume : MonoBehaviour
 {
     public NodeData nodeData;
+    public Action<NodeData> onEnterVolume;
     
     void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
-        
-        ScratchManager.I.AddNode(nodeData);
+        onEnterVolume?.Invoke(nodeData);
     }
 }

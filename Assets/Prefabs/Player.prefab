@@ -1231,7 +1231,7 @@ MonoBehaviour:
   airDrag: 1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 65
   groundCheck: {fileID: 5561527052591306808}
   groundCheckRadius: 0.2
   footstepCurve:
@@ -1325,7 +1325,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527051434680986}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6601ef6b361d434194375b3e0f2874a, type: 3}
   m_Name: 
@@ -1394,6 +1394,8 @@ MonoBehaviour:
   dependencies: {fileID: 5561527051434680992}
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   hookDistance: 35
+  cutRopeKey: 120
+  resetHookKey: 114
   releaseImpulseFactor: 50
   holdDelayToSwing: 0.2
   playerRetractStrength: 1000
@@ -1444,6 +1446,9 @@ MonoBehaviour:
   retractSound: {fileID: 8300000, guid: 6875343683773b64b98110db918a092e, type: 3}
   balloonInflateSound: {fileID: 8300000, guid: d54581f06851035468e9de1a144676c7, type: 3}
   balloonDeflateSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}
+  grappleLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   hooks: []
   hookModels: []
   hookLatches: []
@@ -1866,8 +1871,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5561527052145966904}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalRotation: {x: 0.052659996, y: 0.3913838, z: -0.022478921, w: 0.9184446}
+  m_LocalPosition: {x: 224.16151, y: 4.9294405, z: -10.291003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

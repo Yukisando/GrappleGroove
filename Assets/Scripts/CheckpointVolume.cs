@@ -1,18 +1,18 @@
 #region
 
+using System;
 using UnityEngine;
 
 #endregion
 
 public class CheckpointVolume : MonoBehaviour
 {
-    public Transform checkpoint;
+    public Action<Transform> onEnterVolume;
     
     void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
-            checkpoint.position = transform.position;
-            Debug.Log("Checkpoint!");
-            gameObject.SetActive(false);
-        }
+        if (!other.CompareTag("Player")) return;
+        
+        onEnterVolume?.Invoke(transform);
+        gameObject.SetActive(false);
     }
 }
