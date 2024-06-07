@@ -23,21 +23,36 @@ public class GameManager : MonoBehaviour
         var checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         var resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         var nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         
         foreach (var checkpointVolume in checkpointVolumes) {
-            checkpointVolume.onEnterVolume +=  OnPlayerEnteredCheckpointVolume;
+            checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
         }
         
         foreach (var resetVolume in resetVolumes) {
-            resetVolume.onEnterVolume += OnPlayerEnteredKillVolume;
+            resetVolume.onEnterVolume += OnPlayerEnteredResetVolume;
         }
         
         foreach (var nodeVolume in nodeVolumes) {
             nodeVolume.onEnterVolume += OnPlayerEnteredNodePickupVolume;
         }
+        
+        foreach (var killVolume in killVolumes) {
+            killVolume.onEnterVolume += OnPlayerEnteredKillVolume;
+        }
     }
     
-    void OnPlayerEnteredKillVolume() {
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Application.Quit();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.F5)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+    
+    void OnPlayerEnteredResetVolume() {
         playerTransform.position = respawnPoint.position;
         playerDependencies.GetComponent<GrapplingHook>().ResetHook();
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
@@ -56,13 +71,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Node collected!");
     }
     
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            Application.Quit();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.F5)) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+    void OnPlayerEnteredKillVolume() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Player died!");
     }
 }
