@@ -1,6 +1,5 @@
 #region
 
-using System;
 using PrototypeFPC;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +8,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField] Transform respawnPoint;
     [SerializeField] Transform playerTransform;
     [SerializeField] ScratchManager scratchManager;
     [SerializeField] Dependencies playerDependencies;
+    
+    [Header("Audio")]
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip checkpointSound;
+    [SerializeField] AudioClip nodeSound;
     
     void Awake() {
         var checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -35,16 +40,19 @@ public class GameManager : MonoBehaviour
     void OnPlayerEnteredKillVolume() {
         playerTransform.position = respawnPoint.position;
         playerDependencies.GetComponent<GrapplingHook>().ResetHook();
+        playerDependencies.audioSourceTop.PlayOneShot(deathSound);
         Debug.Log("Player died!");
     }
     
     void OnPlayerEnteredCheckpointVolume(Transform t) {
         respawnPoint.position = t.transform.position;
+        playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
         Debug.Log("Checkpoint reached!");
     }
     
     void OnPlayerEnteredNodePickupVolume(NodeData nodeData) {
         scratchManager.AddNode(nodeData);
+        playerDependencies.audioSourceTop.PlayOneShot(nodeSound);
         Debug.Log("Node collected!");
     }
     
