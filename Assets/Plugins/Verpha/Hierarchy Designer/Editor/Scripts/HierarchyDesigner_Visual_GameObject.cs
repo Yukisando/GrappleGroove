@@ -262,6 +262,7 @@ namespace Verpha.HierarchyDesigner
 
         private static bool ShouldComponentBeVisible(Component component, GameObject gameObject)
         {
+            if (component == null) return false;
             Type componentType = component.GetType();
             if ((componentType == typeof(Transform) || componentType == typeof(RectTransform)) && !HierarchyDesigner_Manager_Settings.ShowTransformComponent) return false;
             if (HierarchyDesigner_Visual_Folder.IsFolder(gameObject) && !HierarchyDesigner_Manager_Settings.ShowComponentIconsForFolders) return false;

@@ -1,3 +1,6 @@
+| Version 1.1.0.3f
+- Hotfix: Fixed a bug where deleting a script from a GameObject while the Hierarchy Buttons were enabled would throw a NullReferenceException.
+
 | Version 1.1.0.2f
 - Modified the 'FolderExists()' and 'SeparatorExists()' methods in their respective utility classes to support UNITY_6000_0_OR_NEWER versions. 
 - Added a 'ReadMe.txt' file to the Documentation folder.

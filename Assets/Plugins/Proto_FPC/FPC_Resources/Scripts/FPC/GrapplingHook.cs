@@ -242,7 +242,7 @@ namespace PrototypeFPC
                     // Set the maxDistance and minDistance to the initial distance from the hook point
                     sj.maxDistance = mouseButton switch {
                         // Set maxDistance based on mouse button
-                        0 => distanceFromHook * .95f,
+                        0 => distanceFromHook,
                         1 => distanceFromHook * 3f,
                         _ => sj.maxDistance,
                     };
@@ -253,7 +253,7 @@ namespace PrototypeFPC
                         _ => sj.minDistance,
                     };
 
-                    sj.spring = 20000f; // Increase spring strength to make it tighter
+                    sj.spring = 25000f; // Increase spring strength to make it tighter
                     sj.damper = 10000f; // Adjust damper to control oscillation
 
                     // Add collider for rope cutting
