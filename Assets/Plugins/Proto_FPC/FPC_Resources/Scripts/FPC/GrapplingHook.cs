@@ -14,6 +14,7 @@ namespace PrototypeFPC
 
         // Hook properties
         [Header("Hook Properties")]
+        [SerializeField] public LayerMask grappleLayerMask;
         [SerializeField] GameObject hookModel;
         public float hookDistance = 50f;
         [SerializeField] KeyCode cutRopeKey;
@@ -58,8 +59,7 @@ namespace PrototypeFPC
         [SerializeField] AudioClip balloonInflateSound;
         [SerializeField] AudioClip balloonDeflateSound;
 
-        // LayerMask for hook placement
-        [SerializeField] public LayerMask grappleLayerMask;
+
 
         // Lists to store data
         [HideInInspector] [SerializeField] List<GameObject> hooks, hookModels, hookLatches, ropeColliders, balloons;
@@ -242,7 +242,7 @@ namespace PrototypeFPC
                     // Set the maxDistance and minDistance to the initial distance from the hook point
                     sj.maxDistance = mouseButton switch {
                         // Set maxDistance based on mouse button
-                        0 => distanceFromHook,
+                        0 => distanceFromHook * .95f,
                         1 => distanceFromHook * 3f,
                         _ => sj.maxDistance,
                     };
