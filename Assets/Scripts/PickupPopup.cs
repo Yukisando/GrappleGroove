@@ -30,10 +30,10 @@ public class PickupPopup : MonoBehaviour
     }
     
     [Button]
-    void ShowPopup(string info = "New info!") {
+    void ShowPopup(string _info = "New info!") {
         Reset();
-        text.text = info;
-        Debug.Log($"{info}");
+        text.text = _info;
+        Debug.Log($"{_info}");
         rectTransform.LeanMoveY(height, duration).setEaseOutBounce().setOnComplete(Reset);
     }
 }

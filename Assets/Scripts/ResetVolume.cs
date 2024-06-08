@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class ResetVolume : MonoBehaviour
 {
-    public Action onEnterVolume;
+    public Action<GameObject> onEnterVolume;
     
-    void OnTriggerEnter(Collider other) {
-        if (!other.CompareTag("Player")) return;
+    void OnTriggerEnter(Collider _other) {
+        if (!_other.CompareTag("PlayerHitbox")) return;
         
-        onEnterVolume?.Invoke();
+        onEnterVolume?.Invoke(_other.gameObject);
     }
 }

@@ -97,12 +97,13 @@ namespace PrototypeFPC
             if (!dependencies.isGrounded) {
                 // Check fall rate
                 if (rb.linearVelocity.y < rateBeforeForce && Physics.Raycast(rb.transform.position, Vector3.down, out falltHit, distanceBeforeForce)) {
-                    // Apply additional force towards ground if falling faster the fall rate
+                    // Apply additional force towards ground if falling faster than the fall rate
                     newFallVelocity = rb.linearVelocity;
-                    rb.linearVelocity = new Vector3(newFallVelocity.x, newFallVelocity.y += -1 * hardLandForce, newFallVelocity.z);
+                    rb.linearVelocity = new Vector3(newFallVelocity.x, newFallVelocity.y += -1 * hardLandForce * Time.deltaTime, newFallVelocity.z);
                 }
             }
         }
+
         
         void Land() {
             // Toggle landing upon ground detection

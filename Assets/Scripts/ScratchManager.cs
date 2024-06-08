@@ -55,12 +55,12 @@ public class ScratchManager : MonoBehaviour
         Cursor.visible = scratchpad.enabled;
     }
     
-    public void AddNode(NodeData nodeData) {
-        if (nodeData.unique && nodes.Contains(nodeData)) return;
-        nodes.Add(nodeData);
+    public void AddNode(NodeData _nodeData) {
+        if (_nodeData.unique && nodes.Contains(_nodeData)) return;
+        nodes.Add(_nodeData);
         var node = Instantiate(nodePrefab, nodeListParent);
-        node.Populate(nodeData);
-        Debug.Log($"Picked up {nodeData.id}!");
-        onNewNode?.Invoke($"{nodeData.id} added to scratchpad!");
+        node.Populate(_nodeData);
+        Debug.Log($"Picked up {_nodeData.id}!");
+        onNewNode?.Invoke($"{_nodeData.id} added to scratchpad!");
     }
 }

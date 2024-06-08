@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
         
         foreach (var resetVolume in resetVolumes) {
-            resetVolume.onEnterVolume += OnPlayerEnteredResetVolume;
+            resetVolume.onEnterVolume += OnObjectEnteredResetVolume;
         }
         
         foreach (var nodeVolume in nodeVolumes) {
@@ -52,21 +52,21 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    void OnPlayerEnteredResetVolume() {
+    void OnObjectEnteredResetVolume(GameObject _object) {
         playerTransform.position = respawnPoint.position;
         playerDependencies.GetComponent<GrapplingHook>().ResetHook();
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
-        Debug.Log("Player died!");
+        Debug.Log($"{_object} got reset!");
     }
     
-    void OnPlayerEnteredCheckpointVolume(Transform t) {
-        respawnPoint.position = t.transform.position;
+    void OnPlayerEnteredCheckpointVolume(Transform _t) {
+        respawnPoint.position = _t.transform.position;
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
         Debug.Log("Checkpoint reached!");
     }
     
-    void OnPlayerEnteredNodePickupVolume(NodeData nodeData) {
-        scratchManager.AddNode(nodeData);
+    void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
+        scratchManager.AddNode(_nodeData);
         playerDependencies.audioSourceTop.PlayOneShot(nodeSound);
         Debug.Log("Node collected!");
     }

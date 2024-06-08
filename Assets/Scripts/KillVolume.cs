@@ -11,8 +11,8 @@ public class KillVolume : MonoBehaviour
     
     public Action onEnterVolume;
     
-    void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
+    void OnTriggerEnter(Collider _other) {
+        if (_other.CompareTag("PlayerHitbox"))
             onEnterVolume?.Invoke();
     }
 }

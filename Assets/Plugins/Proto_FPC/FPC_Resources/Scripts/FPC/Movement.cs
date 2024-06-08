@@ -173,16 +173,12 @@ namespace PrototypeFPC
         
         //Add drag to movement
         void ControlDrag() {
-            //Ground movement drag
-            if (dependencies.isGrounded && !dependencies.isSliding) {
-                rb.linearDamping = groundDrag;
-            }
-            
-            //Air movement drag
-            else {
-                rb.linearDamping = airDrag;
-            }
+            // Target drag value
+            float targetDrag = dependencies.isGrounded && !dependencies.isSliding ? groundDrag : airDrag;
+            // Smoothly interpolate the drag value
+            rb.linearDamping = Mathf.Lerp(rb.linearDamping, targetDrag, Time.deltaTime * 10f);
         }
+
         
         //Strafe Tilt
         void StrafeTilt() {
