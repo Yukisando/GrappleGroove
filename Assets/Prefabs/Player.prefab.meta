@@ -1,14 +1,7 @@
 fileFormatVersion: 2
-guid: 172f9386e5ef58a49a21a05b76f23f37
+guid: bfe40c624ec109942aa5f01f1b2c25df
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 236376
-  packageName: Prototype-FPC
-  packageVersion: 1.0
-  assetPath: Assets/Proto_FPC/FPC_Prefab/Prototype_FPC.prefab
-  uploadId: 542059
