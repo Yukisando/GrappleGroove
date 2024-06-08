@@ -19,19 +19,16 @@ namespace PrototypeFPC
         [Header("Hook Properties")]
         [SerializeField] public LayerMask grappleLayerMask;
         [SerializeField] GameObject hookModel;
+        [SerializeField] GameObject platformPrefab;
         public float hookDistance = 50f;
         [SerializeField] KeyCode cutRopeKey;
         [SerializeField] KeyCode resetHookKey;
+        [SerializeField] float minimumRopeLength = 1f;
         [SerializeField] float releaseImpulseFactor = 50f;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float playerRetractStrength = 1000f;
         [SerializeField] float retractStrength = 500f;
         [SerializeField] float latchOnImpulse = 200f;
-
-        // Platform properties
-        [Header("Platform Properties")]
-        [SerializeField] GameObject platformPrefab;
-        [HideInInspector] [SerializeField] List<GameObject> planks;
 
         // Rope properties
         [Header("Rope Properties")]
@@ -251,7 +248,7 @@ namespace PrototypeFPC
                         _ => sj.minDistance,
                     };
 
-                    sj.spring = 25000f; // Increase spring strength to make it tighter
+                    sj.spring = 20000f; // Increase spring strength to make it tighter
                     sj.damper = 10000f; // Adjust damper to control oscillation
 
                     // Add collider for rope cutting
@@ -341,6 +338,32 @@ namespace PrototypeFPC
 
                         hooked = false;
 
+                        // Calculate the distance between the hooks
+                        float ropeLength = Vector3.Distance(hooks[^1].transform.position, hit.point);
+
+                        // Check if the rope is too short
+                        if (ropeLength < minimumRopeLength) {
+                            // Destroy the last hook and related components if the rope is too short
+                            Destroy(hooks[^1]);
+                            hooks.RemoveAt(hooks.Count - 1);
+
+                            Destroy(hookLatches[^1]);
+                            hookLatches.RemoveAt(hookLatches.Count - 1);
+
+                            Destroy(ropeColliders[^1]);
+                            ropeColliders.RemoveAt(ropeColliders.Count - 1);
+
+                            Destroy(ropes[^1]);
+                            ropes.RemoveAt(ropes.Count - 1);
+
+                            Destroy(hookModels[^1]);
+                            hookModels.RemoveAt(hookModels.Count - 1);
+
+                            audioSource.PlayOneShot(releaseSound);
+
+                            return; // Exit the method as the rope is too short
+                        }
+
                         // Audio
                         audioSource.PlayOneShot(grapplingSound);
 
@@ -391,6 +414,32 @@ namespace PrototypeFPC
 
                         hooked = false;
                         holdingBalloon = false;
+
+                        // Calculate the distance between the hooks
+                        float ropeLength = Vector3.Distance(hooks[^1].transform.position, hit.point);
+
+                        // Check if the rope is too short
+                        if (ropeLength < minimumRopeLength) {
+                            // Destroy the last hook and related components if the rope is too short
+                            Destroy(hooks[^1]);
+                            hooks.RemoveAt(hooks.Count - 1);
+
+                            Destroy(hookLatches[^1]);
+                            hookLatches.RemoveAt(hookLatches.Count - 1);
+
+                            Destroy(ropeColliders[^1]);
+                            ropeColliders.RemoveAt(ropeColliders.Count - 1);
+
+                            Destroy(ropes[^1]);
+                            ropes.RemoveAt(ropes.Count - 1);
+
+                            Destroy(hookModels[^1]);
+                            hookModels.RemoveAt(hookModels.Count - 1);
+
+                            audioSource.PlayOneShot(releaseSound);
+
+                            return; // Exit the method as the rope is too short
+                        }
 
                         // Audio
                         audioSource.PlayOneShot(grapplingSound);
