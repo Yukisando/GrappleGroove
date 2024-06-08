@@ -1,7 +1,6 @@
 #region
 
 using UnityEngine;
-using UnityEngine.Serialization;
 
 #endregion
 
@@ -13,30 +12,30 @@ namespace PrototypeFPC
         [SerializeField] public float worldGravity = -20f;
         [SerializeField] public int physicsIterations = 12;
         [SerializeField] public float timeStep = 0.003f;
-        public float grappleDistance;
-        public float interactableDistance;
-        
+
         [SerializeField] public Rigidbody rb;
         [SerializeField] public CapsuleCollider cc;
         [SerializeField] public Camera cam;
         [SerializeField] public Transform orientation;
         [SerializeField] public Transform vaultPoint;
-        [SerializeField] public Transform spawnPoint;
+
+        [SerializeField] public Transform spawnPointRight;
+        [SerializeField] public Transform spawnPointLeft;
         [SerializeField] public Transform inspectPoint;
         [SerializeField] public Transform grabPoint;
-        [FormerlySerializedAs("swayPivot")] public Transform swayPivotRight;
+        public Transform swayPivotRight;
         public Transform swayPivotLeft;
         [SerializeField] public AudioSource audioSourceTop;
         [SerializeField] public AudioSource audioSourceBottom;
-        
-        [SerializeField] public bool isGrounded { get; set; }
-        [SerializeField] public bool isSliding { get; set; }
-        [SerializeField] public bool isWallRunning { get; set; }
-        [SerializeField] public bool isInspecting { get; set; }
-        [SerializeField] public bool isGrabbing { get; set; }
-        [SerializeField] public bool isVaulting { get; set; }
-        [SerializeField] public float tilt { get; set; }
-        
+
+        public bool isGrounded { get; set; }
+        public bool isSliding { get; set; }
+        public bool isWallRunning { get; set; }
+        public bool isInspecting { get; set; }
+        public bool isGrabbing { get; set; }
+        public bool isVaulting { get; set; }
+        public float tilt { get; set; }
+
         //----------
         void Awake() {
             //Physics & Timestep setup

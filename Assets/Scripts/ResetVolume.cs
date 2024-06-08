@@ -1,13 +1,16 @@
+#region
+
 using System;
 using UnityEngine;
 
+#endregion
+
 public class ResetVolume : MonoBehaviour
 {
-    public Action<GameObject> onEnterVolume;
-    
+    public Action onEnterVolume;
+
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        
-        onEnterVolume?.Invoke(_other.gameObject);
+        onEnterVolume?.Invoke();
     }
 }

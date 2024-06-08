@@ -18,6 +18,7 @@ namespace PrototypeFPC
         // Hook properties
         [Header("Hook Properties")]
         [SerializeField] public LayerMask grappleLayerMask;
+        [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
         [SerializeField] GameObject platformPrefab;
         public float hookDistance = 50f;
@@ -69,7 +70,6 @@ namespace PrototypeFPC
         float mouseDownTimer;
         Rigidbody player;
         Ray ray;
-        Transform spawnPoint;
         Spring spring;
 
         //-----------------------
@@ -94,7 +94,6 @@ namespace PrototypeFPC
         void Setup() {
             // Setup dependencies
             player = dependencies.rb;
-            spawnPoint = dependencies.spawnPoint;
             audioSource = dependencies.audioSourceTop;
         }
 
@@ -167,8 +166,9 @@ namespace PrototypeFPC
                     hookModels[^1].transform.parent = hooks[^1].transform;
 
                     // Hook start point model
-                    hookModels.Add(Instantiate(hookModel, spawnPoint.position, Quaternion.identity));
-                    hookModels[^1].transform.parent = spawnPoint.transform;
+                    var spawnPoint = mouseButton == 0 ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
+                    hookModels.Add(Instantiate(hookModel, spawnPoint, Quaternion.identity));
+                    hookModels[^1].transform.parent = mouseButton == 0 ? dependencies.spawnPointLeft.transform : dependencies.spawnPointRight.transform;
 
                     // Set hook rope values
                     ropes.Add(hooks[^1].AddComponent<LineRenderer>());
@@ -430,7 +430,7 @@ namespace PrototypeFPC
                 }
 
                 // At index and are not attached to player
-                else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, grappleLayerMask)) {
+                else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ropeLayerMask)) {
                     if (hit.collider.isTrigger) {
                         int index = GameObjectToIndex(hit.collider.gameObject);
 
@@ -498,11 +498,11 @@ namespace PrototypeFPC
         // Draw ropes
         void DrawRopes() {
             if (ropes.Count != 0 && ropes.Count == hooks.Count)
-
-                // Loop and set the respective start and end draw positions of each rope
                 for (var i = 0; i < ropes.Count; i++) {
-                    // From the player
                     if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == hooks[i].GetComponent<Rigidbody>()) {
+                        // Determine the correct spawn point based on the rope color
+                        var spawnPoint = ropes[i].material.color == leftClickRopeColor ? dependencies.spawnPointLeft : dependencies.spawnPointRight;
+
                         // Set spring properties
                         spring.SetDamper(damper);
                         spring.SetStrength(springStrength);

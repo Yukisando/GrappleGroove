@@ -828,14 +828,13 @@ MonoBehaviour:
   worldGravity: -20
   physicsIterations: 12
   timeStep: 0.003
-  grappleDistance: 0
-  interactableDistance: 0
   rb: {fileID: 619021368732356237}
   cc: {fileID: 8245302811132308742}
   cam: {fileID: 548907423963366387}
   orientation: {fileID: 2927831574506113995}
   vaultPoint: {fileID: 5153562455555910575}
-  spawnPoint: {fileID: 7858047983564672586}
+  spawnPointRight: {fileID: 7858047983564672586}
+  spawnPointLeft: {fileID: 7501055845142795298}
   inspectPoint: {fileID: 725079336522127488}
   grabPoint: {fileID: 2008084229923416026}
   swayPivotRight: {fileID: 5829778298654027080}
@@ -2529,7 +2528,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643533470452205149}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.21268986, y: 0.445998, z: -0.11001901, w: -0.8624063}
+  m_LocalRotation: {x: 0.21268673, y: -0.44599655, z: 0.110018425, w: 0.8624079}
   m_LocalPosition: {x: 269.22632, y: -7.1105967, z: -112.17489}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2538,7 +2537,7 @@ Transform:
   - {fileID: 4020737450502963886}
   - {fileID: 2927831574506113995}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 27.709, y: -54.691, z: 0.003}
 --- !u!136 &8245302811132308742
 CapsuleCollider:
   m_ObjectHideFlags: 0
