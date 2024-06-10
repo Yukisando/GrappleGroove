@@ -8,10 +8,6 @@ namespace PrototypeFPC
 {
     public class Sway : MonoBehaviour
     {
-        // Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         // Sway properties
         [Header("Sway Properties")]
         [SerializeField] float amount = 25f;
@@ -26,12 +22,21 @@ namespace PrototypeFPC
         Quaternion localRotationRight;
         Quaternion newRotationLeft;
         Quaternion newRotationRight;
+
+        // PlayerDependencies
+
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
         Transform swayPivotLeft;
         Transform swayPivotRight;
         float y, z;
 
         // Functions
         ///////////////
+
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
 
         void Start() {
             Setup();
@@ -45,9 +50,9 @@ namespace PrototypeFPC
         //-----------------------
 
         void Setup() {
-            // Setup dependencies
-            swayPivotRight = dependencies.swayPivotRight;
-            swayPivotLeft = dependencies.swayPivotLeft; // Initialize second sway pivot
+            // Setup playerDependencies
+            swayPivotRight = playerDependencies.swayPivotRight;
+            swayPivotLeft = playerDependencies.swayPivotLeft; // Initialize second sway pivot
 
             // Set local rotation
             localRotationRight = swayPivotRight.localRotation;
@@ -59,7 +64,7 @@ namespace PrototypeFPC
         }
 
         void ControlSway() {
-            if (!dependencies.isInspecting) {
+            if (!playerDependencies.isInspecting) {
                 // Record input axis
                 y = Input.GetAxis("Mouse Y") * amount;
                 z = -Input.GetAxis("Mouse X") * amount;
@@ -80,7 +85,7 @@ namespace PrototypeFPC
         }
 
         void ControlPositionDelay() {
-            if (!dependencies.isInspecting) {
+            if (!playerDependencies.isInspecting) {
                 // Calculate drag when moving
                 drag = new Vector3(-Input.GetAxisRaw("Horizontal") * positionDelay, 0f, -Input.GetAxisRaw("Vertical") * positionDelay);
 

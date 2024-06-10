@@ -1,20 +1,13 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
     public class GrabThrow : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Input properties
         [Header("Input Properties")]
         [SerializeField] KeyCode grabThrowKey = KeyCode.G;
@@ -31,74 +24,68 @@ namespace PrototypeFPC
         [SerializeField] AudioClip grabSound;
         [SerializeField] AudioClip throwSound;
 
+        AudioSource audioSource;
+
         //Helpers
         Camera cam;
-
-        Rigidbody rb;
         Rigidbody grabbedObject;
 
         Transform grabPoint;
+        RaycastHit hit;
         Transform originalParent;
-
-        AudioSource audioSource;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
 
         Ray ray;
-        RaycastHit hit;
 
+        Rigidbody rb;
 
         //-----------------------
-
 
         //Functions
         ///////////////
 
-        void Start()
-        {
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
+
+        void Start() {
             Setup(); //- Line 74
         }
 
-        void Update()
-        {
+        void Update() {
             GrabHoldThrow(); //- Line 88
         }
 
-        void FixedUpdate()
-        {
+        void FixedUpdate() {
             Hold(); //- Line 137
         }
 
-
         //-----------------------
 
-
-        void Setup()
-        {
-            //Setup dependencies
-            cam = dependencies.cam;
-            rb = dependencies.rb;
-            grabPoint = dependencies.grabPoint;
-            audioSource = dependencies.audioSourceTop;
+        void Setup() {
+            //Setup playerDependencies
+            cam = playerDependencies.cam;
+            rb = playerDependencies.rb;
+            grabPoint = playerDependencies.grabPoint;
+            audioSource = playerDependencies.audioSourceTop;
 
             //Create and make grab point A kinematic rigidbody
             grabPoint.gameObject.AddComponent<Rigidbody>().useGravity = false;
             grabPoint.gameObject.GetComponent<Rigidbody>().isKinematic = true;
         }
 
-
-        void GrabHoldThrow()
-        {
+        void GrabHoldThrow() {
             //Track the mouse position for raycasting
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if(dependencies.isGrabbing && grabbedObject != null)
-            {
-                if(Input.GetKeyDown(grabThrowKey))
-                {
+            if (playerDependencies.isGrabbing && grabbedObject != null) {
+                if (Input.GetKeyDown(grabThrowKey)) {
                     //Apply force, throw the object
-                    grabbedObject.AddForce(dependencies.cam.transform.forward *  throwForce, ForceMode.Impulse);
+                    grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
                     grabbedObject = null;
 
-                    dependencies.isGrabbing = false;
+                    playerDependencies.isGrabbing = false;
 
                     //Disable grab icon
                     grabIcon.SetActive(false);
@@ -108,19 +95,15 @@ namespace PrototypeFPC
                 }
             }
 
-            else if(!dependencies.isGrabbing && !dependencies.isInspecting)
-            {
-                if(Input.GetKeyDown(grabThrowKey))
-                {
-                    if(Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore))
-                    {
-                        if(hit.collider.gameObject.GetComponent<Rigidbody>() != null && !hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic)
-                        {
+            else if (!playerDependencies.isGrabbing && !playerDependencies.isInspecting)
+                if (Input.GetKeyDown(grabThrowKey))
+                    if (Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore))
+                        if (hit.collider.gameObject.GetComponent<Rigidbody>() != null && !hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic) {
                             //Set grab object and point position
                             grabPoint.position = hit.point;
                             grabbedObject = hit.collider.gameObject.GetComponent<Rigidbody>();
 
-                            dependencies.isGrabbing = true;
+                            playerDependencies.isGrabbing = true;
 
                             //Enable grab icon
                             grabIcon.SetActive(true);
@@ -128,19 +111,13 @@ namespace PrototypeFPC
                             //Audio
                             audioSource.PlayOneShot(grabSound);
                         }
-                    }
-                }
-            }
         }
 
+        void Hold() {
+            if (playerDependencies.isGrabbing && grabbedObject != null)
 
-        void Hold()
-        {
-            if(dependencies.isGrabbing && grabbedObject != null)
-            {
                 //Move the grabbed object towards grab point
                 grabbedObject.linearVelocity = grabSpeed * (grabPoint.position - grabbedObject.transform.position);
-            }
         }
     }
 }

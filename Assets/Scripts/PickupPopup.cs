@@ -21,7 +21,6 @@ public class PickupPopup : MonoBehaviour
     }
 
     void Start() {
-        ScratchManager.I.onNewNode += ShowPopup;
         startY = rectTransform.anchoredPosition.y;
     }
 
@@ -30,7 +29,7 @@ public class PickupPopup : MonoBehaviour
     }
 
     [Button]
-    void ShowPopup(string _info = "New info!") {
+    public void ShowPopup(string _info = "New info!") {
         Init();
         text.text = _info;
         Debug.Log($"{_info}");

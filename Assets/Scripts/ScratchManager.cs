@@ -10,50 +10,47 @@ using UnityEngine;
 
 public class ScratchManager : MonoBehaviour
 {
-    public static ScratchManager I;
+    public PlayerDependencies playerDependencies;
     public Canvas scratchpad;
     public Node nodePrefab;
     public Transform nodeListParent;
     public AudioClip scratchpadSoundOnClip;
     public AudioClip scratchpadSoundOffClip;
-    
+
     [Space(10)] [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
-    
+
     public Action<string> onNewNode;
-    
+
     Movement playerMovement;
-    
+
     void Awake() {
-        I = this;
         scratchpad.enabled = false;
         playerMovement = FindAnyObjectByType<Movement>();
     }
-    
+
     void Start() {
         LoadNodes();
     }
-    
+
     void Update() {
-        if (Input.GetKeyDown(scratchpadKey)) {
-            ToggleScratchpad();
-        }
+        if (Input.GetKeyDown(scratchpadKey)) ToggleScratchpad();
     }
-    
+
     void LoadNodes() {
         foreach (var nodeData in nodes) {
             AddNode(nodeData);
         }
     }
-    
+
     void ToggleScratchpad() {
         scratchpad.enabled = !scratchpad.enabled;
         playerMovement.enabled = !scratchpad.enabled;
-        AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, transform.position);
+        AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, playerDependencies.transform.position);
         Cursor.lockState = scratchpad.enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = scratchpad.enabled;
     }
-    
+
     public void AddNode(NodeData _nodeData) {
         if (_nodeData.unique && nodes.Contains(_nodeData)) return;
         nodes.Add(_nodeData);

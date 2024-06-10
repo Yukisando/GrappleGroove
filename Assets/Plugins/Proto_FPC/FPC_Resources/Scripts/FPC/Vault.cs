@@ -1,20 +1,13 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
     public class Vault : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Input
         [Header("Input Properties")]
         [SerializeField] KeyCode vaultKey = KeyCode.LeftShift;
@@ -29,63 +22,58 @@ namespace PrototypeFPC
         //Audio properties
         [Header("Audio Properties")]
         [SerializeField] AudioClip vaultSound;
+        AudioSource audioSource;
+        CapsuleCollider cc;
+        RaycastHit hit;
+
+        Vector3 lastPos, lastVel;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
+        Rigidbody rb;
+
+        Transform vaultPoint;
+        Vector3 vaultRayPos;
 
         //Helpers
         float vaultTimer;
 
-        Vector3 lastPos, lastVel;
-        Vector3 vaultRayPos;
-        
-        Transform vaultPoint;
-        Rigidbody rb;
-        CapsuleCollider cc;
-        AudioSource audioSource;
-        RaycastHit hit;
-
-
         //-----------------------
-
 
         //Functions
         ///////////////
 
-        void Start()
-        {
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
+
+        void Start() {
             Setup(); //- Line 66
         }
 
-        void FixedUpdate()
-        {
+        void FixedUpdate() {
             Vaulting(); //- Line 76
         }
 
-
         //-----------------------
 
-
-        void Setup()
-        {
-            //Setup dependencies
-            rb = dependencies.rb;
-            vaultPoint = dependencies.vaultPoint;
-            cc = dependencies.cc;
-            audioSource = dependencies.audioSourceBottom;
+        void Setup() {
+            //Setup playerDependencies
+            rb = playerDependencies.rb;
+            vaultPoint = playerDependencies.vaultPoint;
+            cc = playerDependencies.cc;
+            audioSource = playerDependencies.audioSourceBottom;
         }
 
-
-        void Vaulting()
-        {
-             if(rb.linearVelocity.magnitude > 1 && Input.GetKey(vaultKey) && !dependencies.isVaulting && !dependencies.isWallRunning && !dependencies.isSliding)
-            {
+        void Vaulting() {
+            if (rb.linearVelocity.magnitude > 1 && Input.GetKey(vaultKey) && !playerDependencies.isVaulting && !playerDependencies.isWallRunning && !playerDependencies.isSliding) {
                 //Raycast check vault
-                if(Physics.Raycast(dependencies.vaultPoint.position, -dependencies.vaultPoint.up, out hit, vaultRayLength, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore))
-                {
+                if (Physics.Raycast(playerDependencies.vaultPoint.position, -playerDependencies.vaultPoint.up, out hit, vaultRayLength, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore))
+
                     //Check if obstacle is static
-                    if(!hit.collider.gameObject.GetComponent<Rigidbody>() || hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic)
-                    {
+                    if (!hit.collider.gameObject.GetComponent<Rigidbody>() || hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic)
+
                         //If obstacle is flat
-                        if(hit.normal == Vector3.up)
-                        {
+                        if (hit.normal == Vector3.up) {
                             //set player, vault position and velocity before vaulting
                             vaultRayPos = hit.point;
                             lastPos = rb.transform.position;
@@ -94,27 +82,23 @@ namespace PrototypeFPC
                             rb.useGravity = false;
                             cc.enabled = false;
 
-                            dependencies.isVaulting = true;
+                            playerDependencies.isVaulting = true;
 
                             //Audio
                             audioSource.PlayOneShot(vaultSound);
                         }
-                    }
-                }
             }
 
-            else if(dependencies.isVaulting)
-            {
+            else if (playerDependencies.isVaulting) {
                 //Start vault timer
                 vaultTimer += speed * Time.fixedDeltaTime;
 
                 //Move player to vault position
                 rb.MovePosition(Vector3.Lerp(lastPos, vaultRayPos + new Vector3(0, cc.height / 2, 0), vaultTimer));
-                dependencies.tilt = Mathf.Lerp(dependencies.tilt, vaultTilt, vaultTimer);
+                playerDependencies.tilt = Mathf.Lerp(playerDependencies.tilt, vaultTilt, vaultTimer);
 
                 //Vault timer
-                if(vaultTimer >= duration)
-                {
+                if (vaultTimer >= duration) {
                     //Apply last velocity after vaulting
                     rb.linearVelocity = lastVel += lastVel * 0.2f;
 
@@ -123,7 +107,7 @@ namespace PrototypeFPC
 
                     vaultTimer = 0;
 
-                    dependencies.isVaulting = false;
+                    playerDependencies.isVaulting = false;
                 }
             }
         }

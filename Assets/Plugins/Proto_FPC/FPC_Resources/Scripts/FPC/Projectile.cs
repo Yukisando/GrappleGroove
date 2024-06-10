@@ -9,10 +9,6 @@ namespace PrototypeFPC
 {
     public class Projectile : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Projectile properties
         [Header("Projectile Properties")]
         [SerializeField] GameObject projectile;
@@ -31,6 +27,8 @@ namespace PrototypeFPC
         bool allowProjectile = true;
         AudioSource audioSource;
         bool fireProjectile;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
         Rigidbody spawnedProjectile;
 
         Transform spawnPoint;
@@ -39,6 +37,10 @@ namespace PrototypeFPC
 
         //Functions
         ///////////////
+
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
 
         void Start() {
             Setup(); //- Line68
@@ -59,15 +61,15 @@ namespace PrototypeFPC
         //--------------------------
 
         void Setup() {
-            //Setup dependencies
-            spawnPoint = dependencies.spawnPointRight;
-            audioSource = dependencies.audioSourceTop;
+            //Setup playerDependencies
+            spawnPoint = playerDependencies.spawnPointRight;
+            audioSource = playerDependencies.audioSourceTop;
         }
 
         //Control projectile rate
         void ControlRate() {
             //Increase and decrease projecting rate with scroll wheel
-            if (Mathf.Clamp(projectRate, 0.1f, 0.5f) == projectRate && Input.mouseScrollDelta.y != 0 && !dependencies.isInspecting) {
+            if (Mathf.Clamp(projectRate, 0.1f, 0.5f) == projectRate && Input.mouseScrollDelta.y != 0 && !playerDependencies.isInspecting) {
                 //Set rate
                 projectRate += Input.mouseScrollDelta.y * 0.01f;
 
@@ -97,7 +99,7 @@ namespace PrototypeFPC
         //Create projectile
         void CreateProjectile() {
             //Initiate projectile
-            if (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.LeftControl) && allowProjectile && !dependencies.isInspecting) StartCoroutine(ProjectAtRate());
+            if (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.LeftControl) && allowProjectile && !playerDependencies.isInspecting) StartCoroutine(ProjectAtRate());
 
             //Project at specified rate
             IEnumerator ProjectAtRate() {
@@ -121,7 +123,7 @@ namespace PrototypeFPC
         void ShootProjectile() {
             if (fireProjectile) {
                 fireProjectile = false;
-                spawnedProjectile.AddForce(dependencies.spawnPointRight.transform.forward * force, ForceMode.Impulse);
+                spawnedProjectile.AddForce(playerDependencies.spawnPointRight.transform.forward * force, ForceMode.Impulse);
             }
         }
     }

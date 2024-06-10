@@ -1,20 +1,13 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
     public class Flashlight : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Input properties
         [Header("Input Properties")]
         [SerializeField] KeyCode flashlightKey = KeyCode.F;
@@ -43,36 +36,35 @@ namespace PrototypeFPC
         [SerializeField] AudioClip switchOnSound;
         [SerializeField] AudioClip switchOffSound;
 
-        //Helpers
-        bool flashLightOn = false;
-
         AudioSource audioSource;
 
+        //Helpers
+        bool flashLightOn;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
 
         //-----------------------
-
 
         //Functions
         ///////////////
 
-        void Start()
-        {
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
+
+        void Start() {
             Setup(); //- 72
         }
 
-        void Update()
-        {
+        void Update() {
             LightControl(); //- 90
         }
 
-
         //-----------------------
 
-
-        void Setup()
-        {
-            //Setup dependencies
-            audioSource = dependencies.audioSourceTop;
+        void Setup() {
+            //Setup playerDependencies
+            audioSource = playerDependencies.audioSourceTop;
 
             //Setup spot light
             spotLight.range = spotRange;
@@ -87,13 +79,10 @@ namespace PrototypeFPC
             ambientLight.color = ambientLightColor;
         }
 
-        void LightControl()
-        {
-            if(Input.GetKeyDown(flashlightKey))
-            {
+        void LightControl() {
+            if (Input.GetKeyDown(flashlightKey)) {
                 //Disable flashlight
-                if(flashLightOn)
-                {
+                if (flashLightOn) {
                     spotLight.enabled = false;
                     ambientLight.enabled = false;
 
@@ -104,8 +93,7 @@ namespace PrototypeFPC
                 }
 
                 //Enable flashlight
-                else
-                {
+                else {
                     spotLight.enabled = true;
                     ambientLight.enabled = true;
 

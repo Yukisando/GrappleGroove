@@ -8,10 +8,6 @@ namespace PrototypeFPC
 {
     public class Jump : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Input
         [Header("Input Properties")]
         [SerializeField] KeyCode jumpKey = KeyCode.Space;
@@ -34,12 +30,18 @@ namespace PrototypeFPC
 
         //Helpers
         float nextTimeToJump;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
         Rigidbody rb;
 
         //-----------------------
 
         //Functions
         ///////////////
+
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
 
         void Start() {
             Setup(); //- Line 74
@@ -60,19 +62,19 @@ namespace PrototypeFPC
         //-----------------------
 
         void Setup() {
-            // Setup dependencies
-            rb = dependencies.rb;
-            audioSource = dependencies.audioSourceBottom;
+            // Setup playerDependencies
+            rb = playerDependencies.rb;
+            audioSource = playerDependencies.audioSourceBottom;
         }
 
         // Initiate jump
         void SimulateJump() {
-            if (Input.GetKey(jumpKey) && jumpKeyReleased && dependencies.isGrounded && !dependencies.isWallRunning && !dependencies.isVaulting && !dependencies.isInspecting && Time.time >= nextTimeToJump) {
+            if (Input.GetKey(jumpKey) && jumpKeyReleased && playerDependencies.isGrounded && !playerDependencies.isWallRunning && !playerDependencies.isVaulting && !playerDependencies.isInspecting && Time.time >= nextTimeToJump) {
                 // Jump cooldown rate
                 nextTimeToJump = Time.time + 1f / coolDownRate;
 
                 // Apply force if grounded
-                if (dependencies.isGrounded) {
+                if (playerDependencies.isGrounded) {
                     // Apply upward force
                     rb.AddForce(Vector3.up * amount - Vector3.up * rb.linearVelocity.y, ForceMode.VelocityChange);
 
@@ -87,18 +89,18 @@ namespace PrototypeFPC
 
         void Fall() {
             //Add some gravity
-            if (!dependencies.isGrounded)
+            if (!playerDependencies.isGrounded)
                 rb.linearVelocity += Vector3.up * (Physics.gravity.y * Time.fixedDeltaTime);
         }
 
         void Land() {
             // Toggle landing upon ground detection
-            if (!dependencies.isGrounded && landed) landed = false;
+            if (!playerDependencies.isGrounded && landed) landed = false;
 
-            if (dependencies.isGrounded && !landed) {
+            if (playerDependencies.isGrounded && !landed) {
                 landed = true;
 
-                if (!dependencies.isVaulting)
+                if (!playerDependencies.isVaulting)
 
                     // Audio
                     audioSource.PlayOneShot(landSound);

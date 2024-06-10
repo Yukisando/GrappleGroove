@@ -9,11 +9,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Dependencies")]
+    [Header("Game dependencies")]
     [SerializeField] Transform respawnPoint;
     [SerializeField] Transform playerTransform;
     [SerializeField] ScratchManager scratchManager;
-    [SerializeField] Dependencies playerDependencies;
+    [SerializeField] PickupPopup pickupPopup;
+    [SerializeField] PlayerDependencies playerDependencies;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
         scratchManager.AddNode(_nodeData);
+        pickupPopup.ShowPopup($"Node collected: {_nodeData.id}");
         playerDependencies.audioSourceTop.PlayOneShot(nodeSound);
         Debug.Log("Node collected!");
     }

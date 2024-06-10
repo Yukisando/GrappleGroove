@@ -1,20 +1,13 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
     public class Slide : MonoBehaviour
     {
-        //Dependencies
-        [Header("Dependencies")]
-        [SerializeField] Dependencies dependencies;
-
         //Input properties
         [Header("Input Properties")]
         [SerializeField] KeyCode slideKey = KeyCode.C;
@@ -31,114 +24,98 @@ namespace PrototypeFPC
         [Header("Audio Properties")]
         [SerializeField] AudioClip slideSound;
         [SerializeField] AudioClip getUpSound;
+        AudioSource audioSource;
+        CapsuleCollider cc;
+        bool hardLanding;
+        bool headNotSafe;
+        RaycastHit headNotSafeHit;
+        Transform orientation;
 
         //Helpers
         float originalHeight;
+        [Header("PlayerDependencies")]
+        PlayerDependencies playerDependencies;
 
-        bool slid = false;
-        bool headNotSafe = false;
-        bool hardLanding = false;
-        
         Rigidbody rb;
-        CapsuleCollider cc;
-        Transform orientation;
-        RaycastHit headNotSafeHit;
-        AudioSource audioSource;
 
+        bool slid;
 
         //-----------------------
-
 
         //Functions
         ///////////////
 
-        void Start()
-        {
+        void Awake() {
+            playerDependencies = GetComponent<PlayerDependencies>();
+        }
+
+        void Start() {
             Setup(); //- Line 76
         }
 
-        void Update()
-        {
+        void Update() {
             HeadSafeCheck(); //- Line 89
             InitiateSlide(); //- Line 96
             SlideDrag(); //- Line 189
         }
 
-        void FixedUpdate()
-        {
+        void FixedUpdate() {
             Sliding(); //- Line 161
         }
 
-
         //-----------------------
 
-
-        void Setup()
-        {
-            //Setup dependencies
-            rb = dependencies.rb;
-            cc = dependencies.cc;
-            orientation = dependencies.orientation;
-            audioSource = dependencies.audioSourceBottom;
+        void Setup() {
+            //Setup playerDependencies
+            rb = playerDependencies.rb;
+            cc = playerDependencies.cc;
+            orientation = playerDependencies.orientation;
+            audioSource = playerDependencies.audioSourceBottom;
 
             //Record original height
             originalHeight = cc.height;
         }
 
-
-        void HeadSafeCheck()
-        {
+        void HeadSafeCheck() {
             //Check if safe to stand up
             headNotSafe = Physics.Raycast(rb.transform.position, orientation.up, out headNotSafeHit, originalHeight);
         }
 
-
-        void InitiateSlide()
-        {
+        void InitiateSlide() {
             //Toggle hard land slide
-            if(rb.linearVelocity.y < -35 && rb.linearVelocity.z > 5 && !dependencies.isGrounded)
-            {
-                hardLanding = true;
-            }
+            if (rb.linearVelocity.y < -35 && rb.linearVelocity.z > 5 && !playerDependencies.isGrounded) hardLanding = true;
 
-            if(rb.linearVelocity.magnitude < 5 && dependencies.isGrounded)
-            {
-                hardLanding = false;
-            }
+            if (rb.linearVelocity.magnitude < 5 && playerDependencies.isGrounded) hardLanding = false;
 
-            if(dependencies.isGrounded)
-            {
+            if (playerDependencies.isGrounded) {
                 //Slide when landed hard
-                if(hardLanding && !dependencies.isSliding)
-                {
+                if (hardLanding && !playerDependencies.isSliding) {
                     //Set collider height
                     cc.height = slideHeight;
 
-                    dependencies.isSliding = true;
+                    playerDependencies.isSliding = true;
 
                     //Audio
                     audioSource.PlayOneShot(slideSound);
                 }
 
                 //Slide
-                if(Input.GetKey(slideKey) && rb.linearVelocity.magnitude > 5 && !dependencies.isSliding)
-                {
+                if (Input.GetKey(slideKey) && rb.linearVelocity.magnitude > 5 && !playerDependencies.isSliding) {
                     //Set collider height
                     cc.height = slideHeight;
 
-                    dependencies.isSliding = true;
+                    playerDependencies.isSliding = true;
 
                     //Audio
                     audioSource.PlayOneShot(slideSound);
                 }
 
                 //Unslide
-                else if(!Input.GetKey(slideKey) && dependencies.isSliding && !headNotSafe && !hardLanding)
-                {
+                else if (!Input.GetKey(slideKey) && playerDependencies.isSliding && !headNotSafe && !hardLanding) {
                     //Reset collider height
                     cc.height = originalHeight;
 
-                    dependencies.isSliding = false;
+                    playerDependencies.isSliding = false;
                     slid = false;
 
                     //Audio
@@ -147,52 +124,38 @@ namespace PrototypeFPC
             }
 
             //Unslide if in air
-            else if(!dependencies.isGrounded && dependencies.isSliding)
-            {
+            else if (!playerDependencies.isGrounded && playerDependencies.isSliding) {
                 //Reset collider height
                 cc.height = originalHeight;
 
-                dependencies.isSliding = false;
+                playerDependencies.isSliding = false;
                 slid = false;
             }
         }
 
-
-        void Sliding()
-        {
+        void Sliding() {
             //Add slide force
-            if(dependencies.isGrounded && dependencies.isSliding && !slid)
-            {
+            if (playerDependencies.isGrounded && playerDependencies.isSliding && !slid) {
                 slid = true;
                 rb.AddForce(orientation.forward * rb.linearVelocity.magnitude * amount, ForceMode.Impulse);
             }
 
-            else if(headNotSafe && dependencies.isSliding)
-            {
-                if(cc.height != slideHeight)
-                {
-                    cc.height = slideHeight;
-                }
-                
+            else if (headNotSafe && playerDependencies.isSliding) {
+                if (cc.height != slideHeight) cc.height = slideHeight;
+
                 rb.AddForce(orientation.forward * amount * 250, ForceMode.Force);
             }
 
             //Slide tilt
-            if(cc.height == slideHeight)
-            {
-                var tiltSpeed = slideTiltSpeed * Time.deltaTime;
-                dependencies.tilt = Mathf.Lerp(dependencies.tilt, slideTilt, tiltSpeed);
+            if (cc.height == slideHeight) {
+                float tiltSpeed = slideTiltSpeed * Time.deltaTime;
+                playerDependencies.tilt = Mathf.Lerp(playerDependencies.tilt, slideTilt, tiltSpeed);
             }
         }
 
-
-        void SlideDrag()
-        {
+        void SlideDrag() {
             //Slide drag
-            if(dependencies.isGrounded && dependencies.isSliding)
-            {
-                rb.linearDamping = drag;
-            }
+            if (playerDependencies.isGrounded && playerDependencies.isSliding) rb.linearDamping = drag;
         }
     }
 }
