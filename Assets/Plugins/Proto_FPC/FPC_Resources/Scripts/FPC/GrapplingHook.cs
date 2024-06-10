@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 #endregion
 
@@ -47,7 +48,7 @@ namespace PrototypeFPC
         [SerializeField] float waveCount = 5;
         [SerializeField] float waveHeight = 4;
         [SerializeField] AnimationCurve affectCurve;
-        [SerializeField] List<GrappleRope> ropes = new List<GrappleRope>();
+        [SerializeField] List<Rope> ropes = new List<Rope>();
 
         // Audio properties
         [Header("Audio Properties")]
@@ -77,11 +78,8 @@ namespace PrototypeFPC
             CreateHooks(0);
             CreateHooks(1);
             RetractHooks();
-            CutRopes();
-        }
-
-        void LateUpdate() {
             DrawRopes();
+            CutRopes();
         }
 
         void Setup() {
@@ -117,7 +115,7 @@ namespace PrototypeFPC
                 hookRelease = true;
 
                 // Get the player's current velocity
-                var playerVelocity = player.velocity;
+                var playerVelocity = player.linearVelocity;
                 float speedFactor = playerVelocity.magnitude;
 
                 // Apply an impulse based on the speed at release
@@ -126,9 +124,9 @@ namespace PrototypeFPC
             }
         }
 
-        void CreateHooks(int mouseButton) {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetMouseButtonDown(mouseButton) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+        void CreateHooks(int _mouseButton) {
+            if (Input.GetMouseButtonDown(_mouseButton) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 // Check and set target rigidbody if none
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, grappleLayerMask, QueryTriggerInteraction.Ignore))
                     if (hit.transform.gameObject.GetComponent<Rigidbody>() == null)
@@ -140,7 +138,7 @@ namespace PrototypeFPC
                     if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == player) return;
                     hooked = true;
 
-                    CreateHook(mouseButton, hit.point);
+                    CreateHook(_mouseButton, hit.point);
                 }
                 else if (hooked) {
                     if (!Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, grappleLayerMask, QueryTriggerInteraction.Ignore)) return;
@@ -153,13 +151,13 @@ namespace PrototypeFPC
 
         void CreateHook(int _mouseButton, Vector3 _position) {
             // Create new rope
-            var rope = new GrappleRope {
+            var rope = new Rope {
                 hook = new GameObject("Hook") {
                     transform = {
                         position = _position,
                     },
                 },
-                isLeft = _mouseButton == 0,
+                side = _mouseButton,
             };
 
             // Add Rigidbody to hook
@@ -185,7 +183,7 @@ namespace PrototypeFPC
             rope.lineRenderer.textureMode = LineTextureMode.Tile;
             rope.lineRenderer.shadowCastingMode = ShadowCastingMode.On;
             rope.lineRenderer.receiveShadows = false;
-            rope.lineRenderer.positionCount = segments + 1; // Set positionCount here
+            rope.lineRenderer.positionCount = segments + 1;
 
             // Add and set joint parameters
             spring.Reset();
@@ -397,7 +395,6 @@ namespace PrototypeFPC
 
         void DrawRopes() {
             foreach (var rope in ropes) {
-                // Update spring properties
                 spring.SetDamper(damper);
                 spring.SetStrength(springStrength);
                 spring.Update(Time.deltaTime);
@@ -406,7 +403,7 @@ namespace PrototypeFPC
                 Vector3 endPoint;
 
                 if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
-                    startPoint = rope.isLeft ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
+                    startPoint = rope.side == 0 ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
                     endPoint = rope.hook.transform.position;
                 }
                 else if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != player) {
@@ -450,9 +447,9 @@ namespace PrototypeFPC
         }
 
         [Serializable]
-        public class GrappleRope
+        public class Rope
         {
-            public bool isLeft;
+            public int side;
             public GameObject hook;
             public GameObject hookLatch;
             public GameObject ropeCollider;

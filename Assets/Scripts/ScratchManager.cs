@@ -17,8 +17,7 @@ public class ScratchManager : MonoBehaviour
     public AudioClip scratchpadSoundOnClip;
     public AudioClip scratchpadSoundOffClip;
     
-    [Title(" ")]
-    [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
+    [Space(10)] [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
     
     public Action<string> onNewNode;
