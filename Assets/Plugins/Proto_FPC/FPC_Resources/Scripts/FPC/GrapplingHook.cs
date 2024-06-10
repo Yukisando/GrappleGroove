@@ -1,6 +1,6 @@
 #region
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -33,9 +33,8 @@ namespace PrototypeFPC
 
         // Rope properties
         [Header("Rope Properties")]
-        [SerializeField] Material ropeMaterial;
-        [SerializeField] Color leftClickRopeColor = Color.red;
-        [SerializeField] Color rightClickRopeColor = Color.blue;
+        [SerializeField] Material leftRopeMaterial;
+        [SerializeField] Material rightRopeMaterial;
         [SerializeField] float startThickness = 0.02f;
         [SerializeField] float endThickness = 0.06f;
 
@@ -48,6 +47,7 @@ namespace PrototypeFPC
         [SerializeField] float waveCount = 5;
         [SerializeField] float waveHeight = 4;
         [SerializeField] AnimationCurve affectCurve;
+        [SerializeField] List<GrappleRope> ropes = new List<GrappleRope>();
 
         // Audio properties
         [Header("Audio Properties")]
@@ -55,24 +55,17 @@ namespace PrototypeFPC
         [SerializeField] AudioClip releaseSound;
         [SerializeField] AudioClip retractSound;
 
-        // Lists to store data
-        [SerializeField] List<GameObject> hooks, hookModels, hookLatches, ropeColliders;
-        [HideInInspector] [SerializeField] List<LineRenderer> ropes;
-
         AudioSource audioSource;
 
         bool executeHookSwing;
         RaycastHit hit;
         bool hooked;
         bool hookRelease;
-        bool isOptimizing;
 
         float mouseDownTimer;
         Rigidbody player;
         Ray ray;
         Spring spring;
-
-        //-----------------------
 
         void Start() {
             Setup();
@@ -97,14 +90,12 @@ namespace PrototypeFPC
             audioSource = dependencies.audioSourceTop;
         }
 
-        // Create spring
         void CreateSpring() {
             // Create and set rope visual spring value
             spring = new Spring();
             spring.SetTarget(0);
         }
 
-        // Input
         void InputCheck() {
             // Reset checker
             if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
@@ -126,7 +117,7 @@ namespace PrototypeFPC
                 hookRelease = true;
 
                 // Get the player's current velocity
-                var playerVelocity = player.velocity;
+                var playerVelocity = player.linearVelocity;
                 float speedFactor = playerVelocity.magnitude;
 
                 // Apply an impulse based on the speed at release
@@ -135,7 +126,6 @@ namespace PrototypeFPC
             }
         }
 
-        // Create Hooks
         void CreateHooks(int mouseButton) {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Input.GetMouseButtonDown(mouseButton) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
@@ -161,99 +151,116 @@ namespace PrototypeFPC
             }
         }
 
-        void CreateHook(int mouseButton, Vector3 position) {
-            // Create new hook object
-            hooks.Add(new GameObject("Hook"));
-            hooks[^1].transform.position = position;
+        void CreateHook(int _mouseButton, Vector3 _position) {
+            // Create new rope
+            var rope = new GrappleRope {
+                hook = new GameObject("Hook") {
+                    transform = {
+                        position = _position,
+                    },
+                },
+                isLeft = _mouseButton == 0,
+            };
 
             // Add Rigidbody to hook
-            var hookRb = hooks[^1].AddComponent<Rigidbody>();
+            var hookRb = rope.hook.AddComponent<Rigidbody>();
             hookRb.isKinematic = true;
 
             // Hook end point model
-            hookModels.Add(Instantiate(hookModel, hooks[^1].transform.position, Quaternion.identity));
-            hookModels[^1].transform.parent = hooks[^1].transform;
+            rope.hookModels.Add(Instantiate(hookModel, rope.hook.transform.position, Quaternion.identity));
+            rope.hookModels[^1].transform.parent = rope.hook.transform;
 
             // Hook start point model
-            var spawnPoint = mouseButton == 0 ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
-            hookModels.Add(Instantiate(hookModel, spawnPoint, Quaternion.identity));
-            hookModels[^1].transform.parent = mouseButton == 0 ? dependencies.spawnPointLeft.transform : dependencies.spawnPointRight.transform;
+            var spawnPoint = _mouseButton == 0 ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
+            rope.hookModels.Add(Instantiate(hookModel, spawnPoint, Quaternion.identity));
+            rope.hookModels[^1].transform.parent = _mouseButton == 0 ? dependencies.spawnPointLeft.transform : dependencies.spawnPointRight.transform;
 
             // Set hook rope values
-            ropes.Add(hooks[^1].AddComponent<LineRenderer>());
-            ropes[^1].material = new Material(ropeMaterial); // Create a new instance of the material to modify the color
-            ropes[^1].startWidth = startThickness;
-            ropes[^1].endWidth = endThickness;
-            ropes[^1].numCornerVertices = 2;
-            ropes[^1].numCapVertices = 10;
-            ropes[^1].textureMode = LineTextureMode.Tile;
-            ropes[^1].shadowCastingMode = ShadowCastingMode.On;
-            ropes[^1].receiveShadows = false;
-            ropes[^1].material.color = mouseButton == 0 ? leftClickRopeColor : rightClickRopeColor;
+            rope.lineRenderer = rope.hook.AddComponent<LineRenderer>();
+            rope.lineRenderer.material = new Material(_mouseButton == 0 ? leftRopeMaterial : rightRopeMaterial);
+            rope.lineRenderer.startWidth = startThickness;
+            rope.lineRenderer.endWidth = endThickness;
+            rope.lineRenderer.numCornerVertices = 2;
+            rope.lineRenderer.numCapVertices = 10;
+            rope.lineRenderer.textureMode = LineTextureMode.Tile;
+            rope.lineRenderer.shadowCastingMode = ShadowCastingMode.On;
+            rope.lineRenderer.receiveShadows = false;
+            rope.lineRenderer.positionCount = segments + 1; // Set positionCount here
 
             // Add and set joint parameters
             spring.Reset();
-            ropes[^1].positionCount = segments + 1;
+            rope.lineRenderer.positionCount = segments + 1;
 
-            player.gameObject.AddComponent<SpringJoint>().connectedBody = hooks[^1].GetComponent<Rigidbody>();
+            player.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
             var sj = player.GetComponent<SpringJoint>();
             sj.autoConfigureConnectedAnchor = false;
             sj.connectedAnchor = Vector3.zero;
 
             // Calculate the distance between the player and the hook point
-            float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, hooks[^1].transform.position);
+            float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, rope.hook.transform.position);
 
             // Set the maxDistance and minDistance to the initial distance from the hook point
-            sj.maxDistance = mouseButton == 0 ? distanceFromHook : distanceFromHook * 3f;
-            sj.minDistance = mouseButton == 0 ? distanceFromHook * .025f : distanceFromHook * 0.95f;
+            sj.maxDistance = _mouseButton == 0 ? distanceFromHook : distanceFromHook * 3f;
+            sj.minDistance = _mouseButton == 0 ? distanceFromHook * .025f : distanceFromHook * 0.95f;
 
             sj.spring = 20000f; // Increase spring strength to make it tighter
             sj.damper = 10000f; // Adjust damper to control oscillation
 
             // Add collider for rope cutting
-            ropeColliders.Add(new GameObject("RopeCollider"));
-            ropeColliders[^1].transform.parent = hooks[^1].transform;
-            ropeColliders[^1].AddComponent<BoxCollider>().size = new Vector3(0.1f, 0, 0.1f);
-            ropeColliders[^1].GetComponent<BoxCollider>().isTrigger = true;
-            ropeColliders[^1].GetComponent<BoxCollider>().enabled = false;
+            rope.ropeCollider = new GameObject("RopeCollider") {
+                transform = {
+                    parent = rope.hook.transform,
+                },
+            };
+            rope.ropeCollider.AddComponent<BoxCollider>().size = new Vector3(0.1f, 0, 0.1f);
+            rope.ropeCollider.GetComponent<BoxCollider>().isTrigger = true;
+            rope.ropeCollider.GetComponent<BoxCollider>().enabled = false;
 
             // Knock back when hooked
-            hooks[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
+            rope.hook.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
 
             // Set previous rope quality to 2 if not already
-            if (ropes.Count > 1 && ropes[^2].positionCount > 2)
-                ropes[^2].positionCount = 2;
+            if (ropes.Count > 1 && ropes[^2].lineRenderer.positionCount > 2)
+                ropes[^2].lineRenderer.positionCount = 2;
 
             // Audio
             audioSource.PlayOneShot(grapplingSound);
+
+            ropes.Add(rope);
         }
 
         void CreateHookLatch(Vector3 position) {
+            // Get the last rope
+            var rope = ropes[^1];
+
             // Create new hook latch object
-            hookLatches.Add(new GameObject("HookLatch"));
-            hookLatches[^1].transform.position = position;
+            rope.hookLatch = new GameObject("HookLatch") {
+                transform = {
+                    position = position,
+                },
+            };
 
             // Add Rigidbody to hook latch
-            var latchRb = hookLatches[^1].AddComponent<Rigidbody>();
+            var latchRb = rope.hookLatch.AddComponent<Rigidbody>();
             latchRb.isKinematic = true;
 
             // Remove hook start point model
-            Destroy(hookModels[^1].gameObject);
-            hookModels.RemoveAt(hookModels.Count - 1);
+            Destroy(rope.hookModels[^1].gameObject);
+            rope.hookModels.RemoveAt(rope.hookModels.Count - 1);
 
             // Add hook latch point model
-            hookModels.Add(Instantiate(hookModel, hookLatches[hooks.Count - 1].transform.position, Quaternion.identity));
-            hookModels[^1].transform.parent = hookLatches[hooks.Count - 1].transform;
+            rope.hookModels.Add(Instantiate(hookModel, rope.hookLatch.transform.position, Quaternion.identity));
+            rope.hookModels[^1].transform.parent = rope.hookLatch.transform;
 
             // Add and set joint parameters
             spring.Reset();
             spring.SetVelocity(speed);
 
-            hookLatches[^1].AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
+            rope.hookLatch.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
 
             Destroy(player.GetComponent<SpringJoint>());
-            hooks[^1].AddComponent<SpringJoint>().connectedBody = hookLatches[^1].GetComponent<Rigidbody>();
-            var hsj = hooks[^1].GetComponent<SpringJoint>();
+            rope.hook.AddComponent<SpringJoint>().connectedBody = rope.hookLatch.GetComponent<Rigidbody>();
+            var hsj = rope.hook.GetComponent<SpringJoint>();
             hsj.autoConfigureConnectedAnchor = false;
             hsj.anchor = Vector3.zero;
             hsj.connectedAnchor = Vector3.zero;
@@ -263,25 +270,22 @@ namespace PrototypeFPC
             hsj.minDistance = 0;
 
             // Knock back when hooked
-            hookLatches[^1].GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
+            rope.hookLatch.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
 
             // Set rope width
-            ropes[^1].startWidth = endThickness;
-            ropes[^1].endWidth = endThickness;
+            rope.lineRenderer.startWidth = endThickness;
+            rope.lineRenderer.endWidth = endThickness;
 
             // Enable rope collider
-            ropeColliders[^1].GetComponent<BoxCollider>().enabled = true;
-
-            isOptimizing = true;
-
+            rope.ropeCollider.GetComponent<BoxCollider>().enabled = true;
             hooked = false;
 
             // Calculate the distance between the hooks
-            float ropeLength = Vector3.Distance(hooks[^1].transform.position, hit.point);
+            float ropeLength = Vector3.Distance(rope.hook.transform.position, hit.point);
 
             // Check if the rope is too short
             if (ropeLength < minimumRopeLength) {
-                DestroyHook(hooks.Count - 1);
+                DestroyHook(ropes.Count - 1);
                 audioSource.PlayOneShot(releaseSound);
                 return; // Exit the method as the rope is too short
             }
@@ -290,11 +294,11 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
 
             // Instantiate the plank as a child of the hook latch
-            var plank = Instantiate(platformPrefab, hooks[^1].transform.position, Quaternion.identity);
-            plank.transform.parent = ropes[^1].transform;
+            var plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
+            plank.transform.parent = rope.lineRenderer.transform;
 
             // Adjust the scale and position of the plank
-            var startPoint = hooks[^1].transform.position;
+            var startPoint = rope.hook.transform.position;
             var endPoint = hit.point;
             var midPoint = (startPoint + endPoint) / 2;
             plank.transform.position = midPoint;
@@ -307,7 +311,6 @@ namespace PrototypeFPC
             plank.transform.Rotate(0, 90, 0); // Rotate 90 degrees to make the plank align with the rope
         }
 
-        // Retract hooked objects
         void RetractHooks() {
             // Set player hook swing strength
             if (executeHookSwing && player.GetComponent<SpringJoint>() && Mathf.Approximately(player.GetComponent<SpringJoint>().spring, playerRetractStrength))
@@ -320,16 +323,15 @@ namespace PrototypeFPC
                 player.GetComponent<SpringJoint>().spring = playerRetractStrength;
 
             // Set all other hook and latched retract strengths
-            foreach (var hookJoints in hooks) {
-                if (hookJoints.GetComponent<SpringJoint>() && hookJoints.GetComponent<SpringJoint>().connectedBody != player)
-                    hookJoints.GetComponent<SpringJoint>().spring = retractStrength;
+            foreach (var rope in ropes) {
+                if (rope.hook.GetComponent<SpringJoint>() && rope.hook.GetComponent<SpringJoint>().connectedBody != player)
+                    rope.hook.GetComponent<SpringJoint>().spring = retractStrength;
             }
 
-            if (hooks.Count > 0)
+            if (ropes.Count > 0)
                 audioSource.PlayOneShot(retractSound);
         }
 
-        // Cut Ropes
         void CutRopes() {
             // Destroy player hooks upon hold release
             if (hookRelease && hooked) {
@@ -341,15 +343,11 @@ namespace PrototypeFPC
             if (Input.GetKey(cutRopeKey) && !dependencies.isInspecting) {
                 if (hooked)
                     DestroyLastHook();
-                else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ropeLayerMask)) {
+                else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ropeLayerMask))
                     if (hit.collider.isTrigger) {
                         int index = GameObjectToIndex(hit.collider.gameObject);
                         DestroyHook(index);
                     }
-
-                    // Clean up the hook model list if missing after the models get destroyed
-                    hookModels.RemoveAll(hookModel => hookModel == null);
-                }
             }
 
             // Destroy everything created and clear all lists
@@ -357,9 +355,9 @@ namespace PrototypeFPC
         }
 
         void DestroyLastHook() {
-            if (hooks.Count > 0) {
+            if (ropes.Count > 0) {
                 Destroy(player.GetComponent<SpringJoint>());
-                DestroyHook(hooks.Count - 1);
+                DestroyHook(ropes.Count - 1);
             }
 
             hooked = false;
@@ -368,147 +366,102 @@ namespace PrototypeFPC
         }
 
         void DestroyHook(int index) {
-            Destroy(hooks[index].gameObject);
-            hooks.RemoveAt(index);
-
-            if (hookLatches.Count > index) {
-                Destroy(hookLatches[index].gameObject);
-                hookLatches.RemoveAt(index);
+            var rope = ropes[index];
+            Destroy(rope.hook.gameObject);
+            if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
+            if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
+            foreach (var model in rope.hookModels) {
+                Destroy(model);
             }
 
-            if (ropeColliders.Count > index) {
-                Destroy(ropeColliders[index].gameObject);
-                ropeColliders.RemoveAt(index);
-            }
+            ropes.RemoveAt(index);
 
-            // Find and destroy the correct hookModel associated with this rope
-            int hookModelIndex = index * 2; // Each hook has two models, one at the spawn point and one at the hook point
-            if (hookModelIndex < hookModels.Count) {
-                Destroy(hookModels[hookModelIndex].gameObject);
-                hookModels.RemoveAt(hookModelIndex);
-            }
-            if (hookModelIndex < hookModels.Count) {
-                Destroy(hookModels[hookModelIndex].gameObject);
-                hookModels.RemoveAt(hookModelIndex);
-            }
-
-            if (ropes.Count > index) ropes.RemoveAt(index);
-
-            if (hooks.Count == 0) hooked = false;
+            if (ropes.Count == 0) hooked = false;
             audioSource.PlayOneShot(releaseSound);
         }
 
         public void ResetHook() {
             hooked = false;
 
-            if (hooks.Count > 0 && player.GetComponent<SpringJoint>())
+            if (ropes.Count > 0 && player.GetComponent<SpringJoint>())
                 Destroy(player.GetComponent<SpringJoint>());
 
-            DestroyAllObjectsInList(hooks);
-            DestroyAllObjectsInList(hookLatches);
-            DestroyAllObjectsInList(ropeColliders);
-            DestroyAllObjectsInList(hookModels);
+            foreach (var rope in ropes) {
+                Destroy(rope.hook.gameObject);
+                if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
+                if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
+                foreach (var model in rope.hookModels) {
+                    Destroy(model);
+                }
+            }
 
-            hooks.Clear();
-            hookModels.Clear();
-            hookLatches.Clear();
             ropes.Clear();
-            ropeColliders.Clear();
-
             audioSource.PlayOneShot(releaseSound);
         }
 
-        void DestroyAllObjectsInList(List<GameObject> list) {
-            foreach (var obj in list) {
-                Destroy(obj);
+        void DrawRopes() {
+            foreach (var rope in ropes) {
+                // Update spring properties
+                spring.SetDamper(damper);
+                spring.SetStrength(springStrength);
+                spring.Update(Time.deltaTime);
+
+                Vector3 startPoint;
+                Vector3 endPoint;
+
+                if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
+                    startPoint = rope.isLeft ? dependencies.spawnPointLeft.position : dependencies.spawnPointRight.position;
+                    endPoint = rope.hook.transform.position;
+                }
+                else if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != player) {
+                    startPoint = rope.hook.transform.position;
+                    endPoint = rope.hookLatch.transform.position;
+                }
+                else
+                    continue;
+
+                // Ensure the LineRenderer has the correct number of positions
+                if (rope.lineRenderer.positionCount != segments + 1) rope.lineRenderer.positionCount = segments + 1;
+
+                var up = Quaternion.LookRotation((endPoint - startPoint).normalized) * Vector3.up;
+                var right = Quaternion.LookRotation((endPoint - startPoint).normalized) * Vector3.right;
+
+                for (var t = 0; t < segments + 1; t++) {
+                    float delta = t / (float)segments;
+                    var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta))
+                                 + right * (waveHeight * Mathf.Cos(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta));
+                    rope.lineRenderer.SetPosition(t, Vector3.Lerp(startPoint, endPoint, delta) + offset);
+                }
+
+                // Set rope collider size and position
+                if (rope.ropeCollider != null && rope.hook.GetComponent<SpringJoint>() != null) {
+                    rope.ropeCollider.transform.position = startPoint;
+                    rope.ropeCollider.transform.LookAt(endPoint);
+                    rope.ropeCollider.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, Vector3.Distance(startPoint, endPoint));
+                    float worldZCenter = Vector3.Distance(endPoint, startPoint) / 2;
+                    rope.ropeCollider.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, worldZCenter);
+                }
             }
         }
 
-        // Draw ropes
-        void DrawRopes() {
-            if (ropes.Count != 0 && ropes.Count == hooks.Count)
-                for (var i = 0; i < ropes.Count; i++) {
-                    if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == hooks[i].GetComponent<Rigidbody>()) {
-                        // Determine the correct spawn point based on the rope color
-                        var spawnPoint = ropes[i].material.color == leftClickRopeColor ? dependencies.spawnPointLeft : dependencies.spawnPointRight;
-
-                        // Set spring properties
-                        spring.SetDamper(damper);
-                        spring.SetStrength(springStrength);
-                        spring.Update(Time.deltaTime);
-
-                        var up = Quaternion.LookRotation((hooks[i].transform.position - spawnPoint.position).normalized) * Vector3.up;
-
-                        var currentGrapplePosition = Vector3.zero;
-                        Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
-
-                        for (var t = 0; t < segments + 1; t++) {
-                            float delta = t / (float)segments;
-
-                            var right = Quaternion.LookRotation((hooks[i].transform.position - spawnPoint.position).normalized) * Vector3.right;
-
-                            var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta)) + right * (waveHeight * Mathf.Cos(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta));
-
-                            if (ropes[i].positionCount > 2) ropes[i].SetPosition(t, Vector3.Lerp(spawnPoint.position, hooks[i].transform.position, delta) + offset);
-                        }
-                    }
-                    else if (hooks[i].GetComponent<SpringJoint>() != null && hooks[i].GetComponent<SpringJoint>().connectedBody != player && ropes[i].positionCount > 2) {
-                        // Set spring properties
-                        spring.SetDamper(damper);
-                        spring.SetStrength(springStrength);
-                        spring.Update(Time.deltaTime);
-
-                        var up = Quaternion.LookRotation((hooks[i].transform.position - hookLatches[i].transform.position).normalized) * Vector3.up;
-
-                        var currentGrapplePosition = Vector3.zero;
-                        Vector3.Lerp(currentGrapplePosition, hooks[i].transform.position, 12f * Time.deltaTime);
-
-                        for (var t = 0; t < segments + 1; t++) {
-                            float delta = t / (float)segments;
-                            var right = Quaternion.LookRotation((hooks[i].transform.position - hookLatches[i].transform.position).normalized) * Vector3.right;
-
-                            var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta)) + right * (waveHeight * Mathf.Cos(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta));
-
-                            if (ropes[i].positionCount > 2 && i == ropes.Count || i == ropes.Count - 1) ropes[i].SetPosition(t, Vector3.Lerp(hookLatches[i].transform.position, hooks[i].transform.position, delta) + offset);
-                        }
-
-                        // Set rope segments to 2 (start and end) after spring visuals
-                        if (isOptimizing) {
-                            StartCoroutine(delay());
-
-                            IEnumerator delay() {
-                                yield return new WaitForSeconds(1);
-                                if (ropes.Count > 1 && i != ropes.Count)
-                                    ropes[^2].positionCount = 2;
-
-                                isOptimizing = false;
-                            }
-                        }
-                    }
-                    else if (hooks[i].GetComponent<SpringJoint>() != null && hooks[i].GetComponent<SpringJoint>().connectedBody != player && ropes[i].positionCount == 2) {
-                        ropes[i].SetPosition(0, hooks[i].transform.position);
-                        ropes[i].SetPosition(1, hookLatches[i].transform.position);
-                    }
-
-                    // Set rope collider size and position
-                    if (ropeColliders.Count > 0 && hooks[i].GetComponent<SpringJoint>() != null) {
-                        ropeColliders[i].transform.position = hooks[i].transform.position;
-                        ropeColliders[i].transform.LookAt(hooks[i].GetComponent<SpringJoint>().connectedBody.transform.position);
-                        ropeColliders[i].GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, Vector3.Distance(hooks[i].transform.position, hooks[i].GetComponent<SpringJoint>().connectedBody.transform.position));
-                        float worldZCenter = Vector3.Distance(hooks[i].GetComponent<SpringJoint>().connectedBody.transform.position, hooks[i].transform.position) / 2;
-                        ropeColliders[i].GetComponent<BoxCollider>().center = new Vector3(0f, 0f, worldZCenter);
-                    }
-                }
-        }
-
-        // Rope collider Index checker for cutting
         int GameObjectToIndex(GameObject ropeColliderList) {
-            for (var i = 0; i < ropeColliders.Count; i++) {
-                if (ropeColliders[i] == ropeColliderList)
+            for (var i = 0; i < ropes.Count; i++) {
+                if (ropes[i].ropeCollider == ropeColliderList)
                     return i;
             }
 
             return -1;
+        }
+
+        [Serializable]
+        public class GrappleRope
+        {
+            public bool isLeft;
+            public GameObject hook;
+            public GameObject hookLatch;
+            public GameObject ropeCollider;
+            public LineRenderer lineRenderer;
+            public List<GameObject> hookModels = new List<GameObject>();
         }
     }
 }

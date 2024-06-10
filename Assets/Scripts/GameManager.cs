@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] ScratchManager scratchManager;
     [SerializeField] Dependencies playerDependencies;
 
+    [Header("Settings")]
+    [SerializeField] KeyCode respawnKey = KeyCode.Q;
+    [SerializeField] KeyCode restartKey = KeyCode.F5;
+    [SerializeField] KeyCode quitKey = KeyCode.Escape;
+
     [Header("Audio")]
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip checkpointSound;
@@ -31,7 +36,7 @@ public class GameManager : MonoBehaviour
         }
 
         foreach (var resetVolume in resetVolumes) {
-            resetVolume.onEnterVolume += OnPlayerEnteredResetVolume;
+            resetVolume.onEnterVolume += ResetPlayer;
         }
 
         foreach (var nodeVolume in nodeVolumes) {
@@ -44,12 +49,12 @@ public class GameManager : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Q)) Application.Quit();
-
-        if (Input.GetKeyDown(KeyCode.F5)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (Input.GetKeyDown(quitKey)) Application.Quit();
+        if (Input.GetKeyDown(respawnKey)) ResetPlayer();
+        if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void OnPlayerEnteredResetVolume() {
+    void ResetPlayer() {
         playerDependencies.GetComponent<GrapplingHook>().ResetHook();
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
         playerTransform.SetPositionAndRotation(respawnPoint.position, quaternion.identity);

@@ -1053,6 +1053,9 @@ MonoBehaviour:
   grappleLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  ropeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   platformPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
   hookDistance: 35
@@ -1064,17 +1067,16 @@ MonoBehaviour:
   playerRetractStrength: 1000
   retractStrength: 300
   latchOnImpulse: 50
-  ropeMaterial: {fileID: 2100000, guid: c96aecf21a6c7c64aadf470d0e3f9674, type: 2}
-  leftClickRopeColor: {r: 1, g: 0, b: 0, a: 1}
-  rightClickRopeColor: {r: 0, g: 0, b: 1, a: 1}
+  leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}
+  rightRopeMaterial: {fileID: 2100000, guid: a89a7d00e18f1e94daa0e1a461804f02, type: 2}
   startThickness: 0.02
   endThickness: 0.06
   segments: 50
-  damper: 12
-  springStrength: 800
+  damper: 25
+  springStrength: 500
   speed: 12
   waveCount: 5
-  waveHeight: 4
+  waveHeight: 3
   affectCurve:
     serializedVersion: 2
     m_Curve:
@@ -1385,7 +1387,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0f81479fe494bd4b9dda49e0302ea60, type: 2}
+  - {fileID: 2100000, guid: 4bff2382039161d468ddf0360afa762c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1784,7 +1786,7 @@ Transform:
   m_GameObject: {fileID: 5169672068622258408}
   serializedVersion: 2
   m_LocalRotation: {x: -0.015800513, y: 0.96412426, z: -0.058968335, w: -0.25833625}
-  m_LocalPosition: {x: 0.2, y: 0.048, z: -0.09}
+  m_LocalPosition: {x: 0.2, y: -0.2, z: 0.29}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2206,7 +2208,7 @@ Transform:
   m_GameObject: {fileID: 6324492833587520348}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.401, y: -0.21099997, z: 0.51}
+  m_LocalPosition: {x: 0.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2271,7 +2273,7 @@ Transform:
   m_GameObject: {fileID: 6724451987647718273}
   serializedVersion: 2
   m_LocalRotation: {x: 0.015802387, y: 0.9619443, z: -0.056981556, w: 0.2667708}
-  m_LocalPosition: {x: -0.17, y: 0.048, z: -0.09}
+  m_LocalPosition: {x: -0.2, y: -0.2, z: 0.29}
   m_LocalScale: {x: 0.050000004, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2432,7 +2434,7 @@ Transform:
   m_GameObject: {fileID: 7211893591571068450}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: -0.21099997, z: 0.51}
+  m_LocalPosition: {x: -0.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
