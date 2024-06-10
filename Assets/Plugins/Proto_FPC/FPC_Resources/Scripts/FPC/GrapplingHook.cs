@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 #endregion
 
@@ -66,11 +65,9 @@ namespace PrototypeFPC
         float mouseDownTimer;
         Rigidbody player;
         Ray ray;
-        Spring spring;
 
         void Start() {
             Setup();
-            CreateSpring();
         }
 
         void Update() {
@@ -86,12 +83,6 @@ namespace PrototypeFPC
             // Setup dependencies
             player = dependencies.rb;
             audioSource = dependencies.audioSourceTop;
-        }
-
-        void CreateSpring() {
-            // Create and set rope visual spring value
-            spring = new Spring();
-            spring.SetTarget(0);
         }
 
         void InputCheck() {
@@ -127,6 +118,7 @@ namespace PrototypeFPC
         void CreateHooks(int _mouseButton) {
             if (Input.GetMouseButtonDown(_mouseButton) && !Input.GetKey(KeyCode.LeftControl) && !dependencies.isInspecting) {
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
                 // Check and set target rigidbody if none
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, grappleLayerMask, QueryTriggerInteraction.Ignore))
                     if (hit.transform.gameObject.GetComponent<Rigidbody>() == null)
@@ -185,9 +177,11 @@ namespace PrototypeFPC
             rope.lineRenderer.receiveShadows = false;
             rope.lineRenderer.positionCount = segments + 1;
 
-            // Add and set joint parameters
-            spring.Reset();
-            rope.lineRenderer.positionCount = segments + 1;
+            // Initialize spring for the new rope
+            rope.spring = new Spring();
+            rope.spring.SetTarget(0);
+            rope.spring.SetDamper(damper);
+            rope.spring.SetStrength(springStrength);
 
             player.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
             var sj = player.GetComponent<SpringJoint>();
@@ -246,9 +240,9 @@ namespace PrototypeFPC
             rope.hookModels.Add(Instantiate(hookModel, rope.hookLatch.transform.position, Quaternion.identity));
             rope.hookModels[^1].transform.parent = rope.hookLatch.transform;
 
-            // Add and set joint parameters
-            spring.Reset();
-            spring.SetVelocity(speed);
+            // Reset and initialize the spring for the latch
+            rope.spring.Reset();
+            rope.spring.SetVelocity(speed);
 
             rope.hookLatch.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
 
@@ -395,9 +389,7 @@ namespace PrototypeFPC
 
         void DrawRopes() {
             foreach (var rope in ropes) {
-                spring.SetDamper(damper);
-                spring.SetStrength(springStrength);
-                spring.Update(Time.deltaTime);
+                rope.spring.Update(Time.deltaTime); // Update the spring value for each rope individually
 
                 Vector3 startPoint;
                 Vector3 endPoint;
@@ -421,8 +413,8 @@ namespace PrototypeFPC
 
                 for (var t = 0; t < segments + 1; t++) {
                     float delta = t / (float)segments;
-                    var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta))
-                                 + right * (waveHeight * Mathf.Cos(delta * waveCount * Mathf.PI) * spring.Value * affectCurve.Evaluate(delta));
+                    var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * rope.spring.Value * affectCurve.Evaluate(delta))
+                                 + right * (waveHeight * Mathf.Cos(delta * waveCount * Mathf.PI) * rope.spring.Value * affectCurve.Evaluate(delta));
                     rope.lineRenderer.SetPosition(t, Vector3.Lerp(startPoint, endPoint, delta) + offset);
                 }
 
@@ -455,6 +447,7 @@ namespace PrototypeFPC
             public GameObject ropeCollider;
             public LineRenderer lineRenderer;
             public List<GameObject> hookModels = new List<GameObject>();
+            public Spring spring;
         }
     }
 }
