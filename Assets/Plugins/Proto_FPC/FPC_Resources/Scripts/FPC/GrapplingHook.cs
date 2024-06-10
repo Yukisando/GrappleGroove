@@ -117,7 +117,7 @@ namespace PrototypeFPC
                 hookRelease = true;
 
                 // Get the player's current velocity
-                var playerVelocity = player.linearVelocity;
+                var playerVelocity = player.velocity;
                 float speedFactor = playerVelocity.magnitude;
 
                 // Apply an impulse based on the speed at release
@@ -218,10 +218,6 @@ namespace PrototypeFPC
 
             // Knock back when hooked
             rope.hook.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
-
-            // Set previous rope quality to 2 if not already
-            if (ropes.Count > 1 && ropes[^2].lineRenderer.positionCount > 2)
-                ropes[^2].lineRenderer.positionCount = 2;
 
             // Audio
             audioSource.PlayOneShot(grapplingSound);
