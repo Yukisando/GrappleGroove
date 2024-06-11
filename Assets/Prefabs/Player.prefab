@@ -828,6 +828,7 @@ MonoBehaviour:
   worldGravity: -20
   physicsIterations: 12
   timeStep: 0.003
+  playerTransform: {fileID: 2463789918313756800}
   rb: {fileID: 619021368732356237}
   cc: {fileID: 8245302811132308742}
   cam: {fileID: 548907423963366387}

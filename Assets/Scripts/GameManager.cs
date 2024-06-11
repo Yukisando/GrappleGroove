@@ -10,11 +10,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Game dependencies")]
+    [SerializeField] PlayerDependencies playerDependencies;
+    [SerializeField] CheckpointData checkpointData;
     [SerializeField] Transform respawnPoint;
-    [SerializeField] Transform playerTransform;
     [SerializeField] ScratchManager scratchManager;
     [SerializeField] PickupPopup pickupPopup;
-    [SerializeField] PlayerDependencies playerDependencies;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -26,11 +26,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip checkpointSound;
     [SerializeField] AudioClip nodeSound;
 
+    CheckpointVolume[] checkpointVolumes;
+    KillVolume[] killVolumes;
+    NodePickupVolume[] nodeVolumes;
+    ResetVolume[] resetVolumes;
+
     void Awake() {
-        var checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        var resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        var nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        var killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         foreach (var checkpointVolume in checkpointVolumes) {
             checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
@@ -47,6 +52,12 @@ public class GameManager : MonoBehaviour
         foreach (var killVolume in killVolumes) {
             killVolume.onEnterVolume += OnPlayerEnteredKillVolume;
         }
+
+        checkpointData.ValidateCheckpoints();
+    }
+
+    void Start() {
+        LoadLastCheckpoint();
     }
 
     void Update() {
@@ -55,18 +66,30 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    void LoadLastCheckpoint() {
+        if (!PlayerPrefs.HasKey("lastCheckpoint")) return;
+
+        foreach (var c in checkpointVolumes) {
+            if (PlayerPrefs.GetString("lastCheckpoint") != c.idd) continue;
+            Debug.Log($"Loading last checkpoint: {c.idd}");
+            OnPlayerEnteredCheckpointVolume(c.transform);
+            break;
+        }
+    }
+
     void ResetPlayer() {
         playerDependencies.GetComponent<GrapplingHook>().ResetHook();
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
-        playerTransform.SetPositionAndRotation(respawnPoint.position, quaternion.identity);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
+        playerDependencies.playerTransform.SetPositionAndRotation(respawnPoint.position, quaternion.identity);
         Debug.Log("Player got reset!");
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _t) {
         respawnPoint.position = _t.transform.position;
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
+        _t.gameObject.SetActive(false);
         Debug.Log("Checkpoint reached!");
     }
 

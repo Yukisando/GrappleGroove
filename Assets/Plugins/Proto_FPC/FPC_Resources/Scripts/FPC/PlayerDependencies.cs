@@ -12,6 +12,7 @@ namespace PrototypeFPC
         public int physicsIterations = 12;
         public float timeStep = 0.003f;
 
+        public Transform playerTransform;
         public Rigidbody rb;
         public CapsuleCollider cc;
         public Camera cam;
