@@ -34,6 +34,7 @@ namespace PrototypeFPC
         [SerializeField] Material rightRopeMaterial;
         [SerializeField] float startThickness = 0.02f;
         [SerializeField] float endThickness = 0.06f;
+        [SerializeField] int maxRopes = 2; // Maximum number of ropes allowed
 
         // Rope visual spring properties
         [Header("Rope Visual Spring Properties")]
@@ -83,7 +84,7 @@ namespace PrototypeFPC
             CutRopes();
         }
 
-        void FixedUpdate() {
+        void LateUpdate() {
             DrawRopes();
         }
 
@@ -223,6 +224,10 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
 
             ropes.Add(rope);
+
+            // Check the limit of ropes after adding the new one
+            var ropesOfType = ropes.Where(r => r.type == (_mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT)).ToList();
+            if (ropesOfType.Count > maxRopes) DestroyRope(ropes.IndexOf(ropesOfType.First()));
         }
 
         void CreateHookLatch(Vector3 position) {
@@ -253,6 +258,7 @@ namespace PrototypeFPC
             rope.spring.SetVelocity(speed);
 
             rope.hookLatch.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
+            rope.hookLatch.transform.parent = hit.transform;
 
             Destroy(rb.GetComponent<SpringJoint>());
             rope.hook.AddComponent<SpringJoint>().connectedBody = rope.hookLatch.GetComponent<Rigidbody>();
