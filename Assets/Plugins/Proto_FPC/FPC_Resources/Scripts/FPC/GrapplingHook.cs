@@ -64,8 +64,8 @@ namespace PrototypeFPC
         bool hookRelease;
 
         float mouseDownTimer;
-        Rigidbody player;
         Ray ray;
+        Rigidbody rb;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -89,7 +89,7 @@ namespace PrototypeFPC
 
         void Setup() {
             // Setup playerDependencies
-            player = playerDependencies.rb;
+            rb = playerDependencies.rb;
             audioSource = playerDependencies.audioSourceTop;
         }
 
@@ -114,12 +114,12 @@ namespace PrototypeFPC
                 hookRelease = true;
 
                 // Get the player's current velocity
-                var playerVelocity = player.linearVelocity;
+                var playerVelocity = rb.linearVelocity;
                 float speedFactor = playerVelocity.magnitude;
 
                 // Apply an impulse based on the speed at release
                 var releaseImpulse = playerVelocity.normalized * (speedFactor * releaseImpulseFactor);
-                player.AddForce(releaseImpulse, ForceMode.Impulse);
+                rb.AddForce(releaseImpulse, ForceMode.Impulse);
             }
         }
 
@@ -135,14 +135,14 @@ namespace PrototypeFPC
                 // Create first hook
                 if (!hooked) {
                     if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, grappleLayerMask, QueryTriggerInteraction.Ignore)) return;
-                    if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == player) return;
+                    if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == rb) return;
                     hooked = true;
 
                     CreateHook(_mouseButton, hit.point);
                 }
                 else if (hooked) {
                     if (!Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, grappleLayerMask, QueryTriggerInteraction.Ignore)) return;
-                    if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == player) return;
+                    if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == rb) return;
 
                     CreateHookLatch(hit.point);
                 }
@@ -191,13 +191,13 @@ namespace PrototypeFPC
             rope.spring.SetDamper(damper);
             rope.spring.SetStrength(springStrength);
 
-            player.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
-            var sj = player.GetComponent<SpringJoint>();
+            rb.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
+            var sj = rb.GetComponent<SpringJoint>();
             sj.autoConfigureConnectedAnchor = false;
             sj.connectedAnchor = Vector3.zero;
 
             // Calculate the distance between the player and the hook point
-            float distanceFromHook = Vector3.Distance(player.gameObject.transform.position, rope.hook.transform.position);
+            float distanceFromHook = Vector3.Distance(rb.gameObject.transform.position, rope.hook.transform.position);
 
             // Set the maxDistance and minDistance to the initial distance from the hook point
             sj.maxDistance = _mouseButton == 0 ? distanceFromHook : distanceFromHook * 3f;
@@ -254,7 +254,7 @@ namespace PrototypeFPC
 
             rope.hookLatch.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
 
-            Destroy(player.GetComponent<SpringJoint>());
+            Destroy(rb.GetComponent<SpringJoint>());
             rope.hook.AddComponent<SpringJoint>().connectedBody = rope.hookLatch.GetComponent<Rigidbody>();
             var hsj = rope.hook.GetComponent<SpringJoint>();
             hsj.autoConfigureConnectedAnchor = false;
@@ -309,18 +309,18 @@ namespace PrototypeFPC
 
         void RetractHooks() {
             // Set player hook swing strength
-            if (executeHookSwing && player.GetComponent<SpringJoint>() && Mathf.Approximately(player.GetComponent<SpringJoint>().spring, playerRetractStrength))
-                player.GetComponent<SpringJoint>().spring = playerRetractStrength;
+            if (executeHookSwing && rb.GetComponent<SpringJoint>() && Mathf.Approximately(rb.GetComponent<SpringJoint>().spring, playerRetractStrength))
+                rb.GetComponent<SpringJoint>().spring = playerRetractStrength;
 
             // Set player hook retract strength
             if (!Input.GetMouseButtonDown(2) || playerDependencies.isInspecting) return;
 
-            if (player.GetComponent<SpringJoint>() != null)
-                player.GetComponent<SpringJoint>().spring = playerRetractStrength;
+            if (rb.GetComponent<SpringJoint>() != null)
+                rb.GetComponent<SpringJoint>().spring = playerRetractStrength;
 
             // Set all other hook and latched retract strengths
             foreach (var rope in ropes) {
-                if (rope.hook.GetComponent<SpringJoint>() && rope.hook.GetComponent<SpringJoint>().connectedBody != player)
+                if (rope.hook.GetComponent<SpringJoint>() && rope.hook.GetComponent<SpringJoint>().connectedBody != rb)
                     rope.hook.GetComponent<SpringJoint>().spring = retractStrength;
             }
 
@@ -352,7 +352,7 @@ namespace PrototypeFPC
 
         void DestroyGrappleRope() {
             if (ropes.Count > 0) {
-                Destroy(player.GetComponent<SpringJoint>());
+                Destroy(rb.GetComponent<SpringJoint>());
                 DestroyRope(ropes.Count - 1);
             }
 
@@ -409,11 +409,11 @@ namespace PrototypeFPC
                 Vector3 startPoint;
                 Vector3 endPoint;
 
-                if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
+                if (rb.GetComponent<SpringJoint>() != null && rb.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
                     startPoint = rope.type == RopeType.LEFT ? playerDependencies.spawnPointLeft.position : playerDependencies.spawnPointRight.position;
                     endPoint = rope.hook.transform.position;
                 }
-                else if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != player) {
+                else if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != rb) {
                     startPoint = rope.hook.transform.position;
                     endPoint = rope.hookLatch.transform.position;
                 }

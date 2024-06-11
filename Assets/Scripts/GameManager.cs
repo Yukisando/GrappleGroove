@@ -1,7 +1,6 @@
 #region
 
 using PrototypeFPC;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PickupPopup pickupPopup;
 
     [Header("Settings")]
+    [SerializeField] bool loadLastCheckpointOnStart = true;
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
     [SerializeField] KeyCode restartKey = KeyCode.F5;
     [SerializeField] KeyCode quitKey = KeyCode.Escape;
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
-        LoadLastCheckpoint();
+        if (loadLastCheckpointOnStart) LoadLastCheckpoint();
     }
 
     void Update() {
@@ -76,11 +76,13 @@ public class GameManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("lastCheckpoint")) return;
 
         foreach (var c in checkpointVolumes) {
-            if (PlayerPrefs.GetString("lastCheckpoint") != c.idd) continue;
-            Debug.Log($"Loading last checkpoint: {c.idd}");
-            OnPlayerEnteredCheckpointVolume(c.transform);
+            if (PlayerPrefs.GetString("lastCheckpoint") != c.id) continue;
+            OnPlayerEnteredCheckpointVolume(c);
+            Debug.Log($"Loading last checkpoint: {c.id}");
             break;
         }
+
+        playerDependencies.rb.position = respawnPoint.position;
     }
 
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
@@ -92,14 +94,15 @@ public class GameManager : MonoBehaviour
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
-        playerDependencies.playerTransform.SetPositionAndRotation(respawnPoint.position, quaternion.identity);
+        playerDependencies.rb.position = respawnPoint.position;
         Debug.Log("Player got reset!");
     }
 
-    void OnPlayerEnteredCheckpointVolume(Transform _t) {
-        respawnPoint.position = _t.transform.position;
+    void OnPlayerEnteredCheckpointVolume(CheckpointVolume _v) {
+        checkpointData.lastCheckPointID = _v.id;
+        respawnPoint.position = _v.transform.position;
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
-        _t.gameObject.SetActive(false);
+        _v.gameObject.SetActive(false);
         Debug.Log("Checkpoint reached!");
     }
 

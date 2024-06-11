@@ -3,18 +3,21 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 #endregion
 
 [Serializable]
 public class CheckpointVolume : MonoBehaviour
 {
-    [ReadOnly] public string idd;
-    public Action<Transform> onEnterVolume;
+    [FormerlySerializedAs("idd")] [ReadOnly]
+    public string id;
+    public Action<CheckpointVolume> onEnterVolume;
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        PlayerPrefs.SetString("lastCheckpoint", idd);
-        onEnterVolume?.Invoke(transform);
+
+        PlayerPrefs.SetString("lastCheckpoint", id);
+        onEnterVolume?.Invoke(this);
     }
 }
