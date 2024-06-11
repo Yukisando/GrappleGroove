@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -79,8 +80,11 @@ namespace PrototypeFPC
             CreateHooks(0);
             CreateHooks(1);
             RetractHooks();
-            DrawRopes();
             CutRopes();
+        }
+
+        void FixedUpdate() {
+            DrawRopes();
         }
 
         void Setup() {
@@ -153,7 +157,7 @@ namespace PrototypeFPC
                         position = _position,
                     },
                 },
-                side = _mouseButton,
+                type = _mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT,
             };
 
             // Add Rigidbody to hook
@@ -277,7 +281,7 @@ namespace PrototypeFPC
 
             // Check if the rope is too short
             if (ropeLength < minimumRopeLength) {
-                DestroyHook(ropes.Count - 1);
+                DestroyRope(ropes.Count - 1);
                 audioSource.PlayOneShot(releaseSound);
                 return; // Exit the method as the rope is too short
             }
@@ -328,28 +332,28 @@ namespace PrototypeFPC
             // Destroy player hooks upon hold release
             if (hookRelease && hooked) {
                 hookRelease = false;
-                DestroyLastHook();
+                DestroyGrappleRope();
             }
 
             // Remove specific hooks
             if (Input.GetKey(cutRopeKey) && !playerDependencies.isInspecting) {
                 if (hooked)
-                    DestroyLastHook();
+                    DestroyGrappleRope();
                 else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ropeLayerMask))
                     if (hit.collider.isTrigger) {
                         int index = GameObjectToIndex(hit.collider.gameObject);
-                        DestroyHook(index);
+                        DestroyRope(index);
                     }
             }
 
             // Destroy everything created and clear all lists
-            if (Input.GetKeyDown(resetHookKey) && !playerDependencies.isInspecting) ResetHook();
+            if (Input.GetKeyDown(resetHookKey) && !playerDependencies.isInspecting) DestroyRopes();
         }
 
-        void DestroyLastHook() {
+        void DestroyGrappleRope() {
             if (ropes.Count > 0) {
                 Destroy(player.GetComponent<SpringJoint>());
-                DestroyHook(ropes.Count - 1);
+                DestroyRope(ropes.Count - 1);
             }
 
             hooked = false;
@@ -357,7 +361,7 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(releaseSound);
         }
 
-        void DestroyHook(int index) {
+        void DestroyRope(int index) {
             var rope = ropes[index];
             Destroy(rope.hook.gameObject);
             if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
@@ -372,34 +376,41 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(releaseSound);
         }
 
-        public void ResetHook() {
-            hooked = false;
+        public void DestroyRopes(RopeType _ropeType = RopeType.BOTH) {
+            // Destroy matching player grapple
+            if (hooked && (ropes.Last().type == _ropeType || _ropeType == RopeType.BOTH)) DestroyGrappleRope();
 
-            if (ropes.Count > 0 && player.GetComponent<SpringJoint>())
-                Destroy(player.GetComponent<SpringJoint>());
+            var ropesToRemove = new List<Rope>();
 
-            foreach (var rope in ropes) {
+            // Destroys matching ropes
+            foreach (var rope in ropes.Where(_rope => _ropeType == RopeType.BOTH || _rope.type == _ropeType)) {
                 Destroy(rope.hook.gameObject);
                 if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
                 if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
                 foreach (var model in rope.hookModels) {
                     Destroy(model);
+                    ropesToRemove.Add(rope);
                 }
             }
 
-            ropes.Clear();
-            audioSource.PlayOneShot(releaseSound);
+            if (ropesToRemove.Count > 0) {
+                foreach (var rope in ropesToRemove) {
+                    ropes.Remove(rope);
+                }
+                ropesToRemove.Clear();
+                audioSource.PlayOneShot(releaseSound);
+            }
         }
 
         void DrawRopes() {
             foreach (var rope in ropes) {
-                rope.spring.Update(Time.deltaTime); // Update the spring value for each rope individually
+                rope.spring.Update(Time.fixedDeltaTime); // Update the spring value for each rope individually
 
                 Vector3 startPoint;
                 Vector3 endPoint;
 
                 if (player.GetComponent<SpringJoint>() != null && player.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
-                    startPoint = rope.side == 0 ? playerDependencies.spawnPointLeft.position : playerDependencies.spawnPointRight.position;
+                    startPoint = rope.type == RopeType.LEFT ? playerDependencies.spawnPointLeft.position : playerDependencies.spawnPointRight.position;
                     endPoint = rope.hook.transform.position;
                 }
                 else if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != player) {
@@ -445,7 +456,7 @@ namespace PrototypeFPC
         [Serializable]
         public class Rope
         {
-            public int side;
+            public RopeType type = RopeType.LEFT;
             public GameObject hook;
             public GameObject hookLatch;
             public GameObject ropeCollider;
@@ -453,5 +464,12 @@ namespace PrototypeFPC
             public List<GameObject> hookModels = new List<GameObject>();
             public Spring spring;
         }
+    }
+
+    public enum RopeType
+    {
+        BOTH,
+        LEFT,
+        RIGHT,
     }
 }

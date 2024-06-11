@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip nodeSound;
 
     CheckpointVolume[] checkpointVolumes;
+    EmancipationVolume[] emancipationVolumes;
     KillVolume[] killVolumes;
     NodePickupVolume[] nodeVolumes;
     ResetVolume[] resetVolumes;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         foreach (var checkpointVolume in checkpointVolumes) {
             checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
@@ -51,6 +53,10 @@ public class GameManager : MonoBehaviour
 
         foreach (var killVolume in killVolumes) {
             killVolume.onEnterVolume += OnPlayerEnteredKillVolume;
+        }
+
+        foreach (var emancipationVolume in emancipationVolumes) {
+            emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
 
         checkpointData.ValidateCheckpoints();
@@ -77,8 +83,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
+        playerDependencies.GetComponent<GrapplingHook>().DestroyRopes(_ropeType);
+    }
+
     void ResetPlayer() {
-        playerDependencies.GetComponent<GrapplingHook>().ResetHook();
+        playerDependencies.GetComponent<GrapplingHook>().DestroyRopes();
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
