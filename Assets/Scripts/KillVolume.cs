@@ -2,15 +2,18 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 #endregion
 
 public class KillVolume : MonoBehaviour
 {
-    
     public Action onEnterVolume;
-    
+
+    void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, transform.localScale);
+    }
+
     void OnTriggerEnter(Collider _other) {
         if (_other.CompareTag("PlayerHitbox"))
             onEnterVolume?.Invoke();
