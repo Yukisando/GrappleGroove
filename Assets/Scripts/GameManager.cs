@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
+        // TP player to editor camera position
         if (loadLastCheckpointOnStart) LoadLastCheckpoint();
     }
 
@@ -98,7 +99,7 @@ public class GameManager : MonoBehaviour
 
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
         _v.gameObject.SetActive(false);
-        infoPopup.ShowPopup("Checkpoint reached!");
+        infoPopup.ShowPopup($"{_v.name} checkpoint reached!");
         Debug.Log("Checkpoint reached!");
     }
 

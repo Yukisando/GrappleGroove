@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    public Vector3 localMove = Vector3.up * 5;
+    public Vector3 localMove = Vector3.forward * 5;
     public float speed = 5f;
     Vector3 startPos;
 
@@ -16,8 +16,7 @@ public class Move : MonoBehaviour
     }
 
     void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 0.5f);
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position + localMove, 0.5f);
     }
 }
