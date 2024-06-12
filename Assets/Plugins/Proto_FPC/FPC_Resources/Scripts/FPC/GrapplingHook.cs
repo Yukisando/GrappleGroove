@@ -163,8 +163,8 @@ namespace PrototypeFPC
             };
 
             // Add Rigidbody to hook
-            var hookRb = rope.hook.AddComponent<Rigidbody>();
-            hookRb.isKinematic = true;
+            var hookRB = rope.hook.AddComponent<Rigidbody>();
+            hookRB.useGravity = false;
 
             // Hook end point model
             rope.hookModels.Add(Instantiate(hookModel, rope.hook.transform.position, Quaternion.identity));
@@ -185,6 +185,7 @@ namespace PrototypeFPC
             rope.lineRenderer.textureMode = LineTextureMode.Tile;
             rope.lineRenderer.shadowCastingMode = ShadowCastingMode.On;
             rope.lineRenderer.receiveShadows = false;
+
             rope.lineRenderer.positionCount = segments + 1;
 
             // Initialize spring for the new rope
@@ -194,6 +195,8 @@ namespace PrototypeFPC
             rope.spring.SetStrength(springStrength);
 
             rb.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
+            rope.hook.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
+
             var sj = rb.GetComponent<SpringJoint>();
             sj.autoConfigureConnectedAnchor = false;
             sj.connectedAnchor = Vector3.zero;
@@ -240,8 +243,8 @@ namespace PrototypeFPC
             };
 
             // Add Rigidbody to hook latch
-            var latchRb = rope.hookLatch.AddComponent<Rigidbody>();
-            latchRb.isKinematic = true;
+            var hlrb = rope.hookLatch.AddComponent<Rigidbody>();
+            hlrb.useGravity = false;
 
             // Remove hook start point model
             Destroy(rope.hookModels[^1].gameObject);
