@@ -139,23 +139,24 @@ namespace PrototypeFPC
                     if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == rb) return;
                     hooked = true;
 
-                    CreateHook(_mouseButton, hit.point);
+                    CreateHook(_mouseButton, hit);
                 }
                 else if (hooked) {
                     if (!Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, grappleLayerMask, QueryTriggerInteraction.Ignore)) return;
                     if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == rb) return;
 
-                    CreateHookLatch(hit.point);
+                    CreateHookLatch(hit);
                 }
             }
         }
 
-        void CreateHook(int _mouseButton, Vector3 _position) {
+        void CreateHook(int _mouseButton, RaycastHit _hit) {
             // Create new rope
             var rope = new Rope {
                 hook = new GameObject("Hook") {
                     transform = {
-                        position = _position,
+                        position = _hit.point,
+                        parent = _hit.transform,
                     },
                 },
                 type = _mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT,
@@ -226,14 +227,15 @@ namespace PrototypeFPC
             ropes.Add(rope);
         }
 
-        void CreateHookLatch(Vector3 position) {
+        void CreateHookLatch(RaycastHit _hit) {
             // Get the last rope
             var rope = ropes[^1];
 
             // Create new hook latch object
             rope.hookLatch = new GameObject("HookLatch") {
                 transform = {
-                    position = position,
+                    position = _hit.point,
+                    parent = _hit.transform,
                 },
             };
 

@@ -889,7 +889,7 @@ MonoBehaviour:
   airDrag: 1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 193
   groundCheck: {fileID: 7375722856005314096}
   groundCheckRadius: 0.2
   footstepCurve:

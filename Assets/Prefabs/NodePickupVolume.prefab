@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2945758081133467667}
   - component: {fileID: 4813284617619319450}
   - component: {fileID: 4590643402655209727}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NodePickupVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}

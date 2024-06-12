@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2493585162933906490}
   - component: {fileID: 5004217648422848089}
   - component: {fileID: 4395594971786213239}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EmansipationVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
