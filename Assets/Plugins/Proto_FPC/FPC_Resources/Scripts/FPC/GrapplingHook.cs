@@ -224,10 +224,6 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
 
             ropes.Add(rope);
-
-            // Check the limit of ropes after adding the new one
-            var ropesOfType = ropes.Where(r => r.type == (_mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT)).ToList();
-            if (ropesOfType.Count > maxRopes) DestroyRope(ropes.IndexOf(ropesOfType.First()));
         }
 
         void CreateHookLatch(Vector3 position) {
@@ -311,6 +307,12 @@ namespace PrototypeFPC
             // Adjust the rotation of the plank
             plank.transform.LookAt(endPoint);
             plank.transform.Rotate(0, 90, 0); // Rotate 90 degrees to make the plank align with the rope
+
+            // Check the limit of ropes after adding the new one
+            var leftRopes = ropes.FindAll(_r => _r.type == RopeType.LEFT);
+            var rightRopes = ropes.FindAll(_r => _r.type == RopeType.RIGHT);
+            if (leftRopes.Count > maxRopes) DestroyRope(leftRopes.IndexOf(leftRopes.FirstOrDefault()));
+            if (rightRopes.Count > maxRopes) DestroyRope(rightRopes.IndexOf(rightRopes.FirstOrDefault()));
         }
 
         void RetractHooks() {

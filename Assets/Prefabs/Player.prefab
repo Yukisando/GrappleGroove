@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grappleLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1062,6 +1062,7 @@ MonoBehaviour:
   rightRopeMaterial: {fileID: 2100000, guid: a89a7d00e18f1e94daa0e1a461804f02, type: 2}
   startThickness: 0.02
   endThickness: 0.06
+  maxRopes: 1
   segments: 50
   damper: 25
   springStrength: 500
