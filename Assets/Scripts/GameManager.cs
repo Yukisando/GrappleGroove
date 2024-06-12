@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Game dependencies")]
     [SerializeField] PlayerDependencies playerDependencies;
+    [SerializeField] CheckpointManager checkpointManager;
     [SerializeField] Transform respawnPoint;
     [SerializeField] ScratchManager scratchManager;
     [SerializeField] InfoPopup infoPopup;
@@ -57,10 +58,7 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
-    }
 
-    void Start() {
-        // TP player to editor camera position
         if (loadLastCheckpointOnStart) LoadLastCheckpoint();
     }
 
@@ -70,15 +68,12 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void OnApplicationQuit() {
-        SavePosition(respawnPoint.position);
-    }
-
     void LoadLastCheckpoint() {
-        if (!loadLastCheckpointOnStart) return;
-        var lastCheckpointPosition = new Vector3(PlayerPrefs.GetFloat("cp.x"), PlayerPrefs.GetFloat("cp.y"), PlayerPrefs.GetFloat("cp.z"));
-        respawnPoint.position = lastCheckpointPosition;
-        playerDependencies.rb.position = respawnPoint.position;
+        var checkpointPosition = checkpointManager.LoadLastCheckpoint();
+        if (checkpointPosition != Vector3.zero) {
+            respawnPoint.position = checkpointPosition;
+            playerDependencies.rb.MovePosition(checkpointPosition);
+        }
     }
 
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
@@ -90,17 +85,15 @@ public class GameManager : MonoBehaviour
         playerDependencies.audioSourceTop.PlayOneShot(deathSound);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
-        playerDependencies.rb.position = respawnPoint.position;
+        playerDependencies.rb.MovePosition(respawnPoint.position);
         Debug.Log("Player got reset!");
     }
 
     void OnPlayerEnteredCheckpointVolume(CheckpointVolume _v) {
-        SavePosition(_v.transform.position);
-
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
         _v.gameObject.SetActive(false);
+        checkpointManager.SaveCheckpoint(_v.transform.position);
         infoPopup.ShowPopup($"{_v.name} checkpoint reached!");
-        Debug.Log("Checkpoint reached!");
     }
 
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
@@ -113,12 +106,5 @@ public class GameManager : MonoBehaviour
     void OnPlayerEnteredKillVolume() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Player died!");
-    }
-
-    void SavePosition(Vector3 _pos) {
-        PlayerPrefs.SetFloat("cp.x", _pos.x);
-        PlayerPrefs.SetFloat("cp.y", _pos.y);
-        PlayerPrefs.SetFloat("cp.z", _pos.z);
-        respawnPoint.position = _pos;
     }
 }

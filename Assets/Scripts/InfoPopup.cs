@@ -1,6 +1,5 @@
 #region
 
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
@@ -28,11 +27,10 @@ public class InfoPopup : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, startY);
     }
 
-    [Button]
     public void ShowPopup(string _info = "New info!") {
         Init();
         text.text = _info;
-        Debug.Log($"{_info}");
+        Debug.Log($"Popup: {_info}");
         rectTransform.LeanMoveY(height, duration).setEaseOutBounce().setOnComplete(Init);
     }
 }
