@@ -6,7 +6,7 @@ using UnityEngine;
 
 #endregion
 
-public class PickupPopup : MonoBehaviour
+public class InfoPopup : MonoBehaviour
 {
     public float height = 100f;
     public float duration = 2f;

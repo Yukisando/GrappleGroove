@@ -10,10 +10,9 @@ public class GameManager : MonoBehaviour
 {
     [Header("Game dependencies")]
     [SerializeField] PlayerDependencies playerDependencies;
-    [SerializeField] CheckpointData checkpointData;
     [SerializeField] Transform respawnPoint;
     [SerializeField] ScratchManager scratchManager;
-    [SerializeField] PickupPopup pickupPopup;
+    [SerializeField] InfoPopup infoPopup;
 
     [Header("Settings")]
     [SerializeField] bool loadLastCheckpointOnStart = true;
@@ -58,8 +57,6 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
-
-        checkpointData.ValidateCheckpoints();
     }
 
     void Start() {
@@ -72,16 +69,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    void OnApplicationQuit() {
+        SavePosition(respawnPoint.position);
+    }
+
     void LoadLastCheckpoint() {
-        if (!PlayerPrefs.HasKey("lastCheckpoint")) return;
-
-        foreach (var c in checkpointVolumes) {
-            if (PlayerPrefs.GetString("lastCheckpoint") != c.id) continue;
-            OnPlayerEnteredCheckpointVolume(c);
-            Debug.Log($"Loading last checkpoint: {c.id}");
-            break;
-        }
-
+        if (!loadLastCheckpointOnStart) return;
+        var lastCheckpointPosition = new Vector3(PlayerPrefs.GetFloat("cp.x"), PlayerPrefs.GetFloat("cp.y"), PlayerPrefs.GetFloat("cp.z"));
+        respawnPoint.position = lastCheckpointPosition;
         playerDependencies.rb.position = respawnPoint.position;
     }
 
@@ -99,16 +94,17 @@ public class GameManager : MonoBehaviour
     }
 
     void OnPlayerEnteredCheckpointVolume(CheckpointVolume _v) {
-        checkpointData.lastCheckPointID = _v.id;
-        respawnPoint.position = _v.transform.position;
+        SavePosition(_v.transform.position);
+
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
         _v.gameObject.SetActive(false);
+        infoPopup.ShowPopup("Checkpoint reached!");
         Debug.Log("Checkpoint reached!");
     }
 
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
         scratchManager.AddNode(_nodeData);
-        pickupPopup.ShowPopup($"Node collected: {_nodeData.id}");
+        infoPopup.ShowPopup($"Node collected: {_nodeData.id}");
         playerDependencies.audioSourceTop.PlayOneShot(nodeSound);
         Debug.Log("Node collected!");
     }
@@ -116,5 +112,12 @@ public class GameManager : MonoBehaviour
     void OnPlayerEnteredKillVolume() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Player died!");
+    }
+
+    void SavePosition(Vector3 _pos) {
+        PlayerPrefs.SetFloat("cp.x", _pos.x);
+        PlayerPrefs.SetFloat("cp.y", _pos.y);
+        PlayerPrefs.SetFloat("cp.z", _pos.z);
+        respawnPoint.position = _pos;
     }
 }
