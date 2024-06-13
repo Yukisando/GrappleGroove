@@ -889,7 +889,7 @@ MonoBehaviour:
   airDrag: 1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 449
   groundCheck: {fileID: 7375722856005314096}
   groundCheckRadius: 0.2
   footstepCurve:
@@ -2502,7 +2502,7 @@ GameObject:
   - component: {fileID: 8245302811132308742}
   - component: {fileID: 619021368732356237}
   - component: {fileID: 2976749963382387615}
-  m_Layer: 2
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -2584,7 +2584,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643533470452205149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b7955d4a064a6f40886000aa550ea4c, type: 3}
   m_Name: 
