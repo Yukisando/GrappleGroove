@@ -1,6 +1,5 @@
 #region
 
-using System;
 using System.Collections.Generic;
 using PrototypeFPC;
 using Sirenix.OdinInspector;
@@ -10,53 +9,56 @@ using UnityEngine;
 
 public class ScratchManager : MonoBehaviour
 {
-    public PlayerDependencies playerDependencies;
-    public Canvas scratchpad;
-    public Node nodePrefab;
-    public Transform nodeListParent;
-    public AudioClip scratchpadSoundOnClip;
-    public AudioClip scratchpadSoundOffClip;
-
+    [SerializeField] PlayerDependencies playerDependencies;
+    [SerializeField] Canvas scratchpad;
+    [SerializeField] Node nodePrefab;
+    [SerializeField] Transform nodeListParent;
+    
+    [Header("Audio")]
+    [SerializeField] AudioSource source;
+    [SerializeField] AudioClip scratchpadSoundOnClip;
+    [SerializeField] AudioClip scratchpadSoundOffClip;
+    
     [Space(10)] [ReadOnly] public List<NodeData> nodes = new List<NodeData>();
     public KeyCode scratchpadKey = KeyCode.Tab;
-
-    public Action<string> onNewNode;
-
+    
     Movement playerMovement;
-
+    
     void Awake() {
+        source = GetComponent<AudioSource>();
+        source.ignoreListenerPause = true;
+        
         scratchpad.enabled = false;
-        playerMovement = FindAnyObjectByType<Movement>();
+        playerMovement = playerDependencies.GetComponent<Movement>();
     }
-
+    
     void Start() {
         LoadNodes();
     }
-
+    
     void Update() {
         if (Input.GetKeyDown(scratchpadKey)) ToggleScratchpad();
     }
-
+    
     void LoadNodes() {
         foreach (var nodeData in nodes) {
             AddNode(nodeData);
         }
     }
-
+    
     void ToggleScratchpad() {
         scratchpad.enabled = !scratchpad.enabled;
         playerMovement.enabled = !scratchpad.enabled;
-        AudioSource.PlayClipAtPoint(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip, playerDependencies.transform.position);
-        Cursor.lockState = scratchpad.enabled ? CursorLockMode.None : CursorLockMode.Locked;
+        source.PlayOneShot(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip);
+        Cursor.lockState = scratchpad.enabled ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.visible = scratchpad.enabled;
     }
-
+    
     public void AddNode(NodeData _nodeData) {
         if (_nodeData.unique && nodes.Contains(_nodeData)) return;
         nodes.Add(_nodeData);
         var node = Instantiate(nodePrefab, nodeListParent);
         node.Populate(_nodeData);
         Debug.Log($"Picked up {_nodeData.id}!");
-        onNewNode?.Invoke($"{_nodeData.id} added to scratchpad!");
     }
 }

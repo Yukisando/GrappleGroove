@@ -4,6 +4,7 @@ using UnityEngine;
 
 #endregion
 
+[RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
     public Vector3 localMove = Vector3.forward * 5;
@@ -26,6 +27,7 @@ public class Move : MonoBehaviour
         source.volume = 0f;
         source.maxDistance = 120f;
         source.rolloffMode = AudioRolloffMode.Linear;
+        source.clip = GameManager.I.platformSound;
     }
     
     void Start() {

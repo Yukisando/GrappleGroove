@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager I;
+    
     [Header("Game dependencies")]
     [SerializeField] PlayerDependencies playerDependencies;
     [SerializeField] CheckpointManager checkpointManager;
@@ -23,9 +25,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
     
     [Header("Audio")]
-    [SerializeField] AudioClip deathSound;
-    [SerializeField] AudioClip checkpointSound;
-    [SerializeField] AudioClip nodeSound;
+    public AudioClip resetSound;
+    public AudioClip checkpointSound;
+    public AudioClip nodePickupSound;
+    public AudioClip platformSound;
     
     CheckpointVolume[] checkpointVolumes;
     EmancipationVolume[] emancipationVolumes;
@@ -34,6 +37,8 @@ public class GameManager : MonoBehaviour
     ResetVolume[] resetVolumes;
     
     void Awake() {
+        if (I == null) I = this;
+        else Destroy(gameObject);
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -84,7 +89,7 @@ public class GameManager : MonoBehaviour
     
     void ResetPlayer() {
         playerDependencies.GetComponent<GrapplingHook>().DestroyRopes();
-        playerDependencies.audioSourceTop.PlayOneShot(deathSound);
+        playerDependencies.audioSourceTop.PlayOneShot(resetSound);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);
@@ -102,7 +107,7 @@ public class GameManager : MonoBehaviour
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
         scratchManager.AddNode(_nodeData);
         infoPopup.ShowPopup($"Node collected: {_nodeData.id}");
-        playerDependencies.audioSourceTop.PlayOneShot(nodeSound);
+        AudioSource.PlayClipAtPoint(nodePickupSound, transform.position);
         Debug.Log("Node collected!");
     }
     
