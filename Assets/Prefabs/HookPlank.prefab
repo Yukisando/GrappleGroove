@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2836084349693941606}
   - component: {fileID: 911388656974011239}
   - component: {fileID: 7367543142783551666}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: HookPlank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 18e1f41c42f590f4c90f28ee0c4761ff, type: 2}
+  - {fileID: 2100000, guid: b187ca1648243764796276f0330ec42f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
