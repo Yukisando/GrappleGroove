@@ -9,14 +9,22 @@ using UnityEngine;
 public class CheckpointManager : MonoBehaviour
 {
     const string CheckpointFile = "checkpoint_data.json";
-
+    
     public void SaveCheckpoint(Vector3 position) {
         var data = CheckpointData.FromVector(position);
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/" + CheckpointFile, json);
         Debug.Log("Checkpoint saved");
     }
-
+    
+    public void DeleteSaveFile() {
+        string path = Application.persistentDataPath + "/" + CheckpointFile;
+        if (File.Exists(path)) {
+            File.Delete(path);
+            Debug.Log("Checkpoint deleted");
+        }
+    }
+    
     public Vector3 LoadLastCheckpoint() {
         string path = Application.persistentDataPath + "/" + CheckpointFile;
         if (File.Exists(path)) {
@@ -32,7 +40,7 @@ public class CheckpointManager : MonoBehaviour
 public class CheckpointData
 {
     public float x, y, z; // Position of the checkpoint
-
+    
     public static CheckpointData FromVector(Vector3 position) {
         return new CheckpointData {
             x = position.x,
@@ -40,7 +48,7 @@ public class CheckpointData
             z = position.z,
         };
     }
-
+    
     public Vector3 ToVector() {
         return new Vector3(x, y, z);
     }

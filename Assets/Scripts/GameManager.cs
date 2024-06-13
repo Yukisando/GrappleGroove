@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
     [SerializeField] KeyCode restartKey = KeyCode.F5;
     [SerializeField] KeyCode quitKey = KeyCode.Escape;
+    [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
     
     [Header("Audio")]
     [SerializeField] AudioClip deathSound;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
     
     void Update() {
         if (Input.GetKeyDown(quitKey)) Application.Quit();
+        if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetPlayer();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
