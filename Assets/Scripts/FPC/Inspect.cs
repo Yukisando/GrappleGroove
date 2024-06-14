@@ -14,8 +14,6 @@ namespace PrototypeFPC
         
         //Inspection properties
         [Header("Inspection Properties")]
-        [SerializeField] Sprite inspectIcon;
-        [SerializeField] Sprite aimDot;
         public float maxPickupDistance = 6;
         [SerializeField] float pickupSpeed = 5f;
         [SerializeField] float rotateSpeed = 2f;

@@ -15,9 +15,9 @@ namespace PrototypeFPC
         //Grab and throw properties
         [Header("Grab/Throw Properties")]
         public float maxGrabDistance = 8f;
+        [SerializeField] float grabbingDistance = 0.3f;
         [SerializeField] float grabSpeed = 15;
         [SerializeField] float throwForce = 800f;
-        [SerializeField] Sprite grabIcon;
         
         //Audio properties
         [Header("Audio Properties")]
@@ -35,9 +35,7 @@ namespace PrototypeFPC
         int mask;
         int originalLayer;
         Transform originalParent;
-        [Header("PlayerDependencies")]
         PlayerDependencies playerDependencies;
-        
         Ray ray;
         
         //-----------------------
@@ -94,6 +92,8 @@ namespace PrototypeFPC
         void GrabObject(Rigidbody hitRigidbody) {
             grabPoint.position = hit.point;
             grabbedObject = hitRigidbody;
+            grabbedObject.linearVelocity = Vector3.zero;
+            grabbedObject.angularVelocity = Vector3.zero;
             playerDependencies.isGrabbing = true;
             originalLayer = grabbedObject.gameObject.layer;
             audioSource.PlayOneShot(grabSound);
@@ -102,7 +102,7 @@ namespace PrototypeFPC
         void Hold() {
             if (playerDependencies.isGrabbing && grabbedObject != null) {
                 // Move the grabbed object towards grab point, maintaining a slight distance
-                var targetPosition = grabPoint.position + grabPoint.forward * grabbedObject.transform.localScale.magnitude;
+                var targetPosition = grabPoint.position + grabPoint.forward * grabbedObject.transform.localScale.magnitude * grabbingDistance;
                 grabbedObject.linearVelocity = grabSpeed * (targetPosition - grabbedObject.transform.position);
             }
         }

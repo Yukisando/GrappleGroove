@@ -53,18 +53,15 @@ namespace PrototypeFPC
         [SerializeField] AudioClip releaseSound;
         [SerializeField] AudioClip retractSound;
         
-        // PlayerDependencies
-        
-        [Header("PlayerDependencies")] public PlayerDependencies playerDependencies;
-        
         AudioSource audioSource;
         
         bool executeHookSwing;
         RaycastHit hit;
         bool hooked;
         bool hookRelease;
-        
         float mouseDownTimer;
+        
+        PlayerDependencies playerDependencies;
         Ray ray;
         Rigidbody rb;
         
