@@ -32,6 +32,7 @@ namespace PrototypeFPC
         
         Transform grabPoint;
         RaycastHit hit;
+        int mask;
         int originalLayer;
         Transform originalParent;
         [Header("PlayerDependencies")]
@@ -39,16 +40,17 @@ namespace PrototypeFPC
         
         Ray ray;
         
-        Rigidbody rb;
-        
         //-----------------------
         
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
-        }
-        
-        void Start() {
-            Setup(); //- Line 74
+            grabPoint = playerDependencies.grabPoint;
+            audioSource = playerDependencies.audioSourceTop;
+            
+            //Create and make grab point A kinematic rigidbody
+            grabPoint.gameObject.AddComponent<Rigidbody>().useGravity = false;
+            grabPoint.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            mask = ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player"));
         }
         
         void Update() {
@@ -59,26 +61,16 @@ namespace PrototypeFPC
             Hold(); //- Line 137
         }
         
-        //-----------------------
-        
-        void Setup() {
-            rb = playerDependencies.rb;
-            grabPoint = playerDependencies.grabPoint;
-            audioSource = playerDependencies.audioSourceTop;
-            
-            //Create and make grab point A kinematic rigidbody
-            grabPoint.gameObject.AddComponent<Rigidbody>().useGravity = false;
-            grabPoint.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
-        
         void GrabHoldThrow() {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            
+            // Update mask to also ignore player layer
             
             switch (playerDependencies.isGrabbing) {
                 case true when grabbedObject != null && Input.GetKeyDown(grabThrowKey):
                     ThrowObject();
                     break;
-                case false when !playerDependencies.isInspecting && Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore):
+                case false when !playerDependencies.isInspecting && Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, mask, QueryTriggerInteraction.Ignore):
                     HandleRaycastHit();
                     break;
             }

@@ -73,7 +73,8 @@ namespace PrototypeFPC
         }
         
         void Start() {
-            Setup();
+            rb = playerDependencies.rb;
+            audioSource = playerDependencies.audioSourceTop;
         }
         
         void Update() {
@@ -86,12 +87,6 @@ namespace PrototypeFPC
         
         void LateUpdate() {
             DrawRopes();
-        }
-        
-        void Setup() {
-            // Setup playerDependencies
-            rb = playerDependencies.rb;
-            audioSource = playerDependencies.audioSourceTop;
         }
         
         void InputCheck() {

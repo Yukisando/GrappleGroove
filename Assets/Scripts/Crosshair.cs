@@ -12,13 +12,21 @@ class Crosshair : MonoBehaviour
     [SerializeField] PlayerDependencies playerDependencies;
     [SerializeField] Image normal;
     [SerializeField] Image grab;
+    [SerializeField] Image grabbing;
     [SerializeField] Image inspect;
+    [SerializeField] Image inspecting;
     [SerializeField] Image grapple;
     
     Sprite defaultSprite;
+    int mask;
     
-    void Update() {
-        if (Physics.Raycast(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward, out var hit, math.INFINITY)) {
+    void Awake() {
+        mask = ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player"));
+    }
+    
+    void LateUpdate() {
+        SetCrosshair(normal);
+        if (Physics.Raycast(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward, out var hit, math.INFINITY, mask, QueryTriggerInteraction.Ignore)) {
             if (hit.collider.CompareTag("Grab") && playerDependencies.GetComponent<GrabThrow>().maxGrabDistance >= hit.distance) {
                 SetCrosshair(grab);
             }
@@ -28,20 +36,17 @@ class Crosshair : MonoBehaviour
             else if (hit.collider.CompareTag("Grapple") && playerDependencies.GetComponent<GrapplingHook>().hookDistance >= hit.distance) {
                 SetCrosshair(grapple);
             }
-            else {
-                SetCrosshair(normal);
-            }
         }
-        else {
-            SetCrosshair(normal);
-        }
+        
+        if (playerDependencies.isGrabbing) SetCrosshair(grabbing);
+        if (playerDependencies.isInspecting) SetCrosshair(inspecting);
     }
     
-    void SetCrosshair(Image activeCrosshair = null) {
+    void SetCrosshair(Image activeCrosshair) {
         normal.enabled = activeCrosshair == normal;
         grab.enabled = activeCrosshair == grab;
         inspect.enabled = activeCrosshair == inspect;
         grapple.enabled = activeCrosshair == grapple;
-        normal.enabled = activeCrosshair == null || activeCrosshair == normal;
+        normal.enabled = activeCrosshair == normal;
     }
 }

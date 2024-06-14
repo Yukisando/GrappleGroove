@@ -828,7 +828,6 @@ MonoBehaviour:
   worldGravity: -20
   physicsIterations: 12
   timeStep: 0.003
-  playerTransform: {fileID: 2463789918313756800}
   rb: {fileID: 619021368732356237}
   cc: {fileID: 8245302811132308742}
   cam: {fileID: 548907423963366387}
@@ -842,6 +841,13 @@ MonoBehaviour:
   swayPivotLeft: {fileID: 1587207694194428453}
   audioSourceTop: {fileID: 6520241559912738807}
   audioSourceBottom: {fileID: 73901545281278128}
+  isGrounded: 0
+  isSliding: 0
+  isWallRunning: 0
+  isInspecting: 0
+  isGrabbing: 0
+  isVaulting: 0
+  tilt: 0
 --- !u!114 &7262846353978981746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1043,10 +1049,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grappleLayerMask:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 705
   ropeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 512
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   platformPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
   hookDistance: 35
@@ -1135,24 +1141,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5d2afa52daab489680620822affd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addToListKey: 105
   inspectKey: 102
-  inspectIcon: {fileID: 0}
-  aimDot: {fileID: 0}
-  maxPickupDistance: 6
+  inspectIcon: {fileID: 21300000, guid: 178c60a3d8751214bab1812751dfacb1, type: 3}
+  aimDot: {fileID: 21300000, guid: 5506810b24f13dc42a03623d5c98f455, type: 3}
+  maxPickupDistance: 3
   pickupSpeed: 5
   rotateSpeed: 2
   zoomSpeed: 0.2
   pickUpSound: {fileID: 8300000, guid: e8db950a4b2c4b5419e99a2b9e5589b5, type: 3}
   putDownSound: {fileID: 8300000, guid: 1f7b3d64aed71054cb5ca513cbf3ae95, type: 3}
   zoomSound: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
-  objectsToInspect:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  objectsToIgnore: []
-  playerDependencies: {fileID: 0}
+  inspectLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &5048031487047790873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,10 +1167,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabThrowKey: 101
-  maxGrabDistance: 8
+  maxGrabDistance: 3
   grabSpeed: 15
   throwForce: 300
-  grabIcon: {fileID: 0}
+  grabIcon: {fileID: 21300000, guid: 80b0e9509d2041b42adf2f42bc7256d7, type: 3}
   grabSound: {fileID: 8300000, guid: fe8cf92163ae5a243ae246a22b0d6518, type: 3}
   throwSound: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
 --- !u!114 &2187118267037873729
