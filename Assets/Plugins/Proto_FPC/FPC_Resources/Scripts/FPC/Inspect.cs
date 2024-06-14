@@ -34,6 +34,7 @@ namespace PrototypeFPC
         [SerializeField] List<Collider> objectsToInspect;
         [SerializeField] List<Collider> objectsToIgnore;
         [Header("PlayerDependencies")] public PlayerDependencies playerDependencies;
+        public LayerMask inspectLayerMask;
         AudioSource audioSource;
         
         Camera cam;

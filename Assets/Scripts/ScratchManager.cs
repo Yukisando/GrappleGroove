@@ -50,7 +50,7 @@ public class ScratchManager : MonoBehaviour
         scratchpad.enabled = !scratchpad.enabled;
         playerMovement.enabled = !scratchpad.enabled;
         source.PlayOneShot(scratchpad.enabled ? scratchpadSoundOnClip : scratchpadSoundOffClip);
-        Cursor.lockState = scratchpad.enabled ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.lockState = scratchpad.enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = scratchpad.enabled;
     }
     
