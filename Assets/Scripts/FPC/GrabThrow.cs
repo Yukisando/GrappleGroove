@@ -17,7 +17,7 @@ namespace PrototypeFPC
         [SerializeField] float maxGrabDistance = 8f;
         [SerializeField] float grabSpeed = 15;
         [SerializeField] float throwForce = 800f;
-        [SerializeField] GameObject grabIcon;
+        [SerializeField] Sprite grabIcon;
         
         //Audio properties
         [Header("Audio Properties")]
@@ -28,10 +28,14 @@ namespace PrototypeFPC
         
         //Helpers
         Camera cam;
+        
+        // Reference to the Crosshair script
+        Crosshair crosshair;
         Rigidbody grabbedObject;
         
         Transform grabPoint;
         RaycastHit hit;
+        int originalLayer;
         Transform originalParent;
         [Header("PlayerDependencies")]
         PlayerDependencies playerDependencies;
@@ -73,48 +77,47 @@ namespace PrototypeFPC
         }
         
         void GrabHoldThrow() {
-            //Track the mouse position for raycasting
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-            if (playerDependencies.isGrabbing && grabbedObject != null) {
-                if (Input.GetKeyDown(grabThrowKey)) {
-                    //Apply force, throw the object
-                    grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
-                    grabbedObject = null;
-                    
-                    playerDependencies.isGrabbing = false;
-                    
-                    //Disable grab icon
-                    grabIcon.SetActive(false);
-                    
-                    //Audio
-                    audioSource.PlayOneShot(throwSound);
-                }
+            switch (playerDependencies.isGrabbing) {
+                case true when grabbedObject != null && Input.GetKeyDown(grabThrowKey):
+                    ThrowObject();
+                    break;
+                case false when !playerDependencies.isInspecting && Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore):
+                    HandleRaycastHit();
+                    break;
             }
-            
-            else if (!playerDependencies.isGrabbing && !playerDependencies.isInspecting)
-                if (Input.GetKeyDown(grabThrowKey))
-                    if (Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance, ~(1 << LayerMask.NameToLayer("Ignore Raycast")), QueryTriggerInteraction.Ignore))
-                        if (hit.collider.gameObject.GetComponent<Rigidbody>() != null && !hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic) {
-                            //Set grab object and point position
-                            grabPoint.position = hit.point;
-                            grabbedObject = hit.collider.gameObject.GetComponent<Rigidbody>();
-                            
-                            playerDependencies.isGrabbing = true;
-                            
-                            //Enable grab icon
-                            grabIcon.SetActive(true);
-                            
-                            //Audio
-                            audioSource.PlayOneShot(grabSound);
-                        }
+        }
+        
+        void ThrowObject() {
+            grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
+            grabbedObject.gameObject.layer = originalLayer;
+            grabbedObject = null;
+            playerDependencies.isGrabbing = false;
+            audioSource.PlayOneShot(throwSound);
+        }
+        
+        void HandleRaycastHit() {
+            var hitRigidbody = hit.collider.gameObject.GetComponent<Rigidbody>();
+            if (hitRigidbody != null && !hitRigidbody.isKinematic && hit.collider.CompareTag("Grab") && Input.GetKeyDown(grabThrowKey)) {
+                GrabObject(hitRigidbody);
+            }
+        }
+        
+        void GrabObject(Rigidbody hitRigidbody) {
+            grabPoint.position = hit.point;
+            grabbedObject = hitRigidbody;
+            playerDependencies.isGrabbing = true;
+            originalLayer = grabbedObject.gameObject.layer;
+            audioSource.PlayOneShot(grabSound);
         }
         
         void Hold() {
-            if (playerDependencies.isGrabbing && grabbedObject != null)
-                
-                //Move the grabbed object towards grab point
-                grabbedObject.linearVelocity = grabSpeed * (grabPoint.position - grabbedObject.transform.position);
+            if (playerDependencies.isGrabbing && grabbedObject != null) {
+                // Move the grabbed object towards grab point, maintaining a slight distance
+                var targetPosition = grabPoint.position + grabPoint.forward * grabbedObject.transform.localScale.magnitude;
+                grabbedObject.linearVelocity = grabSpeed * (targetPosition - grabbedObject.transform.position);
+            }
         }
     }
 }

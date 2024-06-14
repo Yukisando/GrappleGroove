@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ground
   - PlayerHitbox
+  - Grab
+  - Inspect
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Static
   - Plank
   - Rope
-  - 
+  - Inspect
   - 
   - 
   - 
