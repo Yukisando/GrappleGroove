@@ -45,7 +45,9 @@ class Crosshair : MonoBehaviour
     void SetCrosshair(Image activeCrosshair) {
         normal.enabled = activeCrosshair == normal;
         grab.enabled = activeCrosshair == grab;
+        grabbing.enabled = activeCrosshair == grabbing;
         inspect.enabled = activeCrosshair == inspect;
+        inspecting.enabled = activeCrosshair == inspecting;
         grapple.enabled = activeCrosshair == grapple;
         normal.enabled = activeCrosshair == normal;
     }
