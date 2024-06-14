@@ -14,7 +14,7 @@ namespace PrototypeFPC
         
         //Grab and throw properties
         [Header("Grab/Throw Properties")]
-        [SerializeField] float maxGrabDistance = 8f;
+        public float maxGrabDistance = 8f;
         [SerializeField] float grabSpeed = 15;
         [SerializeField] float throwForce = 800f;
         [SerializeField] Sprite grabIcon;
@@ -25,9 +25,6 @@ namespace PrototypeFPC
         [SerializeField] AudioClip throwSound;
         
         AudioSource audioSource;
-        
-        //Helpers
-        Camera cam;
         
         // Reference to the Crosshair script
         Crosshair crosshair;
@@ -65,8 +62,6 @@ namespace PrototypeFPC
         //-----------------------
         
         void Setup() {
-            //Setup playerDependencies
-            cam = playerDependencies.cam;
             rb = playerDependencies.rb;
             grabPoint = playerDependencies.grabPoint;
             audioSource = playerDependencies.audioSourceTop;

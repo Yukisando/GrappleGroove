@@ -25,13 +25,13 @@ public class PlayerDependencies : MonoBehaviour
     public AudioSource audioSourceTop;
     public AudioSource audioSourceBottom;
     
-    public bool isGrounded { get; set; }
-    public bool isSliding { get; set; }
-    public bool isWallRunning { get; set; }
-    public bool isInspecting { get; set; }
-    public bool isGrabbing { get; set; }
-    public bool isVaulting { get; set; }
-    public float tilt { get; set; }
+    public bool isGrounded;
+    public bool isSliding;
+    public bool isWallRunning;
+    public bool isInspecting;
+    public bool isGrabbing;
+    public bool isVaulting;
+    public float tilt;
     
     //----------
     void Awake() {
