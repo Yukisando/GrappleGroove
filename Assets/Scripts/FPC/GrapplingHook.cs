@@ -349,17 +349,28 @@ namespace PrototypeFPC
             
             // Remove specific hooks
             if (Input.GetKey(cutRopeKey) && !playerDependencies.isInspecting) {
-                if (hooked)
-                    DestroyGrappleRope();
-                else if (!hooked && Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, ropeLayerMask))
-                    if (hit.collider.isTrigger) {
-                        int index = GameObjectToIndex(hit.collider.gameObject);
-                        DestroyRope(index);
+                // Perform a raycast to check if it hits a rope collider
+                var r = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(r.origin, r.direction, out hit, hookDistance, ropeLayerMask)) {
+                    // Get the rope index from the hit collider
+                    int ropeIndex = GameObjectToIndex(hit.collider.gameObject);
+                    if (ropeIndex != -1) {
+                        DestroyRope(ropeIndex);
                     }
+                }
             }
             
             // Destroy everything created and clear all lists
             if (Input.GetKeyDown(resetHookKey) && !playerDependencies.isInspecting) DestroyRopes();
+        }
+        
+        int GameObjectToIndex(GameObject ropeColliderObject) {
+            for (int i = 0; i < ropes.Count; i++) {
+                if (ropes[i].ropeCollider == ropeColliderObject) {
+                    return i;
+                }
+            }
+            return -1;
         }
         
         void DestroyGrappleRope() {
@@ -455,17 +466,9 @@ namespace PrototypeFPC
                     
                     // Set the rope collider layer to the rope layer
                     rope.ropeCollider.layer = LayerMask.NameToLayer("Rope");
+                    rope.ropeCollider.tag = "Rope";
                 }
             }
-        }
-        
-        int GameObjectToIndex(GameObject ropeColliderList) {
-            for (int i = 0; i < ropes.Count; i++) {
-                if (ropes[i].ropeCollider == ropeColliderList)
-                    return i;
-            }
-            
-            return -1;
         }
         
         [Serializable]

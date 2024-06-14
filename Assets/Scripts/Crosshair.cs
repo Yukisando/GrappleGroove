@@ -16,6 +16,7 @@ class Crosshair : MonoBehaviour
     [SerializeField] Image inspect;
     [SerializeField] Image inspecting;
     [SerializeField] Image grapple;
+    [SerializeField] Image snipsnip;
     
     Sprite defaultSprite;
     int mask;
@@ -36,6 +37,9 @@ class Crosshair : MonoBehaviour
             else if (hit.collider.CompareTag("Grapple") && playerDependencies.GetComponent<GrapplingHook>().hookDistance >= hit.distance) {
                 SetCrosshair(grapple);
             }
+            else if (hit.collider.CompareTag("Rope")) {
+                SetCrosshair(snipsnip);
+            }
         }
         
         if (playerDependencies.isGrabbing) SetCrosshair(grabbing);
@@ -44,11 +48,12 @@ class Crosshair : MonoBehaviour
     
     void SetCrosshair(Image activeCrosshair) {
         normal.enabled = activeCrosshair == normal;
+        
         grab.enabled = activeCrosshair == grab;
         grabbing.enabled = activeCrosshair == grabbing;
         inspect.enabled = activeCrosshair == inspect;
         inspecting.enabled = activeCrosshair == inspecting;
         grapple.enabled = activeCrosshair == grapple;
-        normal.enabled = activeCrosshair == normal;
+        snipsnip.enabled = activeCrosshair == snipsnip;
     }
 }

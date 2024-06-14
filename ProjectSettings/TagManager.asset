@@ -9,6 +9,7 @@ TagManager:
   - Grab
   - Inspect
   - Grapple
+  - Rope
   layers:
   - Default
   - TransparentFX
