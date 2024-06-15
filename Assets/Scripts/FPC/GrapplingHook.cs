@@ -160,7 +160,7 @@ namespace PrototypeFPC
                     },
                 },
                 type = _mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT,
-                attachedObject = _hit.transform.gameObject, // Keep track of attached object
+                connectedObject1 = _hit.transform.gameObject, // Keep track of the first connected object
             };
             
             // Add Rigidbody to hook
@@ -294,6 +294,9 @@ namespace PrototypeFPC
                 return; // Exit the method as the rope is too short
             }
             
+            // Set the second connected object
+            rope.connectedObject2 = _hit.transform.gameObject;
+            
             // Audio
             audioSource.PlayOneShot(grapplingSound);
             
@@ -337,7 +340,7 @@ namespace PrototypeFPC
                 if (rope.hook.GetComponent<SpringJoint>() != null) {
                     var sj = rope.hook.GetComponent<SpringJoint>();
                     sj.maxDistance = Mathf.Max(sj.maxDistance - retractAmount, minimumRopeLength);
-                    sj.minDistance = Mathf.Max(sj.minDistance - retractAmount, 0f); // Ensure minDistance doesn't go below zero
+                    sj.minDistance = Mathf.Max(sj.minDistance - retractAmount, 0f);
                 }
             }
         }
@@ -492,7 +495,8 @@ namespace PrototypeFPC
             public GameObject ropeCollider;
             public LineRenderer lineRenderer;
             public List<GameObject> hookModels = new List<GameObject>();
-            public GameObject attachedObject;
+            public GameObject connectedObject1;
+            public GameObject connectedObject2;
             public Spring spring;
         }
     }

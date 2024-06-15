@@ -1062,7 +1062,7 @@ MonoBehaviour:
   holdDelayToSwing: 0.2
   connectionSpringStrength: 500
   connectionDamperStrength: 10000
-  retractAmount: 2
+  retractAmount: 10
   latchOnImpulse: 50
   hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}
