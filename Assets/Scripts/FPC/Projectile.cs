@@ -66,7 +66,7 @@ namespace PrototypeFPC
         //Control projectile rate
         void ControlRate() {
             //Increase and decrease projecting rate with scroll wheel
-            if (Mathf.Clamp(projectRate, 0.1f, 0.5f) == projectRate && Input.mouseScrollDelta.y != 0 && !playerDependencies.isInspecting) {
+            if (Mathf.Approximately(Mathf.Clamp(projectRate, 0.1f, 0.5f), projectRate) && Input.mouseScrollDelta.y != 0 && !playerDependencies.isInspecting) {
                 //Set rate
                 projectRate += Input.mouseScrollDelta.y * 0.01f;
                 

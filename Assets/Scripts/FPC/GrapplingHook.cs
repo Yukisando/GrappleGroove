@@ -13,20 +13,23 @@ namespace PrototypeFPC
     public class GrapplingHook : MonoBehaviour
     {
         // Hook properties
-        [Header("Hook Properties")]
+        [Header("Assignments")]
+        [SerializeField] KeyCode cutRopeKey;
+        [SerializeField] KeyCode resetHookKey;
         [SerializeField] public LayerMask grappleLayerMask;
         [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
         [SerializeField] GameObject platformPrefab;
-        public float hookDistance = 50f;
-        [SerializeField] KeyCode cutRopeKey;
-        [SerializeField] KeyCode resetHookKey;
+        
+        [Header("Settings")]
         [SerializeField] float minimumRopeLength = 1f;
         [SerializeField] float releaseImpulseFactor = 50f;
         [SerializeField] float holdDelayToSwing = 0.2f;
-        [SerializeField] float playerRetractStrength = 1000f;
-        [SerializeField] float retractStrength = 500f;
+        [SerializeField] float connectionSpringStrength = 10000f;
+        [SerializeField] float connectionDamperStrength = 1000f;
+        [SerializeField] float retractAmount = .1f;
         [SerializeField] float latchOnImpulse = 200f;
+        public float hookDistance = 50f;
         
         // Rope properties
         [Header("Rope Properties")]
@@ -51,7 +54,8 @@ namespace PrototypeFPC
         [Header("Audio Properties")]
         [SerializeField] AudioClip grapplingSound;
         [SerializeField] AudioClip releaseSound;
-        [SerializeField] AudioClip retractSound;
+        [SerializeField] AudioClip pushClip;
+        [SerializeField] AudioClip pullClip;
         
         AudioSource audioSource;
         
@@ -78,7 +82,7 @@ namespace PrototypeFPC
             InputCheck();
             CreateHooks(0);
             CreateHooks(1);
-            RetractHooks();
+            HandleRopeLength();
             CutRopes();
         }
         
@@ -156,6 +160,7 @@ namespace PrototypeFPC
                     },
                 },
                 type = _mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT,
+                attachedObject = _hit.transform.gameObject, // Keep track of attached object
             };
             
             // Add Rigidbody to hook
@@ -263,8 +268,8 @@ namespace PrototypeFPC
             hsj.autoConfigureConnectedAnchor = false;
             hsj.anchor = Vector3.zero;
             hsj.connectedAnchor = Vector3.zero;
-            hsj.spring = 0;
-            hsj.damper = 0f;
+            hsj.spring = connectionSpringStrength;
+            hsj.damper = connectionDamperStrength;
             hsj.maxDistance = 0;
             hsj.minDistance = 0;
             
@@ -316,25 +321,35 @@ namespace PrototypeFPC
             if (rightRopes.Count > maxRopes) DestroyRope(rightRopes.IndexOf(rightRopes.FirstOrDefault()));
         }
         
-        void RetractHooks() {
-            // Set player hook swing strength
-            if (executeHookSwing && rb.GetComponent<SpringJoint>() && Mathf.Approximately(rb.GetComponent<SpringJoint>().spring, playerRetractStrength))
-                rb.GetComponent<SpringJoint>().spring = playerRetractStrength;
-            
-            // Set player hook retract strength
-            if (!Input.GetMouseButtonDown(2) || playerDependencies.isInspecting) return;
-            
-            if (rb.GetComponent<SpringJoint>() != null)
-                rb.GetComponent<SpringJoint>().spring = playerRetractStrength;
-            
-            // Set all other hook and latched retract strengths
-            foreach (var rope in ropes) {
-                if (rope.hook.GetComponent<SpringJoint>() && rope.hook.GetComponent<SpringJoint>().connectedBody != rb)
-                    rope.hook.GetComponent<SpringJoint>().spring = retractStrength;
+        void HandleRopeLength() {
+            if (Input.mouseScrollDelta.y > 0) {
+                RetractRopes();
+                audioSource.PlayOneShot(pullClip);
             }
-            
-            if (ropes.Count > 0)
-                audioSource.PlayOneShot(retractSound);
+            else if (Input.mouseScrollDelta.y < 0) {
+                ExtendRopes();
+                audioSource.PlayOneShot(pushClip);
+            }
+        }
+        
+        void RetractRopes() {
+            foreach (var rope in ropes) {
+                if (rope.hook.GetComponent<SpringJoint>() != null) {
+                    var sj = rope.hook.GetComponent<SpringJoint>();
+                    sj.maxDistance = Mathf.Max(sj.maxDistance - retractAmount, minimumRopeLength);
+                    sj.minDistance = Mathf.Max(sj.minDistance - retractAmount, 0f); // Ensure minDistance doesn't go below zero
+                }
+            }
+        }
+        
+        void ExtendRopes() {
+            foreach (var rope in ropes) {
+                if (rope.hook.GetComponent<SpringJoint>() != null) {
+                    var sj = rope.hook.GetComponent<SpringJoint>();
+                    sj.maxDistance += retractAmount;
+                    sj.minDistance += retractAmount;
+                }
+            }
         }
         
         void CutRopes() {
@@ -477,6 +492,7 @@ namespace PrototypeFPC
             public GameObject ropeCollider;
             public LineRenderer lineRenderer;
             public List<GameObject> hookModels = new List<GameObject>();
+            public GameObject attachedObject;
             public Spring spring;
         }
     }

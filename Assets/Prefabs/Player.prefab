@@ -806,8 +806,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3225738087276248368}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21268986, y: -0.445998, z: 0.11001901, w: -0.8624063}
-  m_LocalPosition: {x: -64.06083, y: 138.60426, z: 248.5994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1047,6 +1047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a710fad7d6a8b1041980f35957cf6d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutRopeKey: 120
+  resetHookKey: 114
   grappleLayerMask:
     serializedVersion: 2
     m_Bits: 705
@@ -1055,15 +1057,14 @@ MonoBehaviour:
     m_Bits: 512
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   platformPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
-  hookDistance: 35
-  cutRopeKey: 120
-  resetHookKey: 114
   minimumRopeLength: 1
   releaseImpulseFactor: 50
   holdDelayToSwing: 0.2
-  playerRetractStrength: 1000
-  retractStrength: 300
+  connectionSpringStrength: 500
+  connectionDamperStrength: 10000
+  retractAmount: 2
   latchOnImpulse: 50
+  hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}
   rightRopeMaterial: {fileID: 2100000, guid: a89a7d00e18f1e94daa0e1a461804f02, type: 2}
   startThickness: 0.02
@@ -1102,8 +1103,8 @@ MonoBehaviour:
   ropes: []
   grapplingSound: {fileID: 8300000, guid: 292b698b604132543be90af7c6434011, type: 3}
   releaseSound: {fileID: 8300000, guid: 7a79cf881113fff43830e30bd0e4dff3, type: 3}
-  retractSound: {fileID: 8300000, guid: 6875343683773b64b98110db918a092e, type: 3}
-  playerDependencies: {fileID: 5479291347440683839}
+  pushClip: {fileID: 8300000, guid: b2c8d8abfb35a4c4c8e29d59104dec12, type: 3}
+  pullClip: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
 --- !u!114 &9182015932909010048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,8 +1143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inspectKey: 102
-  inspectIcon: {fileID: 21300000, guid: 178c60a3d8751214bab1812751dfacb1, type: 3}
-  aimDot: {fileID: 21300000, guid: 5506810b24f13dc42a03623d5c98f455, type: 3}
   maxPickupDistance: 3
   pickupSpeed: 5
   rotateSpeed: 2
@@ -1168,9 +1167,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabThrowKey: 101
   maxGrabDistance: 3
+  grabbingDistance: 0.3
   grabSpeed: 15
   throwForce: 300
-  grabIcon: {fileID: 21300000, guid: 80b0e9509d2041b42adf2f42bc7256d7, type: 3}
   grabSound: {fileID: 8300000, guid: fe8cf92163ae5a243ae246a22b0d6518, type: 3}
   throwSound: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
 --- !u!114 &2187118267037873729
@@ -2618,7 +2617,7 @@ Transform:
   m_GameObject: {fileID: 7753466973429341682}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.918, z: -0}
+  m_LocalPosition: {x: -0, y: 0.9, z: -0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
