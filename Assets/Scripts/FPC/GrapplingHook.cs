@@ -10,6 +10,13 @@ using UnityEngine.Rendering;
 
 namespace PrototypeFPC
 {
+    public enum RopeType
+    {
+        BOTH,
+        LEFT,
+        RIGHT,
+    }
+    
     public class GrapplingHook : MonoBehaviour
     {
         // Hook properties
@@ -301,21 +308,20 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
             
             // Instantiate the plank as a child of the hook latch
-            var plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
-            plank.transform.parent = rope.lineRenderer.transform;
+            rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity); // Modified line
+            rope.plank.transform.parent = rope.lineRenderer.transform;
             
             // Adjust the scale and position of the plank
             var startPoint = rope.hook.transform.position;
             var endPoint = hit.point;
             var midPoint = (startPoint + endPoint) / 2;
-            plank.transform.position = midPoint;
+            rope.plank.transform.position = midPoint;
             
             float distance = Vector3.Distance(startPoint, endPoint);
-            plank.transform.localScale = new Vector3(distance, plank.transform.localScale.y, plank.transform.localScale.z);
+            rope.plank.transform.localScale = new Vector3(distance, rope.plank.transform.localScale.y, rope.plank.transform.localScale.z);
             
             // Adjust the rotation of the plank
-            plank.transform.LookAt(endPoint);
-            plank.transform.Rotate(0, 90, 0); // Rotate 90 degrees to make the plank align with the rope
+            rope.plank.transform.LookAt(endPoint);
             
             // Check the limit of ropes after adding the new one
             var leftRopes = ropes.FindAll(_r => _r.type == RopeType.LEFT);
@@ -483,6 +489,19 @@ namespace PrototypeFPC
                     rope.ropeCollider.layer = LayerMask.NameToLayer("Rope");
                     rope.ropeCollider.tag = "Rope";
                 }
+                
+                // Update plank position, scale, and rotation
+                if (rope.plank != null) {
+                    var midPoint = (startPoint + endPoint) / 2;
+                    rope.plank.transform.position = midPoint;
+                    
+                    float distance = Vector3.Distance(startPoint, endPoint);
+                    rope.plank.transform.localScale = new Vector3(distance, rope.plank.transform.localScale.y, rope.plank.transform.localScale.z);
+                    
+                    // Ensure the plank faces up
+                    rope.plank.transform.rotation = Quaternion.LookRotation(endPoint - startPoint);
+                    rope.plank.transform.Rotate(0, 90, 0); // Adjust rotation so the plank faces up
+                }
             }
         }
         
@@ -497,14 +516,8 @@ namespace PrototypeFPC
             public List<GameObject> hookModels = new List<GameObject>();
             public GameObject connectedObject1;
             public GameObject connectedObject2;
+            public GameObject plank;
             public Spring spring;
         }
-    }
-    
-    public enum RopeType
-    {
-        BOTH,
-        LEFT,
-        RIGHT,
     }
 }
