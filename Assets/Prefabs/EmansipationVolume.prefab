@@ -122,3 +122,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ropeTypeToDestroy: 0
+  yMovement: 0.2
+  xMovement: 0.1
