@@ -7,9 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
-    public Vector3 localMove = Vector3.forward * 5;
+    public Vector3 localMove = Vector3.one;
     public float duration = 5f;
-    public LeanTweenType easeType = LeanTweenType.easeInOutExpo;
+    public LeanTweenType easeType = LeanTweenType.easeInOutSine;
     
     [Header("Audio")]
     public float maxVolume = 1f;
@@ -31,8 +31,8 @@ public class Move : MonoBehaviour
     }
     
     void Start() {
-        startPos = transform.position;
-        transform.LeanMove(startPos + localMove, duration).setEase(easeType).setLoopPingPong();
+        transform.forward = transform.position;
+        transform.LeanMove(transform.position + localMove, duration).setEase(easeType).setLoopPingPong();
         previousPosition = startPos;
         
         // Calculate the maximum speed
