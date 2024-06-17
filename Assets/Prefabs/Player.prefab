@@ -1057,12 +1057,12 @@ MonoBehaviour:
     m_Bits: 512
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   platformPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
-  minimumRopeLength: 1
+  minimumRopeLength: 0.3
   releaseImpulseFactor: 50
-  holdDelayToSwing: 0.2
-  connectionSpringStrength: 500
-  connectionDamperStrength: 10000
-  retractAmount: 10
+  holdDelayToSwing: 0.15
+  connectionSpringStrength: 1300
+  connectionDamperStrength: 100
+  retractAmount: 0.1
   latchOnImpulse: 50
   hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}

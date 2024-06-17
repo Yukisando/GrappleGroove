@@ -21,9 +21,6 @@ public class EmancipationVolume : MonoBehaviour
     
     void Awake() {
         rd = GetComponent<MeshRenderer>();
-        if (rd == null) {
-            Debug.LogError("MeshRenderer component missing.");
-        }
     }
     
     void Start() {
@@ -31,15 +28,10 @@ public class EmancipationVolume : MonoBehaviour
     }
     
     void LateUpdate() {
-        if (rd != null && rd.material != null) {
-            var offset = rd.material.GetTextureOffset(BaseMap);
-            offset.y += yMovement * Time.deltaTime;
-            offset.x += xMovement * Time.deltaTime;
-            rd.material.SetTextureOffset(BaseMap, offset);
-            
-            // Debug logs to check offset values
-            Debug.Log($"Offset X: {offset.x}, Offset Y: {offset.y}");
-        }
+        var offset = rd.material.GetTextureOffset(BaseMap);
+        offset.y += yMovement * Time.deltaTime;
+        offset.x += xMovement * Time.deltaTime;
+        rd.material.SetTextureOffset(BaseMap, offset);
     }
     
     void OnTriggerEnter(Collider _other) {
@@ -48,21 +40,18 @@ public class EmancipationVolume : MonoBehaviour
     }
     
     void SetVolumeColor() {
-        // Enable emission
-        if (rd != null && rd.material != null) {
-            rd.material.EnableKeyword("_EMISSION");
-            
-            switch (ropeTypeToDestroy) {
-                case RopeType.BOTH:
-                    rd.material.SetColor(EmissionColor, Color.magenta);
-                    break;
-                case RopeType.LEFT:
-                    rd.material.SetColor(EmissionColor, Color.blue);
-                    break;
-                case RopeType.RIGHT:
-                    rd.material.SetColor(EmissionColor, Color.red);
-                    break;
-            }
+        rd.material.EnableKeyword("_EMISSION");
+        
+        switch (ropeTypeToDestroy) {
+            case RopeType.BOTH:
+                rd.material.SetColor(EmissionColor, Color.magenta);
+                break;
+            case RopeType.LEFT:
+                rd.material.SetColor(EmissionColor, Color.blue);
+                break;
+            case RopeType.RIGHT:
+                rd.material.SetColor(EmissionColor, Color.red);
+                break;
         }
     }
 }
