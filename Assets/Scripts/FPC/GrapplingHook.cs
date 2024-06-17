@@ -157,6 +157,7 @@ namespace PrototypeFPC
             }
         }
         
+        // Inside the CreateHook method
         void CreateHook(int _mouseButton, RaycastHit _hit) {
             // Create new rope
             var rope = new Rope {
@@ -213,8 +214,8 @@ namespace PrototypeFPC
             float distanceFromHook = Vector3.Distance(rb.gameObject.transform.position, rope.hook.transform.position);
             
             // Set the maxDistance and minDistance to the initial distance from the hook point
-            sj.maxDistance = _mouseButton == 0 ? distanceFromHook : distanceFromHook * 3f;
-            sj.minDistance = _mouseButton == 0 ? distanceFromHook * .025f : distanceFromHook * 0.95f;
+            sj.maxDistance = distanceFromHook;
+            sj.minDistance = distanceFromHook;
             
             sj.spring = 20000f; // Increase spring strength to make it tighter
             sj.damper = 10000f; // Adjust damper to control oscillation
@@ -238,6 +239,7 @@ namespace PrototypeFPC
             ropes.Add(rope);
         }
         
+// Inside the CreateHookLatch method
         void CreateHookLatch(RaycastHit _hit) {
             // Get the last rope
             var rope = ropes[^1];
@@ -277,8 +279,13 @@ namespace PrototypeFPC
             hsj.connectedAnchor = Vector3.zero;
             hsj.spring = connectionSpringStrength;
             hsj.damper = connectionDamperStrength;
-            hsj.maxDistance = 0;
-            hsj.minDistance = 0;
+            
+            // Calculate the distance between the hooks
+            float ropeLength = Vector3.Distance(rope.hook.transform.position, _hit.point);
+            
+            // Set the maxDistance and minDistance to the initial distance between the hooks
+            hsj.maxDistance = ropeLength;
+            hsj.minDistance = ropeLength;
             
             // Knock back when hooked
             rope.hookLatch.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
@@ -290,9 +297,6 @@ namespace PrototypeFPC
             // Enable rope collider
             rope.ropeCollider.GetComponent<BoxCollider>().enabled = true;
             hooked = false;
-            
-            // Calculate the distance between the hooks
-            float ropeLength = Vector3.Distance(rope.hook.transform.position, hit.point);
             
             // Check if the rope is too short
             if (ropeLength < minimumRopeLength) {
@@ -313,7 +317,7 @@ namespace PrototypeFPC
             
             // Adjust the scale and position of the plank
             var startPoint = rope.hook.transform.position;
-            var endPoint = hit.point;
+            var endPoint = _hit.point;
             var midPoint = (startPoint + endPoint) / 2;
             rope.plank.transform.position = midPoint;
             
