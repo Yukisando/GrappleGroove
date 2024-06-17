@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4dceca858cf321409dd2831b05e0942
+timeCreated: 1497978504
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96396
+  packageName: OpenTerminal
+  packageVersion: 1.0
+  assetPath: Assets/OpenTerminal/Sample/Scene/SampleScene.unity
+  uploadId: 191920

@@ -1,3 +1,35 @@
+| Version 1.1.1 (Remake pt. 1)
+
+Hierarchy Designer was remade from scratch. Update 1.1.1 is the first half of this remake, which contains all previous content and more.
+
+- (New Feature): Created two new types of settings (Design and Advanced Settings) which allow you to customize your Hierarchy even further.
+- (New Feature): Disabled Components for each gameObject can now be easily identified in the Hierarchy if enabled by the settings.
+- (New Feature): GameObject Properties (Main Icon, Component Icons, Tag-Layer, Tree, and Buttons) now update their visuals based on the gameObject's active state (Active, Inactive).
+- (New Feature): You can now customize the style of the Lock label (color, text anchor, font style, and font size).
+- (New Feature): There are extra customization options for the tag and layer feature (text anchor, tag-layer offset, and space between tag and layer offset).
+- (New Feature): You can now customize the style of component icons (size, spacing, and offset).
+- (New Feature): Created Hierarchy Rows.
+- (New Feature): Created the option to exclude the 'Canvas Renderer' component from the component icons.
+- (New Feature): Created the option to dynamically check for gameObject main icon changes in Advanced Settings. If you have this option disabled, the main icon will only check after a major operation such as scene-script reload or editor restart.
+- (New Feature): Created the option to hide gameObjects' component icons for inactive gameObjects in the advanced settings.
+- (New Feature): Created many options, such as the ability to enable tooltips for component icons, in the advanced settings.
+- (New Feature): Created a new tool 'Activate'.
+- (New Feature): Created many new MenuItems for all tools (count, lock, rename, ...).
+- (New Feature): Created a 'Layout Mode' option. You can now choose the layout of Hierarchy Designer's features. Currently available: Consecutive, Docked, Split.
+- (New Feature): You can now dynamically add, remove, organize, and reassign selected gameObjects in the Rename tool window.
+- (Improvement): Lock State Tool operations are now slightly faster.
+- (Improvement): Rename Tool operations are now slightly faster.
+- (Improvement): Reorganized the 'Tools' options (Menu Items) for better visual clarity.
+- (Improvement): Disabling features you don't use from any settings (General, Advanced, and Design settings) will greatly improve performance, especially in larger scenes.
+- (Improvement): Added an Inspector Icon for Separators gameObjects similar to folders.
+- (Improvement): Overall performance improvements.
+- (Improvement): Slightly modified the name, import settings, and/or image of all resources textures for better visuals, organization, data size, and performance.
+- (Improvement): Updated all editor windows (e.g., General Settings) for better usability.
+- (Improvement): Major shortcuts operations were improved; they are now faster and more efficient.
+- (Bug Fix): If a gameObject only has an invalid script component alongside the transform, it will now set the invalid script icon as the main icon.
+- (Bug Fix): Fixed an error that was thrown when trying to rename gameObjects with the Rename tool window due to data loss caused by a script recompilation or similar action.
+- Much more...
+
 | Version 1.1.0.3f
 - Hotfix: Fixed a bug where deleting a script from a GameObject while the Hierarchy Buttons were enabled would throw a NullReferenceException.
 

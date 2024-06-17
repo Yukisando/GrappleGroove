@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -195,10 +194,10 @@ MonoBehaviour:
     m_LineSpacing: 1.55
   m_Text: "<size=40><color=#30BCED><b>How to use:</b></color></size>\n<color=#696773>_________________________________</color>\n\nAll
     features are located at the top bar (\u2191) on Hierarchy Designer.\n\nFolders
-    and Separators are created inside Hierarchy Folder/Separator Manager.\n\nYou
-    can toggle features in the Hierarchy General Settings Window.\n\nYou can also
-    manually create Folders (check the documentation). However, you won\u2019t be
-    able to customize it (i.g., color).\n\n<color=#696773>_________________________________</color>"
+    and Separators are created inside their Manager Windows.\n\nYou can toggle features
+    and modify values in the settings windows under Configurations.\n\nYou can also
+    manually create Folders and Separators (check the documentation). However, you
+    won\u2019t be able to customize their values.\n\n<color=#696773>_________________________________</color>"
 --- !u!222 &124189859
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -207,6 +206,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124189856}
   m_CullTransparentMesh: 1
+--- !u!1 &445426914
+GameObject:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445426915}
+  m_Layer: 0
+  m_Name: //Separator
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 2800000, guid: 4724f3b6006a28f4ca8f7de7bf926d39, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &445426915
+Transform:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445426914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &679548103
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.019607844, g: 0.015686275, b: 0.003921569, a: 0.99215686}
+  m_Color: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 0.99215686}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -354,22 +384,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
   m_Text: "<size=40><color=#30BCED><b>Others</b></color></size>\n<color=#696773>_________________________________</color>\n\nHierarchy
-    Designer contains other features, such as the Hierarchy Tree, which can be customized
-    under the General Settings.\n\nHierarchy Designer is under development, and more
-    updates/features will come.\n\nHierarchy Designer is an EditorOnly tool (exception:
-    Hierarchy Designer Folder script) and will not affect your build or game. Like
-    any other editor tool, performance will be slightly affected (EDITOR ONLY). I'm
-    developing Hierarchy Designer to be as optimized as possible within the realm
-    of reality.\n\nHierarchy Designer uses JSON to save its data. All data are inside
-    the Saved folder (located at: .../Assets/.../Hierarchy Designer/Editor/Saved
-    Data). At the moment, if you would like to replace the path for the saved data,
-    you need to modify the following script: 'HierarchyDesigner_Shared_Data'. Hierarchy
-    Designer's data can also be transferred between projects (provided the versions
-    are compatible)\u2014simply copy the text assets (e.g., HierarchyDesigner_SavedData_Folders,
-    HierarchyDesigner_SavedData_Separators, and HierarchyDesigner_SavedData_Settings)
-    and place them into the Saved Data folder of the other project.\n\nIf you like
-    Hierarchy Designer, please rate it on the Store.\n\nIf you find any bugs, email
-    me at: <VerphaSuporte@outlook.com>.\n\n<color=#696773>_________________________________</color>"
+    Designer is under development, and more updates/features will come.\n\nHierarchy
+    Designer is an Editor-Only tool (exception: Hierarchy Designer Folder script)
+    and will not affect your build or game. Like any other editor tool, performance
+    will be slightly affected (EDITOR ONLY). Disabling features you don't use will
+    greatly improve performance, especially in larger scenes.\n\nHierarchy Designer
+    uses JSON to save its data. All data are inside the Saved folder (located at:
+    .../Assets/.../Hierarchy Designer/Editor/Saved Data). Hierarchy Designer's data
+    can also be transferred between projects (provided the versions are compatible)\u2014simply
+    copy the text assets (e.g., HierarchyDesigner_SavedData_Folders) and place them
+    into the Saved Data folder of the other project.\n\nIf you like Hierarchy Designer,
+    please rate it on the Store.\n\nIf you find any bugs, email me at: <VerphaSuporte@outlook.com>.\n\n<color=#696773>_________________________________</color>"
 --- !u!222 &812146649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -429,7 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.019607844, g: 0.015686275, b: 0.003921569, a: 0.99215686}
+  m_Color: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 0.99215686}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -515,7 +540,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 985485606}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -573,7 +598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.019607844, g: 0.015686275, b: 0.003921569, a: 0.99215686}
+  m_Color: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 0.99215686}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -891,11 +916,6 @@ MonoBehaviour:
     Hierarchy Helpers are designed
     to assist you with specific tasks.
 
-
-    You can change settings and values under
-    "Hierarchy General Settings."
-
-
     <color=#696773>_________________________________</color>'
 --- !u!222 &1408090601
 CanvasRenderer:
@@ -905,37 +925,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408090598}
   m_CullTransparentMesh: 1
---- !u!1 &1431348254
-GameObject:
-  m_ObjectHideFlags: 8
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1431348255}
-  m_Layer: 0
-  m_Name: //Separator
-  m_TagString: EditorOnly
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1431348255
-Transform:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431348254}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2119818421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,6 +1014,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1144564843}
-  - {fileID: 1431348255}
+  - {fileID: 445426915}
   - {fileID: 2119818425}
   - {fileID: 985485609}

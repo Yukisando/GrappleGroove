@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 96bc671c082afac408eb7a5f9b78f7ff
+timeCreated: 1497981493
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96396
+  packageName: OpenTerminal
+  packageVersion: 1.0
+  assetPath: Assets/OpenTerminal/Scripts/TerminalAttribute.cs
+  uploadId: 191920

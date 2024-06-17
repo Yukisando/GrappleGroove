@@ -9,10 +9,10 @@ namespace Verpha.HierarchyDesigner
 
         private void Start()
         {
-            FlattenFolder();
+            FlattenFolderIfRequired();
         }
 
-        private void FlattenFolder()
+        private void FlattenFolderIfRequired()
         {
             if (flattenFolder)
             {
@@ -24,24 +24,24 @@ namespace Verpha.HierarchyDesigner
         {
             for (int i = folderTransform.childCount - 1; i >= 0; i--)
             {
-                Transform child = folderTransform.GetChild(i);
-                HierarchyDesignerFolder childFolder = child.GetComponent<HierarchyDesignerFolder>();
+                Transform childTransform = folderTransform.GetChild(i);
+                HierarchyDesignerFolder childFolder = childTransform.GetComponent<HierarchyDesignerFolder>();
 
                 if (childFolder != null)
                 {
                     if (childFolder.ShouldFlatten)
                     {
-                        childFolder.RecursivelyFlatten(child);
-                        Destroy(child.gameObject);
+                        childFolder.RecursivelyFlatten(childTransform);
+                        Destroy(childTransform.gameObject);
                     }
                     else
                     {
-                        child.SetParent(null);
+                        childTransform.SetParent(null);
                     }
                 }
                 else
                 {
-                    child.SetParent(null);
+                    childTransform.SetParent(null);
                 }
             }
 

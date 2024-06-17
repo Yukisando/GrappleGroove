@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
+    [Command("reload", "Go to last checkpoint.")]
     void LoadLastCheckpoint() {
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
