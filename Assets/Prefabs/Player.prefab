@@ -1060,9 +1060,9 @@ MonoBehaviour:
   minimumRopeLength: 0.3
   releaseImpulseFactor: 50
   holdDelayToSwing: 0.15
-  connectionSpringStrength: 1300
-  connectionDamperStrength: 100
-  retractAmount: 0.1
+  connectionSpringStrength: 1500
+  connectionDamperStrength: 1000
+  retractAmount: 0.2
   latchOnImpulse: 50
   hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}

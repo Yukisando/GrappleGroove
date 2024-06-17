@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         _v.gameObject.SetActive(false);
         checkpointManager.SaveCheckpoint(_v.transform.position);
         respawnPoint.position = _v.transform.position;
-        infoPopup.ShowPopup($"{_v.name} checkpoint reached!");
+        infoPopup.ShowPopup($"{_v.id} checkpoint reached!");
     }
     
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {

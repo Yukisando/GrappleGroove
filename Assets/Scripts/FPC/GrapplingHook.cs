@@ -239,7 +239,7 @@ namespace PrototypeFPC
             ropes.Add(rope);
         }
         
-// Inside the CreateHookLatch method
+        // Inside the CreateHookLatch method
         void CreateHookLatch(RaycastHit _hit) {
             // Get the last rope
             var rope = ropes[^1];
@@ -312,8 +312,8 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
             
             // Instantiate the plank as a child of the hook latch
-            rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity); // Modified line
-            rope.plank.transform.parent = rope.lineRenderer.transform;
+            rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
+            rope.plank.transform.parent = null; // Remove parent to avoid inheriting transformations
             
             // Adjust the scale and position of the plank
             var startPoint = rope.hook.transform.position;
@@ -325,7 +325,8 @@ namespace PrototypeFPC
             rope.plank.transform.localScale = new Vector3(distance, rope.plank.transform.localScale.y, rope.plank.transform.localScale.z);
             
             // Adjust the rotation of the plank
-            rope.plank.transform.LookAt(endPoint);
+            rope.plank.transform.rotation = Quaternion.LookRotation(endPoint - startPoint);
+            rope.plank.transform.Rotate(0, 90, 0); // Ensure the plank is perpendicular to the normal of the hooks
             
             // Check the limit of ropes after adding the new one
             var leftRopes = ropes.FindAll(_r => _r.type == RopeType.LEFT);
@@ -335,11 +336,11 @@ namespace PrototypeFPC
         }
         
         void HandleRopeLength() {
-            if (Input.mouseScrollDelta.y > 0) {
+            if (Input.mouseScrollDelta.y < 0) {
                 RetractRopes();
                 audioSource.PlayOneShot(pullClip);
             }
-            else if (Input.mouseScrollDelta.y < 0) {
+            else if (Input.mouseScrollDelta.y > 0) {
                 ExtendRopes();
                 audioSource.PlayOneShot(pushClip);
             }
@@ -414,6 +415,7 @@ namespace PrototypeFPC
             Destroy(rope.hook.gameObject);
             if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
             if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
+            if (rope.plank != null) Destroy(rope.plank); // Destroy the plank
             foreach (var model in rope.hookModels) {
                 Destroy(model);
             }
@@ -435,6 +437,7 @@ namespace PrototypeFPC
                 Destroy(rope.hook.gameObject);
                 if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
                 if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
+                if (rope.plank != null) Destroy(rope.plank); // Destroy the plank
                 foreach (var model in rope.hookModels) {
                     Destroy(model);
                     ropesToRemove.Add(rope);
