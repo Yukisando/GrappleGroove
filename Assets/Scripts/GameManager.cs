@@ -96,12 +96,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player got reset!");
     }
     
-    void OnPlayerEnteredCheckpointVolume(CheckpointVolume _v) {
+    void OnPlayerEnteredCheckpointVolume(Vector3 _spawnPoint) {
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
-        _v.gameObject.SetActive(false);
-        checkpointManager.SaveCheckpoint(_v.transform.position);
-        respawnPoint.position = _v.transform.position;
-        infoPopup.ShowPopup($"{_v.id} checkpoint reached!");
+        checkpointManager.SaveCheckpoint(_spawnPoint);
+        respawnPoint.position = _spawnPoint;
+        infoPopup.ShowPopup("Checkpoint reached!");
     }
     
     void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {

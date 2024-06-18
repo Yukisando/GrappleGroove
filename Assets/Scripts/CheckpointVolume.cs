@@ -9,16 +9,17 @@ using UnityEngine;
 public class CheckpointVolume : MonoBehaviour
 {
     public string id = "";
-    public Action<CheckpointVolume> onEnterVolume;
+    [SerializeField] Vector3 spawnOffset = Vector3.zero;
+    public Action<Vector3> onEnterVolume;
     
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
+        Gizmos.DrawWireMesh(GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
     }
     
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
         
-        onEnterVolume?.Invoke(this);
+        onEnterVolume?.Invoke(spawnOffset);
     }
 }
