@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
+
         LoadLastCheckpoint();
     }
 
