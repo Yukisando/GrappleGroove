@@ -31,8 +31,8 @@ public class Move : MonoBehaviour
     }
     
     void Start() {
-        transform.forward = transform.position;
-        transform.LeanMove(transform.position + localMove, duration).setEase(easeType).setLoopPingPong();
+        startPos = transform.position;
+        transform.LeanMove(startPos + localMove, duration).setEase(easeType).setLoopPingPong();
         previousPosition = startPos;
         
         // Calculate the maximum speed

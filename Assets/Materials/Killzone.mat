@@ -42,8 +42,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 580e7394def3e464c871fc1a3c1ffd0f, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
@@ -74,8 +74,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 580e7394def3e464c871fc1a3c1ffd0f, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -165,8 +165,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.735849, g: 0.04328522, b: 0, a: 0.74509805}
-    - _Color: {r: 0.735849, g: 0.0432852, b: 0, a: 0.74509805}
+    - _BaseColor: {r: 0.735849, g: 0.0432852, b: 0, a: 1}
+    - _Color: {r: 0.735849, g: 0.043285176, b: 0, a: 1}
     - _DepthGradientDeep: {r: 0.08599999, g: 0.40699998, b: 1, a: 0.749}
     - _DepthGradientShallow: {r: 0.32499996, g: 0.807, b: 0.971, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

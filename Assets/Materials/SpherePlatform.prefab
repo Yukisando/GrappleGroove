@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localMove: {x: -106.98, y: 3, z: 60}
   duration: 4
-  easeType: 19
+  easeType: 16
   maxVolume: 1
 --- !u!82 &5111014541514917784
 AudioSource:

@@ -87,9 +87,11 @@ namespace PrototypeFPC
         
         void Update() {
             InputCheck();
+            HandleRopeLength();
+            
+            if (playerDependencies.isInspecting && playerDependencies.isGrabbing) return;
             CreateHooks(0);
             CreateHooks(1);
-            HandleRopeLength();
             CutRopes();
         }
         
@@ -368,13 +370,15 @@ namespace PrototypeFPC
         
         void CutRopes() {
             // Destroy player hooks upon hold release
-            if (hookRelease && hooked) {
+            Debug.Log($"hookRelease: {hookRelease}, hooked: {hooked}");
+            if (Input.GetKey(cutRopeKey) && hooked) {
                 hookRelease = false;
                 DestroyGrappleRope();
+                return;
             }
             
             // Remove specific hooks
-            if (Input.GetKey(cutRopeKey) && !playerDependencies.isInspecting) {
+            if (Input.GetKey(cutRopeKey)) {
                 // Perform a raycast to check if it hits a rope collider
                 var r = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(r.origin, r.direction, out hit, hookDistance, ropeLayerMask)) {

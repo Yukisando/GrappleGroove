@@ -3,6 +3,7 @@
 #region
 
 using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,15 +15,12 @@ public class TeleportToSceneView : MonoBehaviour
         yield return null;
         Teleport();
     }
-
-    [ContextMenu("Teleport To Scene View")]
+    
+    [ContextMenu("Teleport To Scene View")] [Button(ButtonSizes.Large)]
     void Teleport() {
-        if (SceneView.lastActiveSceneView == null || SceneView.lastActiveSceneView.camera == null) {
-            Debug.LogWarning("No active scene view or camera is available.");
-            return;
-        }
-
-        var sceneCameraTransform = SceneView.lastActiveSceneView.camera.transform;
+        var sceneView = SceneView.lastActiveSceneView ?? SceneView.currentDrawingSceneView;
+        
+        var sceneCameraTransform = sceneView.camera.transform;
         Debug.Log($"Teleporting to scene view at {sceneCameraTransform.position}.");
         GetComponent<Rigidbody>().MovePosition(sceneCameraTransform.position);
     }

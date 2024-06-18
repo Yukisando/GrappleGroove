@@ -861,7 +861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDependencies: {fileID: 5479291347440683839}
-  fov: 70
+  fov: 85
   minRotationLimit: -90
   maxRotationLimit: 90
   sensX: 180
@@ -953,7 +953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpKey: 32
-  amount: 14
+  amount: 22
   coolDownRate: 15
   jumpSound: {fileID: 8300000, guid: dfd23eb9b13f4a34586ea194a3499067, type: 3}
   landSound: {fileID: 8300000, guid: 13e8ced113c05f642b26bac055f40f29, type: 3}
@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3225738087276248368}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86e28c338f50c4948a1b090903b9342a, type: 3}
   m_Name: 
@@ -1023,18 +1023,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3225738087276248368}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed6ec71b156ce6b41b3ed4a4b24ce8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 4708602188485205762, guid: 717a044a18ac7434fab4ef2a82a7c6c9, type: 3}
-  size: 0.12
-  force: 220
-  projectRate: 0.2
+  shootKey: 120
+  size: 0.3
+  force: 120
+  projectRate: 0.5
   projectingSound: {fileID: 8300000, guid: 9a32620284457ff4baa7fae29abd1a63, type: 3}
-  scrollSound: {fileID: 8300000, guid: b2c8d8abfb35a4c4c8e29d59104dec12, type: 3}
-  minMaxSound: {fileID: 8300000, guid: ba4235e862c2e024f89a51ef85607931, type: 3}
 --- !u!114 &4584123976848407548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,7 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a710fad7d6a8b1041980f35957cf6d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutRopeKey: 120
+  cutRopeKey: 99
   resetHookKey: 114
   grappleLayerMask:
     serializedVersion: 2
@@ -2003,7 +2002,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2584,7 +2583,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643533470452205149}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b7955d4a064a6f40886000aa550ea4c, type: 3}
   m_Name: 
