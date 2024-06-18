@@ -370,8 +370,7 @@ namespace PrototypeFPC
         
         void CutRopes() {
             // Destroy player hooks upon hold release
-            Debug.Log($"hookRelease: {hookRelease}, hooked: {hooked}");
-            if (Input.GetKey(cutRopeKey) && hooked) {
+            if ((Input.GetKey(cutRopeKey) || hookRelease) && hooked) {
                 hookRelease = false;
                 DestroyGrappleRope();
                 return;
