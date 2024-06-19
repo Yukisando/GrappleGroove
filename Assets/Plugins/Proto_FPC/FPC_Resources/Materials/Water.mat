@@ -65,7 +65,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SurfaceNoise:
         m_Texture: {fileID: 2800000, guid: f2e616c4096c0944c92f0e3f72b8539c, type: 3}
-        m_Scale: {x: 100, y: 100}
+        m_Scale: {x: 80, y: 80}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:

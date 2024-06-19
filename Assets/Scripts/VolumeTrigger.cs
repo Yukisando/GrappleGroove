@@ -13,7 +13,7 @@ public class VolumeTrigger : MonoBehaviour
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
+        Gizmos.DrawWireMesh(GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
     }
 
     void OnTriggerEnter(Collider _other) {

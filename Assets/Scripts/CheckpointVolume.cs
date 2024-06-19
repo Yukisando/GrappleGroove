@@ -8,7 +8,6 @@ using UnityEngine;
 [Serializable]
 public class CheckpointVolume : MonoBehaviour
 {
-    public string id = "";
     [SerializeField] Vector3 spawnOffset = Vector3.zero;
     public Action<Vector3> onEnterVolume;
 

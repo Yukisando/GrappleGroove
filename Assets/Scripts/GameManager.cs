@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform respawnPoint;
     [SerializeField] ScratchManager scratchManager;
     [SerializeField] InfoPopup infoPopup;
+    [SerializeField] GameObject endUI;
+    [SerializeField] GameObject playerUI;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -83,6 +85,12 @@ public class GameManager : MonoBehaviour
         else {
             respawnPoint.position = playerDependencies.transform.position;
         }
+    }
+
+    public void EndGame() {
+        playerDependencies.rb.gameObject.SetActive(false);
+        playerUI.SetActive(false);
+        endUI.SetActive(true);
     }
 
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
