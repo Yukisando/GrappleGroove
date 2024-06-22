@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1227830617347691525}
   - component: {fileID: 5993371316934473385}
   - component: {fileID: 7501906831276099633}
+  - component: {fileID: 1621653418517193647}
   m_Layer: 2
   m_Name: CheckpointVolume
   m_TagString: Untagged
@@ -50,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8610982150153646250}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -100,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fca484eb1dbb14f9826dcc4ebd66c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
+  spawnOffset: {x: 0, y: 0, z: 0}
 --- !u!64 &7501906831276099633
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -123,3 +124,15 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1621653418517193647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8610982150153646250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1656c7edcb90bf44b0faa2298aecca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

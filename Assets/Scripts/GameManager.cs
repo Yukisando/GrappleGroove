@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
-            playerDependencies.rb.MovePosition(checkpointPosition);
+            ResetPlayer();
         }
         else {
             respawnPoint.position = playerDependencies.transform.position;
@@ -103,13 +103,14 @@ public class GameManager : MonoBehaviour
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);
-        Debug.Log("Player got reset!");
+        playerDependencies.GetComponent<Perspective>().SetCameraRotation(respawnPoint.rotation);
     }
 
-    void OnPlayerEnteredCheckpointVolume(Vector3 _spawnPoint) {
+    void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
-        checkpointManager.SaveCheckpoint(_spawnPoint);
-        respawnPoint.position = _spawnPoint;
+        checkpointManager.SaveCheckpoint(_spawnPoint.position);
+        respawnPoint.position = _spawnPoint.position;
+        respawnPoint.forward = _spawnPoint.forward;
         infoPopup.ShowPopup("Checkpoint reached!");
     }
 
