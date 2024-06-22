@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
-            ResetPlayer();
+            ResetPlayer(false);
         }
         else {
             respawnPoint.position = playerDependencies.transform.position;
@@ -97,9 +97,9 @@ public class GameManager : MonoBehaviour
         playerDependencies.GetComponent<GrapplingHook>().DestroyRopes(_ropeType);
     }
 
-    void ResetPlayer() {
+    void ResetPlayer(bool _playSound = true) {
         playerDependencies.GetComponent<GrapplingHook>().DestroyRopes();
-        playerDependencies.audioSourceTop.PlayOneShot(resetSound);
+        if (_playSound) playerDependencies.audioSourceTop.PlayOneShot(resetSound);
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);

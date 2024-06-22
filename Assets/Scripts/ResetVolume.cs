@@ -12,7 +12,7 @@ public class ResetVolume : MonoBehaviour
     [Header("Extras")]
     [SerializeField] float yMovement = .2f;
     [SerializeField] float xMovement = .1f;
-    public Action onEnterVolume;
+    public Action<bool> onEnterVolume;
 
     MeshRenderer rd;
 
@@ -35,6 +35,6 @@ public class ResetVolume : MonoBehaviour
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        onEnterVolume?.Invoke();
+        onEnterVolume?.Invoke(true);
     }
 }

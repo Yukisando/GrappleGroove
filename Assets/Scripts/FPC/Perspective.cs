@@ -21,8 +21,6 @@ namespace PrototypeFPC
         [SerializeField] float lookTiltSpeed = 12f;
         [SerializeField] float allTiltResetSpeed = 10f;
 
-        Camera cam;
-
         //Helpers
         float mouseX;
         float mouseY;
@@ -39,16 +37,16 @@ namespace PrototypeFPC
         }
 
         void Start() {
-            Setup(); //- Line 67
+            Setup();
         }
 
         void Update() {
             Time.timeScale = Cursor.lockState == CursorLockMode.Locked ? 1 : 0;
-            MouseInput(); //- Line 81
+            MouseInput();
         }
 
         void LateUpdate() {
-            CalculatePerspective(); //- Line 98
+            CalculatePerspective();
         }
 
         //-----------------
@@ -59,11 +57,10 @@ namespace PrototypeFPC
             Cursor.visible = false;
 
             //Setup playerDependencies
-            cam = playerDependencies.cam;
             orientation = playerDependencies.orientation;
 
             //Set fov
-            cam.fieldOfView = fov;
+            playerDependencies.cam.fieldOfView = fov;
         }
 
         void MouseInput() {
@@ -92,7 +89,7 @@ namespace PrototypeFPC
                 //Apply rotation
                 float smooth = smoothness * Time.deltaTime;
                 targetRot = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
-                cam.transform.localRotation = Quaternion.Lerp(cam.transform.localRotation, targetRot, smooth);
+                playerDependencies.cam.transform.localRotation = Quaternion.Lerp(playerDependencies.cam.transform.localRotation, targetRot, smooth);
                 orientation.transform.rotation = Quaternion.Lerp(orientation.transform.rotation, Quaternion.Euler(0, yRotation, 0), smooth);
             }
 
@@ -104,7 +101,12 @@ namespace PrototypeFPC
         }
 
         public void SetCameraRotation(Quaternion rotation) {
-            cam.transform.localRotation = rotation;
+            Camera.main.transform.localRotation = rotation;
+
+            // Extract x and y rotation from the given quaternion
+            var eulerRotation = rotation.eulerAngles;
+            xRotation = eulerRotation.x;
+            yRotation = eulerRotation.y;
         }
     }
 }
