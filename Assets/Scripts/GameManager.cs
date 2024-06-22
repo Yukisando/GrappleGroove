@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     CheckpointVolume[] checkpointVolumes;
     EmancipationVolume[] emancipationVolumes;
     KillVolume[] killVolumes;
+    Move[] movingObjects;
     NodePickupVolume[] nodeVolumes;
     ResetVolume[] resetVolumes;
 
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         foreach (var checkpointVolume in checkpointVolumes) {
             checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
@@ -65,7 +67,9 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
+    }
 
+    void Start() {
         LoadLastCheckpoint();
     }
 
@@ -104,6 +108,14 @@ public class GameManager : MonoBehaviour
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);
         playerDependencies.GetComponent<Perspective>().SetCameraRotation(respawnPoint.rotation);
+
+        ResetMovingObjects();
+    }
+
+    void ResetMovingObjects() {
+        foreach (var movingObject in movingObjects) {
+            movingObject.Reset();
+        }
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {

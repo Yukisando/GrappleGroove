@@ -32,6 +32,8 @@ public class Move : MonoBehaviour
         source.clip = GameManager.I.platformSound;
     }
 
+    public void Reset() { }
+
     void Start() {
         startPos = transform.position;
 

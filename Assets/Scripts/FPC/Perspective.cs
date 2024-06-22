@@ -26,6 +26,7 @@ namespace PrototypeFPC
         float mouseY;
         Transform orientation;
         PlayerDependencies playerDependencies;
+        bool skipLerp;
         Quaternion targetRot;
         float xRotation;
         float yRotation;
@@ -87,10 +88,17 @@ namespace PrototypeFPC
                 }
 
                 //Apply rotation
-                float smooth = smoothness * Time.deltaTime;
-                targetRot = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
-                playerDependencies.cam.transform.localRotation = Quaternion.Lerp(playerDependencies.cam.transform.localRotation, targetRot, smooth);
-                orientation.transform.rotation = Quaternion.Lerp(orientation.transform.rotation, Quaternion.Euler(0, yRotation, 0), smooth);
+                if (skipLerp) {
+                    playerDependencies.cam.transform.localRotation = targetRot;
+                    orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+                    skipLerp = false;
+                }
+                else {
+                    float smooth = smoothness * Time.deltaTime;
+                    targetRot = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
+                    playerDependencies.cam.transform.localRotation = Quaternion.Lerp(playerDependencies.cam.transform.localRotation, targetRot, smooth);
+                    orientation.transform.rotation = Quaternion.Lerp(orientation.transform.rotation, Quaternion.Euler(0, yRotation, 0), smooth);
+                }
             }
 
             //Reset tilt
@@ -101,12 +109,16 @@ namespace PrototypeFPC
         }
 
         public void SetCameraRotation(Quaternion rotation) {
-            Camera.main.transform.localRotation = rotation;
+            playerDependencies.cam.transform.localRotation = rotation;
 
             // Extract x and y rotation from the given quaternion
             var eulerRotation = rotation.eulerAngles;
             xRotation = eulerRotation.x;
             yRotation = eulerRotation.y;
+
+            // Set target rotation and skip lerping
+            targetRot = rotation;
+            skipLerp = true;
         }
     }
 }
