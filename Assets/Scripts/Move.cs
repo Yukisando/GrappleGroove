@@ -4,28 +4,32 @@ using UnityEngine;
 
 #endregion
 
+[RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
-    public Vector3 destination; // Offset to the target position
-    public bool useLocalPosition = true;
-    public bool loop = true;
-    public float duration = 5f; // Duration of the loop
-    [Range(0, 1)] public float startOffset; // Range from 0 (start) to 1 (destination)
-    public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField] Vector3 destination; // Offset to the target position
+    [SerializeField] bool useLocalPosition = true;
+    [SerializeField] bool loop = true;
+    [SerializeField] float duration = 5f; // Duration of the loop
+    [SerializeField] [Range(0, 1)] float startOffset; // Range from 0 (start) to 1 (destination)
+    [SerializeField] AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     Vector3 initialPosition;
+    bool isFirstLoop = true;
+    Vector3 offsetStartPosition;
+    AudioSource source;
     LTDescr tween;
 
     void Awake() {
+        SetupAudio();
         initialPosition = useLocalPosition ? transform.localPosition : transform.position;
-
-        InitOffset();
+        offsetStartPosition = Vector3.Lerp(initialPosition, initialPosition + (useLocalPosition ? transform.TransformDirection(destination) : destination), startOffset);
     }
 
     public void Reset() {
         if (tween != null) {
             LeanTween.cancel(tween.uniqueId);
-            InitOffset();
+            isFirstLoop = true;
             StartMoving();
         }
     }
@@ -47,32 +51,76 @@ public class Move : MonoBehaviour
         Gizmos.DrawSphere(gizmoStartPosition, 0.2f);
     }
 
+    void SetupAudio() {
+        source = GetComponent<AudioSource>();
+        source.loop = true;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.clip = GameManager.I.platformSound;
+    }
+
     void StartMoving() {
-        if (useLocalPosition) {
-            tween = LeanTween.moveLocal(gameObject, initialPosition + transform.TransformDirection(destination), duration)
-                .setEase(animationCurve)
-                .setLoopPingPong()
-                .setOnComplete(() => {
-                    if (!loop) LeanTween.cancel(gameObject);
-                });
+        if (isFirstLoop) {
+            ApplyStartOffset();
+            isFirstLoop = false;
+            CreateTweenFromOffset();
         }
         else {
-            LeanTween.move(gameObject, initialPosition + destination, duration)
-                .setEase(animationCurve)
-                .setLoopPingPong()
-                .setOnComplete(() => {
-                    if (!loop) LeanTween.cancel(gameObject);
-                });
+            CreateTween();
         }
     }
 
-    void InitOffset() {
-        // Set the initial position based on the startOffset value
+    void CreateTween() {
+        var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
+
         if (useLocalPosition) {
-            transform.localPosition = Vector3.Lerp(initialPosition, initialPosition + transform.TransformDirection(destination), startOffset);
+            tween = LeanTween.moveLocal(gameObject, endPosition, duration)
+                .setEase(animationCurve)
+                .setLoopPingPong()
+                .setOnComplete(OnTweenComplete);
         }
         else {
-            transform.position = Vector3.Lerp(initialPosition, initialPosition + destination, startOffset);
+            tween = LeanTween.move(gameObject, endPosition, duration)
+                .setEase(animationCurve)
+                .setLoopPingPong()
+                .setOnComplete(OnTweenComplete);
+        }
+    }
+
+    void CreateTweenFromOffset() {
+        var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
+        float remainingDuration = duration * (1 - startOffset);
+
+        LeanTween.move(gameObject, endPosition, remainingDuration)
+            .setEase(animationCurve)
+            .setOnComplete(() => {
+                // Start the ping-pong tween after reaching the destination
+                if (useLocalPosition) {
+                    tween = LeanTween.moveLocal(gameObject, initialPosition, duration)
+                        .setEase(animationCurve)
+                        .setLoopPingPong()
+                        .setOnComplete(OnTweenComplete);
+                }
+                else {
+                    tween = LeanTween.move(gameObject, initialPosition, duration)
+                        .setEase(animationCurve)
+                        .setLoopPingPong()
+                        .setOnComplete(OnTweenComplete);
+                }
+            });
+    }
+
+    void OnTweenComplete() {
+        if (!loop) {
+            LeanTween.cancel(gameObject);
+        }
+    }
+
+    void ApplyStartOffset() {
+        if (useLocalPosition) {
+            transform.localPosition = offsetStartPosition;
+        }
+        else {
+            transform.position = offsetStartPosition;
         }
     }
 }

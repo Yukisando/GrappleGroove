@@ -1,5 +1,6 @@
 #region
 
+using System.Collections;
 using PrototypeFPC;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,10 +68,13 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
+
+        LoadLastCheckpoint();
     }
 
-    void Start() {
-        LoadLastCheckpoint();
+    IEnumerator Start() {
+        yield return null;
+        ResetPlayer(false);
     }
 
     void Update() {
@@ -84,11 +88,10 @@ public class GameManager : MonoBehaviour
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
-            ResetPlayer(false);
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
-            Debug.Log($"No checkpoint found! Respawn point set to {respawnPoint.position}!");
+            Debug.Log("No checkpoint found.");
             respawnPoint.position = playerDependencies.transform.position;
         }
     }
