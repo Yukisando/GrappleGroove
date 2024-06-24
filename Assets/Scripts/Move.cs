@@ -62,14 +62,14 @@ public class Move : MonoBehaviour
         if (isFirstLoop) {
             ApplyStartOffset();
             isFirstLoop = false;
-            CreateTweenFromOffset();
+            StartTweenFromOffset();
         }
         else {
-            CreateTween();
+            StartTween();
         }
     }
 
-    void CreateTween() {
+    void StartTween() {
         var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
 
         if (useLocalPosition) {
@@ -86,7 +86,7 @@ public class Move : MonoBehaviour
         }
     }
 
-    void CreateTweenFromOffset() {
+    void StartTweenFromOffset() {
         var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
         float remainingDuration = duration * (1 - startOffset);
 
