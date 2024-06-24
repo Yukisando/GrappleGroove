@@ -6,44 +6,50 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    public Vector3 offset; // Offset to the target position
+    public Vector3 destination; // Offset to the target position
     public bool useLocalPosition = true;
     public bool loop = true;
     public float duration = 5f; // Duration of the loop
-    [Range(0, 1)] public float startPosition; // Range from 0 (start) to 1 (destination)
+    [Range(0, 1)] public float startOffset; // Range from 0 (start) to 1 (destination)
     public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     Vector3 initialPosition;
     LTDescr tween;
 
+    void Awake() {
+        initialPosition = useLocalPosition ? transform.localPosition : transform.position;
+
+        InitOffset();
+    }
+
     public void Reset() {
         if (tween != null) {
             LeanTween.cancel(tween.uniqueId);
-            MovePlatform();
+            InitOffset();
+            StartMoving();
         }
     }
 
     void Start() {
-        Initialize();
-        MovePlatform();
+        StartMoving();
     }
 
     void OnDrawGizmos() {
         Gizmos.color = Color.green;
 
         var gizmoStartPoint = useLocalPosition ? transform.localPosition : transform.position;
-        var gizmoEndPoint = useLocalPosition ? gizmoStartPoint + transform.TransformDirection(offset) : gizmoStartPoint + offset;
+        var gizmoEndPoint = useLocalPosition ? gizmoStartPoint + transform.TransformDirection(destination) : gizmoStartPoint + destination;
 
         Gizmos.DrawLine(gizmoStartPoint, gizmoEndPoint);
 
-        var gizmoStartPosition = Vector3.Lerp(gizmoStartPoint, gizmoEndPoint, startPosition);
+        var gizmoStartPosition = Vector3.Lerp(gizmoStartPoint, gizmoEndPoint, startOffset);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(gizmoStartPosition, 0.2f);
     }
 
-    void MovePlatform() {
+    void StartMoving() {
         if (useLocalPosition) {
-            tween = LeanTween.moveLocal(gameObject, initialPosition + transform.TransformDirection(offset), duration)
+            tween = LeanTween.moveLocal(gameObject, initialPosition + transform.TransformDirection(destination), duration)
                 .setEase(animationCurve)
                 .setLoopPingPong()
                 .setOnComplete(() => {
@@ -51,7 +57,7 @@ public class Move : MonoBehaviour
                 });
         }
         else {
-            LeanTween.move(gameObject, initialPosition + offset, duration)
+            LeanTween.move(gameObject, initialPosition + destination, duration)
                 .setEase(animationCurve)
                 .setLoopPingPong()
                 .setOnComplete(() => {
@@ -60,15 +66,13 @@ public class Move : MonoBehaviour
         }
     }
 
-    void Initialize() {
-        initialPosition = useLocalPosition ? transform.localPosition : transform.position;
-
-        // Set the initial position based on the startPosition value
+    void InitOffset() {
+        // Set the initial position based on the startOffset value
         if (useLocalPosition) {
-            transform.localPosition = Vector3.Lerp(initialPosition, initialPosition + transform.TransformDirection(offset), startPosition);
+            transform.localPosition = Vector3.Lerp(initialPosition, initialPosition + transform.TransformDirection(destination), startOffset);
         }
         else {
-            transform.position = Vector3.Lerp(initialPosition, initialPosition + offset, startPosition);
+            transform.position = Vector3.Lerp(initialPosition, initialPosition + destination, startOffset);
         }
     }
 }

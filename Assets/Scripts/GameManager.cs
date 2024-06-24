@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     void Update() {
         if (Input.GetKeyDown(quitKey)) Application.Quit();
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
-        if (Input.GetKeyDown(respawnKey)) ResetPlayer();
+        if (Input.GetKeyDown(respawnKey)) ResetPlayer(false);
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -85,8 +85,10 @@ public class GameManager : MonoBehaviour
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
             ResetPlayer(false);
+            Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
+            Debug.Log($"No checkpoint found! Respawn point set to {respawnPoint.position}!");
             respawnPoint.position = playerDependencies.transform.position;
         }
     }

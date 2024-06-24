@@ -10,7 +10,6 @@ public class ResetVolume : MonoBehaviour
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
     [Header("Extras")]
-    [SerializeField] bool deactivateOnEnter = true;
     [SerializeField] float yMovement = .2f;
     [SerializeField] float xMovement = .1f;
     public Action<bool> onEnterVolume;
@@ -36,7 +35,6 @@ public class ResetVolume : MonoBehaviour
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        if (deactivateOnEnter) gameObject.SetActive(false);
         onEnterVolume?.Invoke(true);
     }
 }

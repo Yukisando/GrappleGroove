@@ -9,6 +9,7 @@ using UnityEngine;
 public class CheckpointVolume : MonoBehaviour
 {
     [SerializeField] Vector3 spawnOffset = Vector3.zero;
+    [SerializeField] bool deactivateOnEnter = true;
     public Action<Transform> onEnterVolume;
 
     void OnDrawGizmosSelected() {
@@ -24,6 +25,7 @@ public class CheckpointVolume : MonoBehaviour
         if (!_other.CompareTag("PlayerHitbox")) return;
         var spawnPoint = transform;
         spawnPoint.position += spawnOffset;
+        if (deactivateOnEnter) gameObject.SetActive(false);
         onEnterVolume?.Invoke(spawnPoint);
     }
 }
