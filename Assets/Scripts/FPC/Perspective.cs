@@ -8,117 +8,79 @@ namespace PrototypeFPC
 {
     public class Perspective : MonoBehaviour
     {
-        //Camera Properties
         [Header("Camera Properties")]
         [SerializeField] float fov = 60f;
         [SerializeField] float minRotationLimit = -90f;
         [SerializeField] float maxRotationLimit = 90f;
-        [SerializeField] float sensX = 180f;
-        [SerializeField] float sensY = 180f;
-        [SerializeField] float multiplier = 0.01f;
-        [SerializeField] float smoothness = 17f;
+        [SerializeField] float sensitivity = 180f;
         [SerializeField] float lookTiltAmount = 6f;
         [SerializeField] float lookTiltSpeed = 12f;
-        [SerializeField] float allTiltResetSpeed = 10f;
+        [SerializeField] float tiltResetSpeed = 10f;
 
-        //Helpers
-        float mouseX;
-        float mouseY;
-        Transform orientation;
+        Vector2 mouseInput;
         PlayerDependencies playerDependencies;
-        bool skipLerp;
-        Quaternion targetRot;
+
         float xRotation;
         float yRotation;
 
-        //-----------------
-
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         void Start() {
-            Setup();
-        }
-
-        void Update() {
-            Time.timeScale = Cursor.lockState == CursorLockMode.Locked ? 1 : 0;
-            MouseInput();
-        }
-
-        void LateUpdate() {
-            CalculatePerspective();
-        }
-
-        //-----------------
-
-        void Setup() {
-            //Set cursor
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            //Setup playerDependencies
-            orientation = playerDependencies.orientation;
-
-            //Set fov
             playerDependencies.cam.fieldOfView = fov;
         }
 
-        void MouseInput() {
+        void Update() {
+            if (Cursor.lockState == CursorLockMode.Locked) {
+                GetMouseInput();
+                UpdateRotation();
+            }
+            Time.timeScale = Cursor.lockState == CursorLockMode.Locked ? 1 : 0;
+        }
+
+        void LateUpdate() {
+            ApplyRotation();
+            UpdateTilt();
+        }
+
+        void GetMouseInput() {
             if (!playerDependencies.isInspecting) {
-                //Get and set input axis
-                mouseX = Input.GetAxisRaw("Mouse X");
-                mouseY = Input.GetAxisRaw("Mouse Y");
-
-                //Calculate rotation
-                yRotation += mouseX * sensX * multiplier;
-                xRotation -= mouseY * sensY * multiplier;
-
-                //Limit rotation
-                xRotation = Mathf.Clamp(xRotation, minRotationLimit, maxRotationLimit);
+                mouseInput.x = Input.GetAxisRaw("Mouse X") * sensitivity * 0.01f;
+                mouseInput.y = Input.GetAxisRaw("Mouse Y") * sensitivity * 0.01f;
             }
         }
 
-        void CalculatePerspective() {
-            if (!playerDependencies.isInspecting) {
-                //Perspective tilt
-                if (!playerDependencies.isWallRunning && !playerDependencies.isSliding && mouseX != 0) {
-                    float tiltSpeed = lookTiltSpeed * Time.deltaTime;
-                    playerDependencies.tilt = Mathf.Lerp(playerDependencies.tilt, -mouseX * lookTiltAmount, tiltSpeed);
-                }
+        void UpdateRotation() {
+            yRotation += mouseInput.x;
+            xRotation -= mouseInput.y;
+            xRotation = Mathf.Clamp(xRotation, minRotationLimit, maxRotationLimit);
+        }
 
-                //Apply rotation
-                if (skipLerp) {
-                    playerDependencies.cam.transform.localRotation = targetRot;
-                    orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
-                    skipLerp = false;
-                }
-                else {
-                    float smooth = smoothness * Time.deltaTime;
-                    targetRot = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
-                    playerDependencies.cam.transform.localRotation = Quaternion.Lerp(playerDependencies.cam.transform.localRotation, targetRot, smooth);
-                    orientation.transform.rotation = Quaternion.Lerp(orientation.transform.rotation, Quaternion.Euler(0, yRotation, 0), smooth);
-                }
-            }
+        void ApplyRotation() {
+            playerDependencies.cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
+            // playerDependencies.orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+            // use Slerp to avoid gimbal lock
+            playerDependencies.orientation.rotation = Quaternion.Slerp(playerDependencies.orientation.rotation, Quaternion.Euler(0, yRotation, 0), 0.1f);
+        }
 
-            //Reset tilt
-            if (!playerDependencies.isWallRunning && !playerDependencies.isSliding && !playerDependencies.isVaulting && mouseX == 0) {
-                float allTiltSpeed = allTiltResetSpeed * Time.deltaTime;
-                playerDependencies.tilt = Mathf.Lerp(playerDependencies.tilt, 0, allTiltSpeed);
+        void UpdateTilt() {
+            if (!playerDependencies.isWallRunning && !playerDependencies.isSliding) {
+                float tiltTarget = mouseInput.x != 0 ? -mouseInput.x * lookTiltAmount : 0f;
+                float tiltSpeed = (mouseInput.x != 0 ? lookTiltSpeed : tiltResetSpeed) * Time.deltaTime;
+                playerDependencies.tilt = Mathf.Lerp(playerDependencies.tilt, tiltTarget, tiltSpeed);
             }
         }
 
-        public void SetCameraRotation(Quaternion rotation) {
+        public void ForceOrientation(Quaternion rotation) {
             playerDependencies.cam.transform.localRotation = rotation;
+            playerDependencies.orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
 
-            // Extract x and y rotation from the given quaternion
             var eulerRotation = rotation.eulerAngles;
             xRotation = eulerRotation.x;
             yRotation = eulerRotation.y;
-
-            // Set target rotation and skip lerping
-            targetRot = rotation;
-            skipLerp = true;
         }
     }
 }

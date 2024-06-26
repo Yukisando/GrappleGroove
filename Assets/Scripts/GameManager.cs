@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);
-        playerDependencies.GetComponent<Perspective>().SetCameraRotation(respawnPoint.rotation);
+        playerDependencies.GetComponent<Perspective>().ForceOrientation(respawnPoint.rotation);
 
         ResetMovingObjects();
     }
