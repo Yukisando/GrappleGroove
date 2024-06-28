@@ -40,7 +40,7 @@ public class EmancipationVolume : MonoBehaviour
     }
 
     void SetVolumeColor() {
-        rd.material.EnableKeyword("_EMISSION");
+        rd.material.EnableKeyword("_BaseMap");
 
         switch (ropeTypeToDestroy) {
             case RopeType.BOTH:

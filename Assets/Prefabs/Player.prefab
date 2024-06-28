@@ -865,8 +865,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 85
   minRotationLimit: -90
-  maxRotationLimit: 90
-  sensitivity: 180
+  maxRotationLimit: 95
+  sensitivity: 150
   lookTiltAmount: 3
   lookTiltSpeed: 12
   tiltResetSpeed: 10

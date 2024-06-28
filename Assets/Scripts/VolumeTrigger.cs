@@ -7,19 +7,42 @@ using UnityEngine.Events;
 
 public class VolumeTrigger : MonoBehaviour
 {
+    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     public UnityEvent onEnter;
     public string tagMask = "Player";
     public bool destroyObjectPostTrigger;
 
-    void OnDrawGizmosSelected() {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireMesh(GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
+    [Header("Material Offset")]
+    [SerializeField] float yMovement = 0.2f;
+    [SerializeField] float xMovement = 0.1f;
+    MeshRenderer meshRenderer;
+
+    void Awake() {
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    void OnTriggerEnter(Collider _other) {
-        if (_other.CompareTag(tagMask)) {
-            if (destroyObjectPostTrigger) Destroy(gameObject);
-            onEnter?.Invoke();
+    void LateUpdate() {
+        if (meshRenderer != null && meshRenderer.material != null) {
+            var offset = meshRenderer.material.GetTextureOffset(BaseMap);
+            offset.y += yMovement * Time.deltaTime;
+            offset.x += xMovement * Time.deltaTime;
+            meshRenderer.material.SetTextureOffset(BaseMap, offset);
+        }
+    }
+
+    void OnDrawGizmosSelected() {
+        Gizmos.color = Color.cyan;
+        var meshFilter = GetComponent<MeshFilter>();
+        if (meshFilter != null && meshFilter.sharedMesh != null) {
+            Gizmos.DrawWireMesh(meshFilter.sharedMesh, transform.position, transform.rotation, transform.localScale);
+        }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (!other.CompareTag(tagMask)) return;
+        onEnter?.Invoke();
+        if (destroyObjectPostTrigger) {
+            Destroy(gameObject);
         }
     }
 }
