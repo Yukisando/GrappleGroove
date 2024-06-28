@@ -1,6 +1,5 @@
 #region
 
-using System.Collections;
 using PrototypeFPC;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -42,6 +41,23 @@ public class GameManager : MonoBehaviour
     void Awake() {
         if (I == null) I = this;
         else Destroy(gameObject);
+
+        InitializeTriggerVolumes();
+        LoadLastCheckpoint();
+    }
+
+    void Update() {
+        CheckInputs();
+    }
+
+    void CheckInputs() {
+        if (Input.GetKeyDown(quitKey)) Application.Quit();
+        if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
+        if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
+        if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void InitializeTriggerVolumes() {
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -54,7 +70,7 @@ public class GameManager : MonoBehaviour
         }
 
         foreach (var resetVolume in resetVolumes) {
-            resetVolume.onEnterVolume += ResetPlayer;
+            resetVolume.onEnterVolume += ResetGameState;
         }
 
         foreach (var nodeVolume in nodeVolumes) {
@@ -68,26 +84,13 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
-
-        LoadLastCheckpoint();
-    }
-
-    IEnumerator Start() {
-        yield return null;
-        ResetPlayer(false);
-    }
-
-    void Update() {
-        if (Input.GetKeyDown(quitKey)) Application.Quit();
-        if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
-        if (Input.GetKeyDown(respawnKey)) ResetPlayer(false);
-        if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void LoadLastCheckpoint() {
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
+            ResetGameState();
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
@@ -103,21 +106,19 @@ public class GameManager : MonoBehaviour
     }
 
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
-        playerDependencies.GetComponent<GrapplingHook>().DestroyRopes(_ropeType);
+        playerDependencies.grapplingHook.DestroyRopes(_ropeType);
     }
 
-    void ResetPlayer(bool _playSound = true) {
-        playerDependencies.GetComponent<GrapplingHook>().DestroyRopes();
+    void ResetGameState(bool _playSound = true) {
+        //Resets player
         if (_playSound) playerDependencies.audioSourceTop.PlayOneShot(resetSound);
+        playerDependencies.grapplingHook.DestroyRopes();
         playerDependencies.rb.linearVelocity = Vector3.zero;
         playerDependencies.rb.angularVelocity = Vector3.zero;
         playerDependencies.rb.MovePosition(respawnPoint.position);
-        playerDependencies.GetComponent<Perspective>().ForceOrientation(respawnPoint.rotation);
+        playerDependencies.perspective.ForceOrientation(respawnPoint.rotation);
 
-        ResetMovingObjects();
-    }
-
-    void ResetMovingObjects() {
+        //Resets all moving objects
         foreach (var movingObject in movingObjects) {
             movingObject.Reset();
         }
@@ -135,11 +136,10 @@ public class GameManager : MonoBehaviour
         scratchManager.AddNode(_nodeData);
         infoPopup.ShowPopup($"Node collected: {_nodeData.id}");
         AudioSource.PlayClipAtPoint(nodePickupSound, transform.position);
-        Debug.Log("Node collected!");
     }
 
     void OnPlayerEnteredKillVolume() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("Player died!");
+        infoPopup.ShowPopup("Crap!");
     }
 }

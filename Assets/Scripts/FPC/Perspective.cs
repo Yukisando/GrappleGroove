@@ -61,8 +61,6 @@ namespace PrototypeFPC
 
         void ApplyRotation() {
             playerDependencies.cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
-            // playerDependencies.orientation.rotation = Quaternion.Euler(0, yRotation, 0);
-            // use Slerp to avoid gimbal lock
             playerDependencies.orientation.rotation = Quaternion.Slerp(playerDependencies.orientation.rotation, Quaternion.Euler(0, yRotation, 0), 0.1f);
         }
 
@@ -75,8 +73,8 @@ namespace PrototypeFPC
         }
 
         public void ForceOrientation(Quaternion rotation) {
-            playerDependencies.cam.transform.localRotation = rotation;
-            playerDependencies.orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
+            GetComponent<PlayerDependencies>().cam.transform.localRotation = rotation;
+            GetComponent<PlayerDependencies>().orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
 
             var eulerRotation = rotation.eulerAngles;
             xRotation = eulerRotation.x;

@@ -1,5 +1,6 @@
 #region
 
+using PrototypeFPC;
 using UnityEngine;
 
 #endregion
@@ -9,13 +10,13 @@ public class PlayerDependencies : MonoBehaviour
     public float worldGravity = -20f;
     public int physicsIterations = 12;
     public float timeStep = 0.003f;
-    
+
     public Rigidbody rb;
     public CapsuleCollider cc;
     public Camera cam;
     public Transform orientation;
     public Transform vaultPoint;
-    
+
     public Transform spawnPointRight;
     public Transform spawnPointLeft;
     public Transform inspectPoint;
@@ -24,7 +25,7 @@ public class PlayerDependencies : MonoBehaviour
     public Transform swayPivotLeft;
     public AudioSource audioSourceTop;
     public AudioSource audioSourceBottom;
-    
+
     public bool isGrounded;
     public bool isSliding;
     public bool isWallRunning;
@@ -32,7 +33,11 @@ public class PlayerDependencies : MonoBehaviour
     public bool isGrabbing;
     public bool isVaulting;
     public float tilt;
-    
+
+    public Perspective perspective;
+    public Movement movement;
+    public GrapplingHook grapplingHook;
+
     //----------
     void Awake() {
         //Physics & Timestep setup

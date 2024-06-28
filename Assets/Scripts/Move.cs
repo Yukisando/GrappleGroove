@@ -7,7 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
-    [SerializeField] Vector3 destination; // Offset to the target position
+    [SerializeReference] bool showGizmos;
+    [Space] [SerializeField] Vector3 destination; // Offset to the target position
     [SerializeField] bool useLocalPosition = true;
     [SerializeField] bool loop = true;
     [SerializeField] float duration = 5f; // Duration of the loop
@@ -21,9 +22,9 @@ public class Move : MonoBehaviour
     LTDescr tween;
 
     void Awake() {
-        SetupAudio();
         initialPosition = useLocalPosition ? transform.localPosition : transform.position;
         offsetStartPosition = Vector3.Lerp(initialPosition, initialPosition + (useLocalPosition ? transform.TransformDirection(destination) : destination), startOffset);
+        SetupAudio();
     }
 
     public void Reset() {
@@ -39,6 +40,7 @@ public class Move : MonoBehaviour
     }
 
     void OnDrawGizmos() {
+        if (!showGizmos) return;
         Gizmos.color = Color.green;
 
         var gizmoStartPoint = useLocalPosition ? transform.localPosition : transform.position;

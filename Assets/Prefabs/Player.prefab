@@ -848,6 +848,9 @@ MonoBehaviour:
   isGrabbing: 0
   isVaulting: 0
   tilt: 0
+  perspective: {fileID: 7262846353978981746}
+  movement: {fileID: 5039367071574727959}
+  grapplingHook: {fileID: 4584123976848407548}
 --- !u!114 &7262846353978981746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,17 +863,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28e9b6f60ee35349b2f65dbeffa19fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDependencies: {fileID: 5479291347440683839}
   fov: 85
   minRotationLimit: -90
   maxRotationLimit: 90
-  sensX: 180
-  sensY: 180
-  multiplier: 0.01
-  smoothness: 17
+  sensitivity: 180
   lookTiltAmount: 3
   lookTiltSpeed: 12
-  allTiltResetSpeed: 10
+  tiltResetSpeed: 10
 --- !u!114 &5039367071574727959
 MonoBehaviour:
   m_ObjectHideFlags: 0
