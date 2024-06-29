@@ -109,6 +109,10 @@ public class GameManager : MonoBehaviour
         playerDependencies.grapplingHook.DestroyRopes(_ropeType);
     }
 
+    public void LoadLevel(string levelName) {
+        SceneManager.LoadScene(levelName);
+    }
+
     void ResetGameState(bool _playSound = true) {
         //Resets player
         if (_playSound) playerDependencies.audioSourceTop.PlayOneShot(resetSound);

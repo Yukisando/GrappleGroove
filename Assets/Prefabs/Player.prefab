@@ -883,13 +883,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintKey: 304
-  walkSpeed: 6.5
-  sprintSpeed: 12
+  walkSpeed: 5
+  sprintSpeed: 9
   acceleration: 70
   multiplier: 10
   airMultiplier: 0.4
-  strafeTilt: 8
-  stafeTiltSpeed: 15
+  strafeTilt: 4
+  stafeTiltSpeed: 10
   groundDrag: 6
   airDrag: 1
   groundLayer:
