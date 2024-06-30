@@ -28,7 +28,6 @@ namespace PrototypeFPC
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float connectionSpringStrength = 10000f;
         [SerializeField] float connectionDamperStrength = 1000f;
-        [SerializeField] float retractAmount = .1f;
         [SerializeField] float latchOnImpulse = 200f;
         public float hookDistance = 50f;
 
@@ -55,15 +54,21 @@ namespace PrototypeFPC
         [SerializeField] AudioClip pushClip;
         [SerializeField] AudioClip pullClip;
 
+        [Header("Grapple Settings")]
+        [SerializeField] float leftGrapplePullForce = 1000f;
+        [SerializeField] float rightGrappleMaxExtension = 20f;
+
         AudioSource audioSource;
         bool executeHookSwing;
         RaycastHit hit;
         bool hooked;
         bool hookRelease;
+        bool leftGrappleHeld;
         float mouseDownTimer;
         PlayerDependencies playerDependencies;
         Ray ray;
         Rigidbody rb;
+        bool rightGrappleHeld;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -76,12 +81,21 @@ namespace PrototypeFPC
 
         void Update() {
             InputCheck();
-            HandleRopeLength();
 
             if (!playerDependencies.isInspecting || !playerDependencies.isGrabbing) {
                 CreateHooks(0);
                 CreateHooks(1);
                 CutRopes();
+            }
+        }
+
+        void FixedUpdate() {
+            if (hooked) {
+                foreach (var rope in ropes) {
+                    if (rope.type == RopeType.LEFT) {
+                        ApplyLeftGrapplePull(rope);
+                    }
+                }
             }
         }
 
@@ -113,10 +127,20 @@ namespace PrototypeFPC
                 hookRelease = true;
                 ApplyReleaseImpulse();
             }
+
+            leftGrappleHeld = Input.GetMouseButton(0);
+            rightGrappleHeld = Input.GetMouseButton(1);
+        }
+
+        void ApplyLeftGrapplePull(Rope rope) {
+            if (!leftGrappleHeld) return;
+
+            var pullDirection = (rope.hook.transform.position - transform.position).normalized;
+            rb.AddForce(pullDirection * leftGrapplePullForce * Time.fixedDeltaTime, ForceMode.Force);
         }
 
         void ApplyReleaseImpulse() {
-            var playerVelocity = rb.linearVelocity;
+            var playerVelocity = rb.velocity;
             float speedFactor = playerVelocity.magnitude;
             var releaseImpulse = playerVelocity.normalized * (speedFactor * releaseImpulseFactor);
             rb.AddForce(releaseImpulse, ForceMode.Impulse);
@@ -208,10 +232,20 @@ namespace PrototypeFPC
             sj.connectedAnchor = Vector3.zero;
 
             float distanceFromHook = Vector3.Distance(rb.gameObject.transform.position, rope.hook.transform.position);
-            sj.maxDistance = distanceFromHook;
-            sj.minDistance = distanceFromHook;
-            sj.spring = 20000f;
-            sj.damper = 10000f;
+
+            if (rope.type == RopeType.LEFT) {
+                sj.maxDistance = distanceFromHook;
+                sj.minDistance = distanceFromHook * 0.25f;
+            }
+            else // RopeType.RIGHT
+            {
+                sj.minDistance = distanceFromHook; // Prevent retraction
+                sj.maxDistance = distanceFromHook + rightGrappleMaxExtension; // Allow extension
+            }
+
+            sj.spring = 4000f;
+            sj.damper = 200f;
+            sj.massScale = 4.0f;
         }
 
         void AddRopeCollider(Rope rope) {
@@ -298,7 +332,6 @@ namespace PrototypeFPC
                 audioSource.PlayOneShot(releaseSound);
                 return;
             }
-
             rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
             rope.plank.transform.parent = null;
 
@@ -323,29 +356,6 @@ namespace PrototypeFPC
             var rightRopes = ropes.FindAll(r => r.type == RopeType.RIGHT);
             if (leftRopes.Count > maxRopes) DestroyRope(ropes.IndexOf(leftRopes[0]));
             if (rightRopes.Count > maxRopes) DestroyRope(ropes.IndexOf(rightRopes[0]));
-        }
-
-        void HandleRopeLength() {
-            if (ropes.Count == 0) return;
-
-            if (Input.mouseScrollDelta.y < 0) {
-                audioSource.PlayOneShot(pullClip);
-                AdjustRopeLength(-retractAmount);
-            }
-            else if (Input.mouseScrollDelta.y > 0) {
-                audioSource.PlayOneShot(pushClip);
-                AdjustRopeLength(retractAmount);
-            }
-        }
-
-        void AdjustRopeLength(float adjustment) {
-            foreach (var rope in ropes) {
-                var sj = rope.hook.GetComponent<SpringJoint>();
-                if (sj != null) {
-                    sj.maxDistance = Mathf.Max(sj.maxDistance + adjustment, minimumRopeLength);
-                    sj.minDistance = Mathf.Max(sj.minDistance + adjustment, 0f);
-                }
-            }
         }
 
         void CutRopes() {
