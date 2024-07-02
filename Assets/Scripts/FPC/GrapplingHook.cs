@@ -69,6 +69,7 @@ namespace PrototypeFPC
         Ray ray;
         Rigidbody rb;
         bool rightGrappleHeld;
+        bool ropeCut;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -114,6 +115,7 @@ namespace PrototypeFPC
                 mouseDownTimer = 0;
                 hookRelease = false;
                 executeHookSwing = false;
+                ropeCut = false;
             }
 
             if (mouseHeld && controlNotHeld && notInspecting) {
@@ -125,7 +127,9 @@ namespace PrototypeFPC
             if (mouseUp && controlNotHeld && mouseDownTimer >= holdDelayToSwing && executeHookSwing && notInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
-                ApplyReleaseImpulse();
+                if (!ropeCut) {
+                    ApplyReleaseImpulse();
+                }
             }
 
             leftGrappleHeld = Input.GetMouseButton(0);
@@ -140,10 +144,18 @@ namespace PrototypeFPC
         }
 
         void ApplyReleaseImpulse() {
-            var playerVelocity = rb.velocity;
-            float speedFactor = playerVelocity.magnitude;
-            var releaseImpulse = playerVelocity.normalized * (speedFactor * releaseImpulseFactor);
-            rb.AddForce(releaseImpulse, ForceMode.Impulse);
+            if (ropes.Count == 0) return;
+
+            var lastRope = ropes[^1];
+            var ropeDirection = (lastRope.hook.transform.position - transform.position).normalized;
+
+            var playerVelocity = rb.linearVelocity;
+            float speedAlongRope = Vector3.Dot(playerVelocity, ropeDirection);
+
+            if (speedAlongRope > 0) {
+                var releaseVelocity = ropeDirection * speedAlongRope * releaseImpulseFactor;
+                rb.AddForce(releaseVelocity, ForceMode.Impulse);
+            }
         }
 
         void CreateHooks(int mouseButton) {
@@ -322,6 +334,10 @@ namespace PrototypeFPC
             rope.lineRenderer.startWidth = endThickness;
             rope.lineRenderer.endWidth = endThickness;
             rope.ropeCollider.GetComponent<BoxCollider>().enabled = true;
+
+            rope.lineRenderer.startWidth = endThickness;
+            rope.lineRenderer.endWidth = endThickness;
+            rope.ropeCollider.GetComponent<BoxCollider>().enabled = true;
             rope.connectedObject2 = hit.transform.gameObject;
         }
 
@@ -332,6 +348,7 @@ namespace PrototypeFPC
                 audioSource.PlayOneShot(releaseSound);
                 return;
             }
+
             rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
             rope.plank.transform.parent = null;
 
@@ -361,6 +378,7 @@ namespace PrototypeFPC
         void CutRopes() {
             if ((Input.GetKey(cutRopeKey) || hookRelease) && hooked) {
                 hookRelease = false;
+                ropeCut = true;
                 DestroyGrappleRope();
                 return;
             }
@@ -379,6 +397,7 @@ namespace PrototypeFPC
             if (Physics.Raycast(r.origin, r.direction, out hit, hookDistance, ropeLayerMask)) {
                 int ropeIndex = GameObjectToIndex(hit.collider.gameObject);
                 if (ropeIndex != -1) {
+                    ropeCut = true;
                     DestroyRope(ropeIndex);
                 }
             }
