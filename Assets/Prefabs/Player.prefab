@@ -883,15 +883,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintKey: 304
-  walkSpeed: 5
-  sprintSpeed: 9
+  walkSpeed: 6
+  sprintSpeed: 10
   acceleration: 70
   multiplier: 10
   airMultiplier: 0.4
   strafeTilt: 4
   stafeTiltSpeed: 10
   groundDrag: 6
-  airDrag: 1
+  airDrag: 0.8
   groundLayer:
     serializedVersion: 2
     m_Bits: 449
@@ -1047,9 +1047,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutRopeKey: 99
   resetHookKey: 114
-  grappleLayerMask:
-    serializedVersion: 2
-    m_Bits: 705
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -1060,7 +1057,6 @@ MonoBehaviour:
   holdDelayToSwing: 0.15
   connectionSpringStrength: 1500
   connectionDamperStrength: 1000
-  retractAmount: 0.2
   latchOnImpulse: 50
   hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}
@@ -1103,6 +1099,8 @@ MonoBehaviour:
   releaseSound: {fileID: 8300000, guid: 7a79cf881113fff43830e30bd0e4dff3, type: 3}
   pushClip: {fileID: 8300000, guid: b2c8d8abfb35a4c4c8e29d59104dec12, type: 3}
   pullClip: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
+  leftGrapplePullForce: 1000
+  rightGrappleMaxExtension: 20
 --- !u!114 &9182015932909010048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1148,9 +1146,6 @@ MonoBehaviour:
   pickUpSound: {fileID: 8300000, guid: e8db950a4b2c4b5419e99a2b9e5589b5, type: 3}
   putDownSound: {fileID: 8300000, guid: 1f7b3d64aed71054cb5ca513cbf3ae95, type: 3}
   zoomSound: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
-  inspectLayerMask:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &5048031487047790873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,7 +1162,7 @@ MonoBehaviour:
   maxGrabDistance: 3
   grabbingDistance: 0.3
   grabSpeed: 15
-  throwForce: 300
+  throwForce: 10
   grabSound: {fileID: 8300000, guid: fe8cf92163ae5a243ae246a22b0d6518, type: 3}
   throwSound: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
 --- !u!114 &2187118267037873729
