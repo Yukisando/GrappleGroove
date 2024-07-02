@@ -16,6 +16,7 @@ namespace PrototypeFPC
         [SerializeField] float pickupSpeed = 5f;
         [SerializeField] float rotateSpeed = 2f;
         [SerializeField] float zoomSpeed = 0.2f;
+        [SerializeField] float objectSizeFactor = 1.5f; // New: Factor to adjust position based on object size
 
         [Header("Audio Properties")]
         [SerializeField] AudioClip pickUpSound;
@@ -89,6 +90,9 @@ namespace PrototypeFPC
 
             inspectedObject.GetComponent<Collider>().enabled = false;
             audioSource.PlayOneShot(pickUpSound);
+
+            // Adjust inspect point based on object size
+            AdjustInspectPointPosition();
         }
 
         void EndInspection() {
@@ -123,6 +127,26 @@ namespace PrototypeFPC
                 inspectPoint.localPosition = new Vector3(inspectPoint.localPosition.x, inspectPoint.localPosition.y, inspectPoint.localPosition.z + Input.mouseScrollDelta.y * zoomSpeed);
                 audioSource.PlayOneShot(zoomSound);
             }
+        }
+
+        void AdjustInspectPointPosition() {
+            // Calculate the object's size
+            var bounds = CalculateObjectBounds(inspectedObject);
+            float objectSize = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+
+            // Adjust the inspect point's forward position based on the object's size
+            var adjustedPosition = inspectPoint.localPosition;
+            adjustedPosition.z = objectSize * objectSizeFactor;
+            inspectPoint.localPosition = adjustedPosition;
+        }
+
+        Bounds CalculateObjectBounds(GameObject obj) {
+            var bounds = new Bounds(obj.transform.position, Vector3.zero);
+            var renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (var rd in renderers) {
+                bounds.Encapsulate(rd.bounds);
+            }
+            return bounds;
         }
     }
 }

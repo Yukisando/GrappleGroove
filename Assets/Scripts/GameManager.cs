@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     CheckpointVolume[] checkpointVolumes;
     EmancipationVolume[] emancipationVolumes;
+    Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
     NodePickupVolume[] nodeVolumes;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        grabbableObjects = FindObjectsByType<Grabbable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         foreach (var checkpointVolume in checkpointVolumes) {
             checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
@@ -99,12 +101,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndGame() {
-        playerDependencies.rb.gameObject.SetActive(false);
-        playerUI.SetActive(false);
-        endUI.SetActive(true);
-    }
-
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
         playerDependencies.grapplingHook.DestroyRopes(_ropeType);
     }
@@ -125,6 +121,11 @@ public class GameManager : MonoBehaviour
         //Resets all moving objects
         foreach (var movingObject in movingObjects) {
             movingObject.Reset();
+        }
+
+        //Resets all grabbable objects
+        foreach (var grabbableObject in grabbableObjects) {
+            grabbableObject.Reset();
         }
     }
 

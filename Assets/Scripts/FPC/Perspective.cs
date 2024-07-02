@@ -16,6 +16,7 @@ namespace PrototypeFPC
         [SerializeField] float lookTiltAmount = 6f;
         [SerializeField] float lookTiltSpeed = 12f;
         [SerializeField] float tiltResetSpeed = 10f;
+        Quaternion initialRotation;
 
         Vector2 mouseInput;
         PlayerDependencies playerDependencies;
@@ -27,10 +28,16 @@ namespace PrototypeFPC
             playerDependencies = GetComponent<PlayerDependencies>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            // Store the initial rotation
+            initialRotation = transform.rotation;
         }
 
         void Start() {
             playerDependencies.cam.fieldOfView = fov;
+
+            // Apply the initial rotation
+            ForceOrientation(initialRotation);
         }
 
         void Update() {
@@ -73,8 +80,8 @@ namespace PrototypeFPC
         }
 
         public void ForceOrientation(Quaternion rotation) {
-            GetComponent<PlayerDependencies>().cam.transform.localRotation = rotation;
-            GetComponent<PlayerDependencies>().orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
+            playerDependencies.cam.transform.localRotation = rotation;
+            playerDependencies.orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
 
             var eulerRotation = rotation.eulerAngles;
             xRotation = eulerRotation.x;
