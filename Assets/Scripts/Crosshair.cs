@@ -17,38 +17,38 @@ class Crosshair : MonoBehaviour
     [SerializeField] Image inspecting;
     [SerializeField] Image grapple;
     [SerializeField] Image snipsnip;
-    
+
     Sprite defaultSprite;
     int mask;
-    
+
     void Awake() {
         mask = ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player"));
     }
-    
+
     void LateUpdate() {
         SetCrosshair(normal);
         if (Physics.Raycast(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward, out var hit, math.INFINITY, mask, QueryTriggerInteraction.Ignore)) {
-            if (hit.collider.CompareTag("Grab") && playerDependencies.GetComponent<GrabThrow>().maxGrabDistance >= hit.distance) {
+            if (hit.collider.GetComponent<Grabbable>() != null && playerDependencies.GetComponent<GrabThrow>().maxGrabDistance >= hit.distance) {
                 SetCrosshair(grab);
             }
-            else if (hit.collider.CompareTag("Inspect") && playerDependencies.GetComponent<Inspect>().maxPickupDistance >= hit.distance) {
+            else if (playerDependencies.GetComponent<Inspectable>() != null && playerDependencies.GetComponent<Inspect>().maxPickupDistance >= hit.distance) {
                 SetCrosshair(inspect);
             }
-            else if (hit.collider.CompareTag("Grapple") && playerDependencies.GetComponent<GrapplingHook>().hookDistance >= hit.distance) {
+            else if (hit.collider.GetComponent<Hookable>() != null && playerDependencies.GetComponent<GrapplingHook>().hookDistance >= hit.distance) {
                 SetCrosshair(grapple);
             }
             else if (hit.collider.CompareTag("Rope")) {
                 SetCrosshair(snipsnip);
             }
         }
-        
+
         if (playerDependencies.isGrabbing) SetCrosshair(grabbing);
         if (playerDependencies.isInspecting) SetCrosshair(inspecting);
     }
-    
+
     void SetCrosshair(Image activeCrosshair) {
         normal.enabled = activeCrosshair == normal;
-        
+
         grab.enabled = activeCrosshair == grab;
         grabbing.enabled = activeCrosshair == grabbing;
         inspect.enabled = activeCrosshair == inspect;

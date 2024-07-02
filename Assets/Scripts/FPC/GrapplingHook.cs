@@ -17,7 +17,6 @@ namespace PrototypeFPC
         [Header("Assignments")]
         [SerializeField] KeyCode cutRopeKey;
         [SerializeField] KeyCode resetHookKey;
-        [SerializeField] public LayerMask grappleLayerMask;
         [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
         [SerializeField] GameObject platformPrefab;
@@ -140,7 +139,7 @@ namespace PrototypeFPC
             if (!leftGrappleHeld) return;
 
             var pullDirection = (rope.hook.transform.position - transform.position).normalized;
-            rb.AddForce(pullDirection * leftGrapplePullForce * Time.fixedDeltaTime, ForceMode.Force);
+            rb.AddForce(pullDirection * (leftGrapplePullForce * Time.fixedDeltaTime), ForceMode.Force);
         }
 
         void ApplyReleaseImpulse() {
@@ -153,7 +152,7 @@ namespace PrototypeFPC
             float speedAlongRope = Vector3.Dot(playerVelocity, ropeDirection);
 
             if (speedAlongRope > 0) {
-                var releaseVelocity = ropeDirection * speedAlongRope * releaseImpulseFactor;
+                var releaseVelocity = ropeDirection * (speedAlongRope * releaseImpulseFactor);
                 rb.AddForce(releaseVelocity, ForceMode.Impulse);
             }
         }
@@ -163,10 +162,11 @@ namespace PrototypeFPC
                 return;
 
             ray = playerDependencies.cam.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, grappleLayerMask, QueryTriggerInteraction.Ignore))
+            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance))
                 return;
 
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Default") || hit.transform.gameObject.layer == LayerMask.NameToLayer("Static"))
+            var hookable = hit.collider.GetComponent<Hookable>();
+            if (hookable == null)
                 return;
 
             EnsureRigidbodyOnHitObject();
@@ -274,10 +274,11 @@ namespace PrototypeFPC
         }
 
         void CreateHookLatch() {
-            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance, grappleLayerMask, QueryTriggerInteraction.Ignore))
+            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance))
                 return;
 
-            if (hit.collider.isTrigger || hit.collider.gameObject.GetComponent<Rigidbody>() == rb)
+            var hookable = hit.collider.GetComponent<Hookable>();
+            if (hookable == null)
                 return;
 
             var rope = ropes[^1];
