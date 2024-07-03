@@ -113,12 +113,12 @@ public class GameManager : MonoBehaviour
 
         //Resets all moving objects
         foreach (var movingObject in movingObjects) {
-            movingObject.Reset();
+            movingObject.ResetObject();
         }
 
         //Resets all grabbable objects
         foreach (var grabbableObject in grabbableObjects) {
-            grabbableObject.Reset();
+            grabbableObject.ResetObject();
         }
     }
 

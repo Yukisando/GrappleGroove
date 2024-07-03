@@ -27,14 +27,6 @@ public class Move : MonoBehaviour
         SetupAudio();
     }
 
-    public void Reset() {
-        if (tween != null) {
-            LeanTween.cancel(tween.uniqueId);
-            isFirstLoop = true;
-            StartMoving();
-        }
-    }
-
     void Start() {
         StartMoving();
     }
@@ -123,6 +115,14 @@ public class Move : MonoBehaviour
         }
         else {
             transform.position = offsetStartPosition;
+        }
+    }
+
+    public void ResetObject() {
+        if (tween != null) {
+            LeanTween.cancel(tween.uniqueId);
+            isFirstLoop = true;
+            StartMoving();
         }
     }
 }

@@ -80,6 +80,8 @@ namespace PrototypeFPC
         }
 
         public void ForceOrientation(Quaternion rotation) {
+            playerDependencies = GetComponent<PlayerDependencies>();
+
             playerDependencies.cam.transform.localRotation = rotation;
             playerDependencies.orientation.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
 
