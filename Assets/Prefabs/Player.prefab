@@ -1143,7 +1143,7 @@ MonoBehaviour:
   pickupSpeed: 5
   rotateSpeed: 2
   zoomSpeed: 0.2
-  objectSizeFactor: 0.4
+  objectSizeFactor: 0.5
   pickUpSound: {fileID: 8300000, guid: e8db950a4b2c4b5419e99a2b9e5589b5, type: 3}
   putDownSound: {fileID: 8300000, guid: 1f7b3d64aed71054cb5ca513cbf3ae95, type: 3}
   zoomSound: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}

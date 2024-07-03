@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c0f81479fe494bd4b9dda49e0302ea60
+guid: 6d24562925b6a3541a5eebacafdbda44
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 236376
   packageName: Prototype-FPC
   packageVersion: 1.0
-  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Yellow.mat
+  assetPath: Assets/Proto_FPC/FPC_Resources/Materials/Yellow2.mat
   uploadId: 542059

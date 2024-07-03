@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerDependencies playerDependencies;
     [SerializeField] CheckpointManager checkpointManager;
     [SerializeField] Transform respawnPoint;
-    [SerializeField] ScratchManager scratchManager;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject endUI;
     [SerializeField] GameObject playerUI;
@@ -36,7 +35,6 @@ public class GameManager : MonoBehaviour
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
-    NodePickupVolume[] nodeVolumes;
     ResetVolume[] resetVolumes;
 
     void Awake() {
@@ -61,7 +59,6 @@ public class GameManager : MonoBehaviour
     void InitializeTriggerVolumes() {
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        nodeVolumes = FindObjectsByType<NodePickupVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -73,10 +70,6 @@ public class GameManager : MonoBehaviour
 
         foreach (var resetVolume in resetVolumes) {
             resetVolume.onEnterVolume += ResetGameState;
-        }
-
-        foreach (var nodeVolume in nodeVolumes) {
-            nodeVolume.onEnterVolume += OnPlayerEnteredNodePickupVolume;
         }
 
         foreach (var killVolume in killVolumes) {
@@ -135,12 +128,6 @@ public class GameManager : MonoBehaviour
         respawnPoint.position = _spawnPoint.position;
         respawnPoint.forward = _spawnPoint.forward;
         infoPopup.ShowPopup("Checkpoint reached!");
-    }
-
-    void OnPlayerEnteredNodePickupVolume(NodeData _nodeData) {
-        scratchManager.AddNode(_nodeData);
-        infoPopup.ShowPopup($"Node collected: {_nodeData.id}");
-        AudioSource.PlayClipAtPoint(nodePickupSound, transform.position);
     }
 
     void OnPlayerEnteredKillVolume() {

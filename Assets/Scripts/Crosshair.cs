@@ -19,25 +19,21 @@ class Crosshair : MonoBehaviour
     [SerializeField] Image snipsnip;
 
     Sprite defaultSprite;
-    int mask;
-
-    void Awake() {
-        mask = ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player"));
-    }
 
     void LateUpdate() {
         SetCrosshair(normal);
-        if (Physics.Raycast(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward, out var hit, math.INFINITY, mask, QueryTriggerInteraction.Ignore)) {
-            if (hit.collider.GetComponent<Grabbable>() != null && playerDependencies.GetComponent<GrabThrow>().maxGrabDistance >= hit.distance) {
-                SetCrosshair(grab);
-            }
-            else if (playerDependencies.GetComponent<Inspectable>() != null && playerDependencies.GetComponent<Inspect>().maxPickupDistance >= hit.distance) {
+        if (Physics.Raycast(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward, out var hit, math.INFINITY, ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore)) {
+            if (hit.collider.GetComponent<Inspectable>() != null && playerDependencies.GetComponent<Inspect>().maxPickupDistance >= hit.distance) {
                 SetCrosshair(inspect);
+            }
+            else if (hit.collider.GetComponent<Grabbable>() != null && playerDependencies.GetComponent<GrabThrow>().maxGrabDistance >= hit.distance) {
+                SetCrosshair(grab);
             }
             else if (hit.collider.GetComponent<Hookable>() != null && playerDependencies.GetComponent<GrapplingHook>().hookDistance >= hit.distance) {
                 SetCrosshair(grapple);
             }
-            else if (hit.collider.CompareTag("Rope")) {
+
+            if (hit.collider.CompareTag("Rope")) {
                 SetCrosshair(snipsnip);
             }
         }

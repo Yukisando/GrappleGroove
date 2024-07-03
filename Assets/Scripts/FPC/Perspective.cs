@@ -41,7 +41,7 @@ namespace PrototypeFPC
         }
 
         void Update() {
-            if (Cursor.lockState == CursorLockMode.Locked) {
+            if (Cursor.lockState == CursorLockMode.Locked && !playerDependencies.isInspecting) {
                 GetMouseInput();
                 UpdateRotation();
             }
