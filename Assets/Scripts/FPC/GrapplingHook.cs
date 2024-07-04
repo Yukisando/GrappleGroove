@@ -23,7 +23,9 @@ namespace PrototypeFPC
 
         [Header("Settings")]
         [SerializeField] float minimumRopeLength = 1f;
-        [SerializeField] float releaseImpulseFactor = 50f;
+        [SerializeField] float releaseJumpForce = 10f;
+        [SerializeField] float upwardForceRatio = 0.5f;
+        [SerializeField] float forwardForceRatio = 0.5f;
         [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float connectionSpringStrength = 10000f;
         [SerializeField] float connectionDamperStrength = 1000f;
@@ -148,12 +150,22 @@ namespace PrototypeFPC
             var lastRope = ropes[^1];
             var ropeDirection = (lastRope.hook.transform.position - transform.position).normalized;
 
-            var playerVelocity = rb.linearVelocity;
-            float speedAlongRope = Vector3.Dot(playerVelocity, ropeDirection);
+            // Calculate the release direction
+            var releaseDirection = (ropeDirection + Vector3.up).normalized;
 
-            if (speedAlongRope > 0) {
-                var releaseVelocity = ropeDirection * (speedAlongRope * releaseImpulseFactor);
-                rb.AddForce(releaseVelocity, ForceMode.Impulse);
+            // Apply the release force
+            var releaseForce = releaseDirection * releaseJumpForce;
+
+            // Split the force between upward and forward components
+            var upwardForce = Vector3.up * (releaseForce.magnitude * upwardForceRatio);
+            var forwardForce = transform.forward * (releaseForce.magnitude * forwardForceRatio);
+
+            // Apply both forces
+            rb.AddForce(upwardForce + forwardForce, ForceMode.Impulse);
+
+            // Play a sound effect for the release (optional)
+            if (audioSource != null && releaseSound != null) {
+                audioSource.PlayOneShot(releaseSound);
             }
         }
 
