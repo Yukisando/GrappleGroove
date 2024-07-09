@@ -1,6 +1,33 @@
-| Version 1.1.1 (Remake pt. 1)
+| Version 1.1.1.2f
+• (Bug Fix) Fixed a bug where the gradient background for separators would become null after entering and exiting play mode.
 
-Hierarchy Designer was remade from scratch. Update 1.1.1 is the first half of this remake, which contains all previous content and more.
+| Version 1.1.1.2p
+• (New): Added a new feature, 'Gradient Background', to Separators.
+• (New): Added a new feature, 'Hierarchy Designer Location', in the Advanced Settings window.
+• (New): Added a new 'Advanced Settings' option: 'Include Background Image for Gradient Background'.
+• (New): Created the following new presets: 'Prismatic' and 'Wildcats'.
+• (Improvement): The 'Tag and Layer' window now displays the selected GameObject.
+• (Others): Made other small changes.
+• (Others): Applied major and minor changes to some classes.
+• (Others): Updated the Demo Scene and Asset Store page.
+
+| Version 1.1.1.1p
+- (New Feature): You can now re-organize your folders and separators in their manager windows.
+- (New Feature): Added the following new advanced settings values: 'Exclude Folders from Count-Select Tool' and 'Exclude Separators from Count-Select Tool'.
+- (New Feature): Created a new value field, 'Starting Index' (int), for the Rename Tool window.
+- (New Feature): 'Open Rename Tool Window' was added to the Minor Shortcuts list.
+- (Improvement): There is now a numerical display to show the order of your folders and separators in their manager windows.
+- (Improvement): Removing folders and separators from their manager windows will now prompt for modified changes instead of saving instantly.
+- (Improvement): Added the 'Unsaved Modified Changes' check to the following settings windows: General Settings, Design Settings, Shortcuts Settings, and Advanced Settings.
+- (Improvement): Sort Tool operations now work on multiple GameObject parents at once.
+- (Improvement): Small modifications to the following windows' GUI: Folder Manager, Separator Manager, Advanced Settings, Shortcut Settings, and Rename Tool.
+- (Improvement): Inactive Folders Icon Color now reflects the folder color.
+- (Improvement): Minor performance improvements.
+- (Bug Fix): Create Folders and Separators' Minor Shortcuts are now working.
+- (Bug Fix): 'Unsaved Modified Changes' are no longer flagged when creating a folder or separators without modifying their values.
+- (Others): Major and/or minor changes in some classes.
+
+| Version 1.1.1 (Hierarchy Designer Remake)
 
 - (New Feature): Created two new types of settings (Design and Advanced Settings) which allow you to customize your Hierarchy even further.
 - (New Feature): Disabled Components for each gameObject can now be easily identified in the Hierarchy if enabled by the settings.

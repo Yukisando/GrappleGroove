@@ -1,6 +1,7 @@
 #region
 
 using PrototypeFPC;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,7 +28,6 @@ public class GameManager : MonoBehaviour
     [Header("Audio")]
     public AudioClip resetSound;
     public AudioClip checkpointSound;
-    public AudioClip nodePickupSound;
     public AudioClip platformSound;
 
     CheckpointVolume[] checkpointVolumes;
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         if (I == null) I = this;
         else Destroy(gameObject);
 
-        InitializeTriggerVolumes();
+        InitializeWorldObjects();
         LoadLastCheckpoint();
     }
 
@@ -50,13 +50,16 @@ public class GameManager : MonoBehaviour
     }
 
     void CheckInputs() {
-        if (Input.GetKeyDown(quitKey)) Application.Quit();
+        if (Input.GetKeyDown(quitKey)) {
+            if (Application.isEditor) EditorApplication.isPlaying = false;
+            else Application.Quit();
+        }
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void InitializeTriggerVolumes() {
+    void InitializeWorldObjects() {
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -133,5 +136,9 @@ public class GameManager : MonoBehaviour
     void OnPlayerEnteredKillVolume() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         infoPopup.ShowPopup("Crap!");
+    }
+
+    public void PrintLog(string _message) {
+        infoPopup.ShowPopup(_message);
     }
 }

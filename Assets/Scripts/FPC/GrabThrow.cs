@@ -46,15 +46,26 @@ namespace PrototypeFPC
         }
 
         void GrabHoldThrow() {
-            ray = playerDependencies.cam.ScreenPointToRay(Input.mousePosition);
+            ray = playerDependencies.cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
             switch (playerDependencies.isGrabbing) {
                 case true when grabbedObject != null && Input.GetKeyDown(grabThrowKey):
                     ThrowObject();
                     break;
-                case false when !playerDependencies.isInspecting && Physics.Raycast(ray.origin, ray.direction, out hit, maxGrabDistance):
-                    HandleRaycastHit();
+                case false when !playerDependencies.isInspecting:
+                    HandleGrabAttempt();
                     break;
+            }
+        }
+
+        void HandleGrabAttempt() {
+            if (Input.GetKeyDown(grabThrowKey)) {
+                if (Physics.SphereCast(ray.origin, 0.25f, ray.direction, out hit, maxGrabDistance)) {
+                    var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
+                    if (grabbable != null) {
+                        GrabObject(grabbable.GetComponent<Rigidbody>());
+                    }
+                }
             }
         }
 
@@ -63,13 +74,6 @@ namespace PrototypeFPC
             grabbedObject = null;
             playerDependencies.isGrabbing = false;
             audioSource.PlayOneShot(throwSound);
-        }
-
-        void HandleRaycastHit() {
-            var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
-            if (grabbable != null && Input.GetKeyDown(grabThrowKey)) {
-                GrabObject(grabbable.GetComponent<Rigidbody>());
-            }
         }
 
         void GrabObject(Rigidbody hitRigidbody) {

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 939d2bd7d77694f4aac16d9c8d25edbd
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/Scenes/DemoSceneBasicCombiner.unity
+  uploadId: 599466

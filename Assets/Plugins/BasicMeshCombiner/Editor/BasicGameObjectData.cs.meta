@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7785760d628d6ec46b49738b33283ac2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Editor/BasicGameObjectData.cs
+  uploadId: 599466

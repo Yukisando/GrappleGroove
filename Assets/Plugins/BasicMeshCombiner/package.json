@@ -1,0 +1,42 @@
+{
+  "name": "detools.basicmeshcombiner",
+  "version": "1.0.0",
+  "displayName": "Basic Mesh Combiner",
+  "description": "\"Basic Mesh Combiner\" is a tool that I created as part of a collection. Its primary function is to change the pivot of a mesh from a MeshFilter and export it to formats such as FBX, STL, OBJ, and Asset.\r\nIn addition to the main feature, the tool also includes the following extra features:\r\nMultiple Pivots: Allows you to use multiple pivots and obtain the center from those pivots.\r\nVertex Snap: Enables you to snap on your own mesh.\r\nGet Center: Provides the center of all vertices.\r\nSlider Movement: Lets you change the pivot position using X, Y, and Z sliders.\r\nPlease note that this is a pre-beta version of the tool and will be updated in the future. I'm sharing it with the community because I find it nice to use. If you require additional features, please feel free to email me at detoolsassetstore@gmail.com.",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "keywords": [
+    "virtual production",
+    "utility",
+    "unity",
+    "tools",
+    "Tools",
+    "Toolbox",
+    "Test",
+    "test",
+    "Terrain",
+    "scaler",
+    "prototype",
+    "obj",
+    "modeling",
+    "model",
+    "mesh",
+    "max",
+    "GameObjects",
+    "fbx",
+    "experiment",
+    "experimentation",
+    "design",
+    "editor",
+    "cube",
+    "configuration",
+    "blender",
+    "asset",
+    "3d"
+  ],
+  "author": {
+    "name": "Timme Kingma",
+    "email": "detoolsassetstore@gmail.com",
+    "url": "https://timmekingma.nl/"
+  }
+}

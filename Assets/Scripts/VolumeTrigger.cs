@@ -8,9 +8,9 @@ using UnityEngine.Events;
 public class VolumeTrigger : MonoBehaviour
 {
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
+    public string id = "Player";
+    public bool destroyOnTrigger;
     public UnityEvent onEnter;
-    public string tagMask = "Player";
-    public bool destroyObjectPostTrigger;
 
     [Header("Material Offset")]
     [SerializeField] float yMovement = 0.2f;
@@ -39,9 +39,10 @@ public class VolumeTrigger : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if (!other.CompareTag(tagMask)) return;
+        other.TryGetComponent<TriggerObject>(out var triggerObject);
+        if (triggerObject == null || triggerObject.id != id) return;
         onEnter?.Invoke();
-        if (destroyObjectPostTrigger) {
+        if (destroyOnTrigger) {
             Destroy(gameObject);
         }
     }

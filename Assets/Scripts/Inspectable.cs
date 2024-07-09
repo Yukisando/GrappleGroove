@@ -4,7 +4,4 @@ using UnityEngine;
 
 #endregion
 
-namespace PrototypeFPC
-{
-    public class Inspectable : MonoBehaviour { }
-}
+public class Inspectable : MonoBehaviour { }

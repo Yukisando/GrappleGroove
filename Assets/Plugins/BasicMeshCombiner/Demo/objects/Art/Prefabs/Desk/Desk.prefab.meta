@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c1e7f729c8ab11b42879204fb4e82ea1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/objects/Art/Prefabs/Desk/Desk.prefab
+  uploadId: 599466

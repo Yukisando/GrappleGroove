@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cde24635d62c7644283365d5307310c3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/objects/Art/Prefabs/Container/Container.prefab
+  uploadId: 599466

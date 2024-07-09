@@ -1,0 +1,14 @@
+{
+    "name": "DeTools.BasicMeshCombiner.Runtime",
+    "rootNamespace": "DeTools",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

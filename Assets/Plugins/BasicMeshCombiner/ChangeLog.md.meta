@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 89511d4b2edd07140a9b4d1e7b92fda2
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/ChangeLog.md
+  uploadId: 599466

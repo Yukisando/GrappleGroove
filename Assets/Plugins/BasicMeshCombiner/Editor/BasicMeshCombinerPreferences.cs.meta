@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: dcf9b5f9876a7ab4d99fc8de6e775539
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Editor/BasicMeshCombinerPreferences.cs
+  uploadId: 599466

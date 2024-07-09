@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0693042a793607b4a908f67a7c031450
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/objects/Art/Import/FillerProps/filler.mat
+  uploadId: 599466

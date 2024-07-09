@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b13bd0a1e54ee8045a906039a59ebd9b
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Editor/DeTools.BasicMeshCombiner.Editor.asmdef
+  uploadId: 599466

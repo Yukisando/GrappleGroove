@@ -145,7 +145,7 @@ namespace PrototypeFPC
         }
 
         void ApplyReleaseImpulse() {
-            if (ropes.Count == 0) return;
+            if (ropes.Count == 0 || playerDependencies.isGrounded) return;
 
             var lastRope = ropes[^1];
             var ropeDirection = (lastRope.hook.transform.position - transform.position).normalized;

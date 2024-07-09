@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 40a1178321be6ef429d24a7787872ff3
+PackageManifestImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/package.json
+  uploadId: 599466

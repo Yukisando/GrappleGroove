@@ -887,11 +887,11 @@ MonoBehaviour:
   sprintSpeed: 10
   acceleration: 70
   multiplier: 10
-  airMultiplier: 0.4
+  airMultiplier: 0.5
   strafeTilt: 4
   stafeTiltSpeed: 10
   groundDrag: 6
-  airDrag: 0.8
+  airDrag: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 449

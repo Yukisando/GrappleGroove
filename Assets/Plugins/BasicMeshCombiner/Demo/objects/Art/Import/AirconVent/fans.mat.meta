@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 705f79699cee91d4885906f5e730acfa
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/objects/Art/Import/AirconVent/fans.mat
+  uploadId: 599466

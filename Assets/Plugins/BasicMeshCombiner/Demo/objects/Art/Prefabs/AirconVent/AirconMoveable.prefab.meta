@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 79db97ed487c0a946a749ace7fe116de
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252289
+  packageName: Basic Mesh Combiner
+  packageVersion: 1.0
+  assetPath: Assets/BasicMeshCombiner/Demo/objects/Art/Prefabs/AirconVent/AirconMoveable.prefab
+  uploadId: 599466
