@@ -94,6 +94,59 @@ namespace Verpha.HierarchyDesigner
             if (updateData) { LoadSettings(); }
             return new Dictionary<string, HierarchyDesigner_FolderData>(folders);
         }
+
+        public static Dictionary<string, List<string>> GetFolderImageTypesGrouped()
+        {
+            return new Dictionary<string, List<string>>
+            {
+                { "Default", new List<string>
+                    {
+                        "Default",
+                        "Default Outline",
+                        "Default Outline 2X"
+                    }
+                },
+                { "Modern", new List<string>
+                    {
+                        "Modern I"
+                    }
+                }
+            };
+        }
+
+        public static FolderImageType ParseFolderImageType(string displayName)
+        {
+            switch (displayName)
+            {
+                case "Default":
+                    return FolderImageType.Default;
+                case "Default Outline":
+                    return FolderImageType.DefaultOutline;
+                case "Default Outline 2X":
+                    return FolderImageType.DefaultOutline2X;
+                case "Modern I":
+                    return FolderImageType.ModernI;
+                default:
+                    return FolderImageType.Default;
+            }
+        }
+
+        public static string GetFolderImageTypeDisplayName(FolderImageType imageType)
+        {
+            switch (imageType)
+            {
+                case FolderImageType.Default:
+                    return "Default";
+                case FolderImageType.DefaultOutline:
+                    return "Default Outline";
+                case FolderImageType.DefaultOutline2X:
+                    return "Default Outline 2X";
+                case FolderImageType.ModernI:
+                    return "Modern I";
+                default:
+                    return imageType.ToString();
+            }
+        }
         #endregion
 
         #region Save and Load

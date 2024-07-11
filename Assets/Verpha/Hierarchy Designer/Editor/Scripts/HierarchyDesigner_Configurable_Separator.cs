@@ -29,10 +29,16 @@ namespace Verpha.HierarchyDesigner
             DefaultFadedLeft,
             DefaultFadedRight,
             DefaultFadedBottom,
-            DefaultFadedLeftAndRight,
+            DefaultFadedSideways,
+            ClassicI,
+            ClassicII,
             ModernI,
             ModernII,
             ModernIII,
+            NeoI,
+            NeoII,
+            NextGenI,
+            NextGenII,
         }
         private const string settingsFileName = "HierarchyDesigner_SavedData_Separators.json";
         private static Dictionary<string, HierarchyDesigner_SeparatorData> separators = new Dictionary<string, HierarchyDesigner_SeparatorData>();
@@ -118,6 +124,127 @@ namespace Verpha.HierarchyDesigner
         {
             if (updateData) { LoadSettings(); }
             return new Dictionary<string, HierarchyDesigner_SeparatorData>(separators);
+        }
+
+        public static Dictionary<string, List<string>> GetSeparatorImageTypesGrouped()
+        {
+            return new Dictionary<string, List<string>>
+            {
+                { "Default", new List<string>
+                    {
+                        "Default",
+                        "Default Faded Top",
+                        "Default Faded Left",
+                        "Default Faded Right",
+                        "Default Faded Bottom",
+                        "Default Faded Sideways"
+                    }
+                },
+                { "Classic", new List<string>
+                    {
+                        "Classic I",
+                        "Classic II",
+                    }
+                },
+                { "Modern", new List<string>
+                    {
+                        "Modern I",
+                        "Modern II",
+                        "Modern III"
+                    }
+                },
+                { "Neo", new List<string>
+                    {
+                        "Neo I",
+                        "Neo II"
+                    } 
+                },
+                { "Next-Gen", new List<string>
+                    {
+                        "Next-Gen I",
+                        "Next-Gen II"
+
+                    }
+                }
+            };
+        }
+
+        public static SeparatorImageType ParseSeparatorImageType(string displayName)
+        {
+            switch (displayName)
+            {
+                case "Default":
+                    return SeparatorImageType.Default;
+                case "Default Faded Top":
+                    return SeparatorImageType.DefaultFadedTop;
+                case "Default Faded Left":
+                    return SeparatorImageType.DefaultFadedLeft;
+                case "Default Faded Right":
+                    return SeparatorImageType.DefaultFadedRight;
+                case "Default Faded Bottom":
+                    return SeparatorImageType.DefaultFadedBottom;
+                case "Default Faded Sideways":
+                    return SeparatorImageType.DefaultFadedSideways;
+                case "Classic I":
+                    return SeparatorImageType.ClassicI;
+                case "Classic II":
+                    return SeparatorImageType.ClassicII;
+                case "Modern I":
+                    return SeparatorImageType.ModernI;
+                case "Modern II":
+                    return SeparatorImageType.ModernII;
+                case "Modern III":
+                    return SeparatorImageType.ModernIII;
+                case "Neo I":
+                    return SeparatorImageType.NeoI;
+                case "Neo II":
+                    return SeparatorImageType.NeoII;
+                case "Next-Gen I":
+                    return SeparatorImageType.NextGenI;
+                case "Next-Gen II":
+                    return SeparatorImageType.NextGenII;
+                default:
+                    return SeparatorImageType.Default;
+            }
+        }
+
+        public static string GetSeparatorImageTypeDisplayName(SeparatorImageType imageType)
+        {
+            switch (imageType)
+            {
+                case SeparatorImageType.Default:
+                    return "Default";
+                case SeparatorImageType.DefaultFadedTop:
+                    return "Default Faded Top";
+                case SeparatorImageType.DefaultFadedLeft:
+                    return "Default Faded Left";
+                case SeparatorImageType.DefaultFadedRight:
+                    return "Default Faded Right";
+                case SeparatorImageType.DefaultFadedBottom:
+                    return "Default Faded Bottom";
+                case SeparatorImageType.DefaultFadedSideways:
+                    return "Default Faded Sideways";
+                case SeparatorImageType.ClassicI:
+                    return "Classic I";
+                case SeparatorImageType.ClassicII:
+                    return "Classic II";
+                case SeparatorImageType.ModernI:
+                    return "Modern I";
+                case SeparatorImageType.ModernII:
+                    return "Modern II";
+                case SeparatorImageType.ModernIII:
+                    return "Modern III";
+                case SeparatorImageType.NeoI:
+                    return "Neo I";
+                case SeparatorImageType.NeoII:
+                    return "Neo II";
+                case SeparatorImageType.NextGenI:
+                    return "Next-Gen I";
+                case SeparatorImageType.NextGenII:
+                    return "Next-Gen II";
+                default:
+                    return imageType.ToString();
+            }
         }
         #endregion
 

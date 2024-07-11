@@ -692,7 +692,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
-  m_Text: 'Current Version: 1.1.1.2f | Developed with Unity 2022.3.33f1'
+  m_Text: 'Current Version: 1.1.2 | Developed with Unity 2022.3.36f1'
 --- !u!222 &605510317
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1313,9 +1313,10 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
   m_Text: "<size=35><b>1. Getting Started:</b></size>\n_________________________________________________\n\n-
-    All features are located at the top bar (\u2191) on Hierarchy Designer.\r\n\n-
-    Folders and Separators are created inside their Manager Windows.\r\n\r\n- You
-    can toggle features and modify values in the settings windows under Configurations.\r\n\n_________________________________________________"
+    All features are located on the top bar (\u2191) inside Hierarchy Designer. Alternatively,
+    some features can be accessed through multiple ways, such as the context menu
+    and shortcuts.\n\n- Folders and Separators are created inside their Manager Windows.\r\n\r\n-
+    You can toggle features and modify values in the settings windows under Configurations.\r\n\n_________________________________________________"
 --- !u!222 &1121789557
 CanvasRenderer:
   m_ObjectHideFlags: 0

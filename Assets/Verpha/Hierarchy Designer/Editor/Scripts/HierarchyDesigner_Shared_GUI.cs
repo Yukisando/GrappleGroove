@@ -13,6 +13,11 @@ namespace Verpha.HierarchyDesigner
         private static GUIStyle headerGUIStyle = null;
         private static GUIStyle contentGUIStyle = null;
         private static GUIStyle messageGUIStyle = null;
+        private static GUIStyle inspectorHeaderGUIStyleGUIStyle = null;
+        private static GUIStyle inspectorContentGUIStyleGUIStyle = null;
+        private static GUIStyle inspectorMessageItalicGUIStyle = null;
+        private static GUIStyle inspectorMessageBoldGUIStyle = null;
+        private static GUIStyle inactiveLabelGUIStyle = null;
         private static Dictionary<Color, GUIStyle> guiStyleCache = new Dictionary<Color, GUIStyle>();
         private static Dictionary<Color, Texture2D> textureCache = new Dictionary<Color, Texture2D>();
         #endregion
@@ -45,6 +50,25 @@ namespace Verpha.HierarchyDesigner
                 if (size.x > labelWidth) labelWidth = size.x;
             }
             return labelWidth;
+        }
+
+        public static float CalculateMaxLabelWidth(Transform parent)
+        {
+            float maxWidth = 0;
+            GatherChildNamesAndCalculateMaxWidth(parent, ref maxWidth);
+            return maxWidth + 18f;
+        }
+
+        private static void GatherChildNamesAndCalculateMaxWidth(Transform parent, ref float maxWidth)
+        {
+            GUIStyle labelStyle = GUI.skin.label;
+            foreach (Transform child in parent)
+            {
+                GUIContent content = new GUIContent(child.name);
+                Vector2 size = labelStyle.CalcSize(content);
+                if (size.x > maxWidth) maxWidth = size.x;
+                GatherChildNamesAndCalculateMaxWidth(child, ref maxWidth);
+            }
         }
         #endregion
 
@@ -107,6 +131,105 @@ namespace Verpha.HierarchyDesigner
                     }
                 }
                 return messageGUIStyle;
+            }
+        }
+
+        public static GUIStyle InspectorHeaderGUIStyle
+        {
+            get
+            {
+                if (inspectorHeaderGUIStyleGUIStyle == null)
+                {
+                    if (EditorStyles.label != null)
+                    {
+                        inspectorHeaderGUIStyleGUIStyle = new GUIStyle(EditorStyles.label)
+                        {
+                            fontSize = 16,
+                            fontStyle = FontStyle.Normal,
+                            alignment = TextAnchor.MiddleLeft
+                        };
+                    }
+                }
+                return inspectorHeaderGUIStyleGUIStyle;
+            }
+        }
+
+        public static GUIStyle InspectorContentGUIStyle
+        {
+            get
+            {
+                if (inspectorContentGUIStyleGUIStyle == null)
+                {
+                    if (EditorStyles.label != null)
+                    {
+                        inspectorContentGUIStyleGUIStyle = new GUIStyle(EditorStyles.label)
+                        {
+                            fontSize = 14,
+                            fontStyle = FontStyle.Bold,
+                            alignment = TextAnchor.MiddleLeft
+                        };
+                    }
+                }
+                return inspectorContentGUIStyleGUIStyle;
+            }
+        }
+
+        public static GUIStyle InspectorMessageBoldGUIStyle
+        {
+            get
+            {
+                if (inspectorMessageBoldGUIStyle == null)
+                {
+                    if (EditorStyles.label != null)
+                    {
+                        inspectorMessageBoldGUIStyle = new GUIStyle(EditorStyles.label)
+                        {
+                            fontSize = 12,
+                            fontStyle = FontStyle.Bold,
+                        };
+                    }
+                }
+                return inspectorMessageBoldGUIStyle;
+            }
+        }
+
+        public static GUIStyle InspectorMessageItalicGUIStyle
+        {
+            get
+            {
+                if (inspectorMessageItalicGUIStyle == null)
+                {
+                    if (EditorStyles.label != null)
+                    {
+                        inspectorMessageItalicGUIStyle = new GUIStyle(EditorStyles.label)
+                        {
+                            fontSize = 12,
+                            fontStyle = FontStyle.Italic,
+                        };
+                    }
+                }
+                return inspectorMessageItalicGUIStyle;
+            }
+        }
+
+        public static GUIStyle InactiveLabelGUIStyle
+        {
+            get
+            {
+                if (inactiveLabelGUIStyle == null)
+                {
+                    if (EditorStyles.label != null)
+                    {
+                        inactiveLabelGUIStyle = new GUIStyle(EditorStyles.label)
+                        {
+                            fontSize = 12,
+                        };
+                        Color textColor = inactiveLabelGUIStyle.normal.textColor;
+                        textColor.a = 0.5f;
+                        inactiveLabelGUIStyle.normal.textColor = textColor;
+                    }
+                }
+                return inactiveLabelGUIStyle;
             }
         }
 

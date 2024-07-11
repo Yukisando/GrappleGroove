@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace Verpha.HierarchyDesigner
         private bool applyToTag = true;
         private bool applyToLayer = true;
         private bool applyToTree = true;
+        private bool applyToLock = true;
         #endregion
         #endregion
 
@@ -66,7 +68,10 @@ namespace Verpha.HierarchyDesigner
             EditorGUILayout.BeginHorizontal(contentBackgroundGUIStyle);
             EditorGUILayout.LabelField("Choose A Preset:", contentGUIStyle, GUILayout.Width(labelWidth));
             GUILayout.Space(4);
-            selectedPresetIndex = EditorGUILayout.Popup(selectedPresetIndex, presetNames);
+            if (GUILayout.Button(presetNames[selectedPresetIndex], EditorStyles.popup))
+            {
+                ShowPresetPopup();
+            }
             EditorGUILayout.EndHorizontal();
             GUILayout.Space(4);
             #endregion
@@ -81,6 +86,7 @@ namespace Verpha.HierarchyDesigner
             applyToTag = HierarchyDesigner_Shared_GUI.DrawToggle("GameObject's Tag", toggleLabelWidth, applyToTag);
             applyToLayer = HierarchyDesigner_Shared_GUI.DrawToggle("GameObject's Layer", toggleLabelWidth, applyToLayer);
             applyToTree = HierarchyDesigner_Shared_GUI.DrawToggle("Hierarchy Tree", toggleLabelWidth, applyToTree);
+            applyToLock = HierarchyDesigner_Shared_GUI.DrawToggle("Lock Label", toggleLabelWidth, applyToLock);
             GUILayout.Space(4);
             EditorGUILayout.EndVertical();
             #endregion
@@ -109,6 +115,28 @@ namespace Verpha.HierarchyDesigner
             #endregion
         }
 
+        private void ShowPresetPopup()
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedPresets = HierarchyDesigner_Configurable_Presets.GetPresetNamesGrouped();
+
+            foreach (KeyValuePair<string, List<string>> group in groupedPresets)
+            {
+                foreach (string presetName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{presetName}"), presetName == presetNames[selectedPresetIndex], OnPresetSelected, presetName);
+                }
+            }
+
+            menu.ShowAsContext();
+        }
+
+        private void OnPresetSelected(object presetNameObj)
+        {
+            string presetName = (string)presetNameObj;
+            selectedPresetIndex = Array.IndexOf(presetNames, presetName);
+        }
+
         private void ApplySelectedPreset()
         {
             if (selectedPresetIndex < 0 || selectedPresetIndex >= presetNames.Length) return;
@@ -122,6 +150,7 @@ namespace Verpha.HierarchyDesigner
             if (applyToTag) changesList.Add("GameObject's Tag");
             if (applyToLayer) changesList.Add("GameObject's Layer");
             if (applyToTree) changesList.Add("Hierarchy Tree");
+            if (applyToLock) changesList.Add("Lock Label");
             message += string.Join(", ", changesList) + "?\n\n*If you select 'confirm' all values will be overridden and saved.*";
 
             if (EditorUtility.DisplayDialog("Confirm Preset Application", message, "Confirm", "Cancel"))
@@ -134,17 +163,30 @@ namespace Verpha.HierarchyDesigner
                 {
                     HierarchyDesigner_Utility_Presets.ApplyPresetToSeparators(selectedPreset);
                 }
+                bool shouldSaveDesignSettings = false;
                 if (applyToTag)
                 {
                     HierarchyDesigner_Utility_Presets.ApplyPresetToTag(selectedPreset);
+                    shouldSaveDesignSettings = true;
                 }
                 if (applyToLayer)
                 {
                     HierarchyDesigner_Utility_Presets.ApplyPresetToLayer(selectedPreset);
+                    shouldSaveDesignSettings = true;
                 }
                 if (applyToTree)
                 {
                     HierarchyDesigner_Utility_Presets.ApplyPresetToTree(selectedPreset);
+                    shouldSaveDesignSettings = true;
+                }
+                if (applyToLock)
+                {
+                    HierarchyDesigner_Utility_Presets.ApplyPresetToLockLabel(selectedPreset);
+                    shouldSaveDesignSettings = true;
+                }
+                if (shouldSaveDesignSettings)
+                {
+                    HierarchyDesigner_Configurable_DesignSettings.SaveSettings();
                 }
                 EditorApplication.RepaintHierarchyWindow();
             }
@@ -157,6 +199,7 @@ namespace Verpha.HierarchyDesigner
             applyToTag = enable;
             applyToLayer = enable;
             applyToTree = enable;
+            applyToLock = enable;
         }
         #endregion
     }

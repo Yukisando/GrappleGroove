@@ -21,8 +21,7 @@ namespace Verpha.HierarchyDesigner
         #region Const
         private const float defaultButtonWidth = 60;
         private const float moveFolderButtonWidth = 25;
-        private const float folderImageTypeButtonWidth = 150;
-        private const float folderCreationLabelWidth = 100;
+        private const float folderCreationLabelWidth = 90;
         private const float extraFolderLabelWidthOffset = 20;
         #endregion
         #region Temporary Values
@@ -79,15 +78,30 @@ namespace Verpha.HierarchyDesigner
 
             #region Main
             #region Folder Creation
+            #region Fields
             EditorGUILayout.BeginVertical(contentBackgroundGUIStyle);
             EditorGUILayout.LabelField("Folder Creation:", contentGUIStyle);
             GUILayout.Space(4);
-            using (new HierarchyDesigner_Shared_GUI.LabelWidth(folderCreationLabelWidth))
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Name", GUILayout.Width(folderCreationLabelWidth));
+            newFolderName = EditorGUILayout.TextField(newFolderName);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Color", GUILayout.Width(folderCreationLabelWidth));
+            newFolderIconColor = EditorGUILayout.ColorField(newFolderIconColor);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Image Type", GUILayout.Width(folderCreationLabelWidth));
+            if (GUILayout.Button(HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(newFolderImageType), EditorStyles.popup))
             {
-                newFolderName = EditorGUILayout.TextField("Name", newFolderName);
-                newFolderIconColor = EditorGUILayout.ColorField("Color", newFolderIconColor);
-                newFolderImageType = (HierarchyDesigner_Configurable_Folder.FolderImageType)EditorGUILayout.EnumPopup("Image Type", newFolderImageType);
+                ShowFolderImageTypePopup();
             }
+            EditorGUILayout.EndHorizontal();
+            #endregion
+            #region Button
             GUILayout.Space(4);
             if (GUILayout.Button("Create Folder", GUILayout.Height(25)))
             {
@@ -103,6 +117,7 @@ namespace Verpha.HierarchyDesigner
             EditorGUILayout.EndVertical();
             GUILayout.Space(4);
             #endregion
+            #endregion
 
             #region Folder's Global Fields and List
             if (tempFolders.Count > 0)
@@ -115,9 +130,7 @@ namespace Verpha.HierarchyDesigner
                 EditorGUI.BeginChangeCheck();
                 tempGlobalFolderIconColor = EditorGUILayout.ColorField(tempGlobalFolderIconColor, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
                 if (EditorGUI.EndChangeCheck()) { UpdateGlobalFolderIconColor(tempGlobalFolderIconColor); }
-                EditorGUI.BeginChangeCheck();
-                tempGlobalFolderImageType = (HierarchyDesigner_Configurable_Folder.FolderImageType)EditorGUILayout.EnumPopup(tempGlobalFolderImageType, GUILayout.Width(folderImageTypeButtonWidth));
-                if (EditorGUI.EndChangeCheck()) { UpdateGlobalFolderImageType(tempGlobalFolderImageType); }
+                if (GUILayout.Button(HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(tempGlobalFolderImageType), EditorStyles.popup)) { ShowFolderImageTypePopupGlobal(); }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
                 GUILayout.Space(4);
@@ -184,6 +197,71 @@ namespace Verpha.HierarchyDesigner
         }
         #endregion
 
+        #region GUI
+        #region Folder Image Type
+        private void ShowFolderImageTypePopup()
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Folder.GetFolderImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(newFolderImageType), OnFolderImageTypeSelected, typeName);
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void ShowFolderImageTypePopupGlobal()
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Folder.GetFolderImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(tempGlobalFolderImageType), OnFolderImageTypeGlobalSelected, typeName);
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void ShowFolderImageTypePopupForFolder(HierarchyDesigner_Configurable_Folder.HierarchyDesigner_FolderData folderData)
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Folder.GetFolderImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(folderData.ImageType), OnFolderImageTypeForFolderSelected, new KeyValuePair<HierarchyDesigner_Configurable_Folder.HierarchyDesigner_FolderData, string>(folderData, typeName));
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void OnFolderImageTypeSelected(object imageTypeObj)
+        {
+            string typeName = (string)imageTypeObj;
+            newFolderImageType = HierarchyDesigner_Configurable_Folder.ParseFolderImageType(typeName);
+        }
+
+        private void OnFolderImageTypeGlobalSelected(object imageTypeObj)
+        {
+            string typeName = (string)imageTypeObj;
+            tempGlobalFolderImageType = HierarchyDesigner_Configurable_Folder.ParseFolderImageType(typeName);
+            UpdateGlobalFolderImageType(tempGlobalFolderImageType);
+        }
+
+        private void OnFolderImageTypeForFolderSelected(object folderDataAndTypeObj)
+        {
+            KeyValuePair<HierarchyDesigner_Configurable_Folder.HierarchyDesigner_FolderData, string> folderDataAndType = (KeyValuePair<HierarchyDesigner_Configurable_Folder.HierarchyDesigner_FolderData, string>)folderDataAndTypeObj;
+            folderDataAndType.Key.ImageType = HierarchyDesigner_Configurable_Folder.ParseFolderImageType(folderDataAndType.Value);
+        }
+        #endregion
+        #endregion
+
         #region Operations
         private bool IsFolderNameValid(string folderName)
         {
@@ -215,7 +293,7 @@ namespace Verpha.HierarchyDesigner
             EditorGUILayout.LabelField($"{index}) {folderData.Name}", GUILayout.Width(folderLabelWidth + extraFolderLabelWidthOffset));
             EditorGUI.BeginChangeCheck();
             folderData.Color = EditorGUILayout.ColorField(folderData.Color, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
-            folderData.ImageType = (HierarchyDesigner_Configurable_Folder.FolderImageType)EditorGUILayout.EnumPopup(folderData.ImageType, GUILayout.Width(folderImageTypeButtonWidth));
+            if (GUILayout.Button(HierarchyDesigner_Configurable_Folder.GetFolderImageTypeDisplayName(folderData.ImageType), EditorStyles.popup)) { ShowFolderImageTypePopupForFolder(folderData); }
             if (EditorGUI.EndChangeCheck()) { hasModifiedChanges = true; }
 
             if (GUILayout.Button("↑", GUILayout.Width(moveFolderButtonWidth)) && position > 0)

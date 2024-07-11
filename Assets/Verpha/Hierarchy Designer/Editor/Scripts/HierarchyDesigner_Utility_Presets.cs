@@ -7,6 +7,36 @@ namespace Verpha.HierarchyDesigner
     public static class HierarchyDesigner_Utility_Presets
     {
         #region Presets
+        public static HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset AgeOfEnlightenmentPreset()
+        {
+            return new HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset(
+                "Age of Enlightenment",
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#E2DAC1"),
+                HierarchyDesigner_Configurable_Folder.FolderImageType.Default,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#464646"),
+                false,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFF9F4"),
+                null,
+                FontStyle.Normal,
+                11,
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.ClassicI,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#6C6C6C"),
+                FontStyle.Italic,
+                10,
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAF1EA"),
+                FontStyle.Italic,
+                10,
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#6C6C6C"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAF1EA"),
+                10,
+                FontStyle.Normal,
+                TextAnchor.MiddleCenter
+            );
+        }
+
         public static HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset AzureDreamscapePreset()
         {
             return new HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset(
@@ -20,14 +50,20 @@ namespace Verpha.HierarchyDesigner
                 FontStyle.BoldAndItalic,
                 13,
                 TextAnchor.MiddleCenter,
-                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedLeftAndRight,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedSideways,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#8E9FD5"),
                 FontStyle.BoldAndItalic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#8E9FD5"),
                 FontStyle.BoldAndItalic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#5A5485")
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#5A5485"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#8E9FD5"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -48,10 +84,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#1C1C1C"),
                 FontStyle.BoldAndItalic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#1C1C1C"),
                 FontStyle.BoldAndItalic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFC402")
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFC402"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFC402"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleRight
             );
         }
 
@@ -72,10 +114,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#ffffff80"),
                 FontStyle.Italic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#ffffff80"),
                 FontStyle.Italic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                11,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -96,10 +144,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFEEAA9C"),
                 FontStyle.Italic,
                 8,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFEEAA9C"),
                 FontStyle.Italic,
                 8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFC8")
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFC8"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFC8"),
+                11,
+                FontStyle.Normal,
+                TextAnchor.UpperCenter
             );
         }
 
@@ -120,10 +174,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#6AB1F8F0"),
                 FontStyle.Bold,
                 8,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#A5D2FF"),
                 FontStyle.Bold,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#A5D2FF")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#A5D2FF"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#A5D2FF"),
+                11,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -141,13 +201,19 @@ namespace Verpha.HierarchyDesigner
                 12,
                 TextAnchor.LowerRight,
                 HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedRight,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#0E244E"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#213864"),
                 FontStyle.Bold,
                 8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#0E244E"),
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#213864"),
                 FontStyle.Bold,
-                8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#1E4E8A")
+                9,
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#213864"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#213864"),
+                10,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleRight
             );
         }
 
@@ -168,10 +234,76 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#DDC0A4E1"),
                 FontStyle.Italic,
                 8,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#DDC0A4E1"),
                 FontStyle.Italic,
                 8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DDC0A4E1")
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DDC0A4E1"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DDC0A4E1"),
+                11,
+                FontStyle.Italic,
+                TextAnchor.MiddleCenter
+            );
+        }
+
+        public static HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset FrostyFogPreset()
+        {
+            return new HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset(
+                "Frosty Fog",
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#C4E7F3DC"),
+                HierarchyDesigner_Configurable_Folder.FolderImageType.DefaultOutline2X,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#E2F0F5"),
+                true,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#C7E6F1"),
+                HierarchyDesigner_Shared_ColorUtility.CreateGradient(GradientMode.Blend, ("#A9DDEF", 255, 20f), ("#BDE7F5", 200, 50f), ("#DCF6FF", 120, 90f), ("DBEFF5", 100, 100f)),
+                FontStyle.Italic,
+                13,
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#ACDEEF"),
+                FontStyle.BoldAndItalic,
+                10,
+                TextAnchor.MiddleRight  ,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#9FA8AB"),
+                FontStyle.Italic,
+                11,
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#CADCE2"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#C4E5F1"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleCenter
+            );
+        }
+
+        public static HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset LittleRedPreset()
+        {
+            return new HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset(
+                "Little Red",
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#E02D3C"),
+                HierarchyDesigner_Configurable_Folder.FolderImageType.ModernI,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                false,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#E02D3CF0"),
+                null,
+                FontStyle.Bold,
+                11,
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                FontStyle.Bold,
+                10,
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#D62E3C"),
+                FontStyle.Bold,
+                10,
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                11,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -181,7 +313,7 @@ namespace Verpha.HierarchyDesigner
                 "Minimal Black",
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000"),
                 HierarchyDesigner_Configurable_Folder.FolderImageType.DefaultOutline,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#3F3F3F"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#646464"),
                 false,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000"),
                 null,
@@ -192,10 +324,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000C8"),
                 FontStyle.Italic,
                 8,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000C8"),
                 FontStyle.Italic,
                 8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000F0")
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000F0"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#000000F0"),
+                10,
+                FontStyle.Normal,
+                TextAnchor.UpperCenter
             );
         }
 
@@ -205,7 +343,7 @@ namespace Verpha.HierarchyDesigner
                 "Minimal White",
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
                 HierarchyDesigner_Configurable_Folder.FolderImageType.DefaultOutline,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#BEBEBE"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#9B9B9B"),
                 false,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
                 null,
@@ -216,10 +354,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFC8"),
                 FontStyle.Italic,
                 8,
+                TextAnchor.MiddleCenter,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFC8"),
                 FontStyle.Italic,
                 8,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFF0")
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFF0"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFFF0"),
+                10,
+                FontStyle.Normal,
+                TextAnchor.UpperCenter
             );
         }
 
@@ -240,10 +384,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD9A5C8"),
                 FontStyle.Normal,
                 9,
+                TextAnchor.MiddleCenter,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD9A5C8"),
                 FontStyle.Normal,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#BCD8E3")
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#BCD8E3"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#BFDFB1"),
+                11,
+                FontStyle.Italic,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -264,10 +414,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD6ECC8"),
                 FontStyle.Bold,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD6ECC8"),
                 FontStyle.Bold,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD6EC")
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD6EC"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#AAD6EC"),
+                11,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -288,10 +444,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#1FC742F0"),
                 FontStyle.Normal,
                 9,
+                TextAnchor.MiddleLeft,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#1FC742F0"),
                 FontStyle.Normal,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#686868")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#686868"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#7D7D7D"),
+                11,
+                FontStyle.Normal,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -312,10 +474,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FB4570FA"),
                 FontStyle.BoldAndItalic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FB4570FA"),
                 FontStyle.BoldAndItalic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FB4570")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FB4570"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FB4570"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -328,18 +496,28 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
                 true,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                #if UNITY_2022_3_OR_NEWER
                 HierarchyDesigner_Shared_ColorUtility.CreateGradient(GradientMode.PerceptualBlend,("#2F7FFF", 155, 0f),("#72BFAF", 158, 35f),("E8CEE8", 162, 70f),("#FFFFFF", 165, 100f)),
+                #else
+                HierarchyDesigner_Shared_ColorUtility.CreateGradient(GradientMode.Blend, ("#2F7FFF", 155, 0f), ("#72BFAF", 158, 35f), ("E8CEE8", 162, 70f), ("#FFFFFF", 165, 100f)),
+                #endif
                 FontStyle.BoldAndItalic,
                 12,
                 TextAnchor.MiddleCenter,
-                HierarchyDesigner_Configurable_Separator.SeparatorImageType.ModernI,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.NeoI,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#9FD3E0"),
                 FontStyle.BoldAndItalic,
                 10,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#E09FAD"),
-                FontStyle.Bold,
+                FontStyle.BoldAndItalic,
                 10,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -356,14 +534,50 @@ namespace Verpha.HierarchyDesigner
                 FontStyle.BoldAndItalic,
                 13,
                 TextAnchor.MiddleCenter,
-                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedLeftAndRight,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedSideways,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#DF4148F0"),
                 FontStyle.BoldAndItalic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#DF4148F0"),
                 FontStyle.BoldAndItalic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DF4148")
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DF4148"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#DF4148"),
+                11,
+                FontStyle.Italic,
+                TextAnchor.MiddleRight
+            );
+        }
+
+        public static HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset StrawberrySalmonPreset()
+        {
+            return new HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset(
+                "Strawberry Salmon",
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAD8D8"),
+                HierarchyDesigner_Configurable_Folder.FolderImageType.DefaultOutline2X,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAD8D8"),
+                false,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F87474"),
+                null,
+                FontStyle.Bold,
+                11,
+                TextAnchor.MiddleCenter,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.NeoI,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#D85E74"),
+                FontStyle.Italic,
+                10,
+                TextAnchor.MiddleRight,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAD8D8"),
+                FontStyle.Italic,
+                10,
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAD8D8"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FAD8D8"),
+                11,
+                FontStyle.Italic,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -384,10 +598,16 @@ namespace Verpha.HierarchyDesigner
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701"),
                 FontStyle.BoldAndItalic,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701"),
                 FontStyle.BoldAndItalic,
                 9,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701"),
+                10,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter
             );
         }
 
@@ -404,14 +624,20 @@ namespace Verpha.HierarchyDesigner
                 FontStyle.Bold,
                 13,
                 TextAnchor.MiddleCenter,
-                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedLeftAndRight,
+                HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedSideways,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
                 FontStyle.Bold,
                 9,
+                TextAnchor.MiddleRight,
                 HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFCF28"),
                 FontStyle.BoldAndItalic,
                 10,
-                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701")
+                TextAnchor.MiddleLeft,
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#FFFFFF"),
+                HierarchyDesigner_Shared_ColorUtility.HexToColor("#F8B701"),
+                11,
+                FontStyle.BoldAndItalic,
+                TextAnchor.UpperCenter
             );
         }
         #endregion
@@ -448,6 +674,7 @@ namespace Verpha.HierarchyDesigner
             HierarchyDesigner_Configurable_DesignSettings.TagColor = preset.tagTextColor;
             HierarchyDesigner_Configurable_DesignSettings.TagFontStyle = preset.tagFontStyle;
             HierarchyDesigner_Configurable_DesignSettings.TagFontSize = preset.tagFontSize;
+            HierarchyDesigner_Configurable_DesignSettings.TagTextAnchor = preset.tagTextAnchor;
         }
 
         public static void ApplyPresetToLayer(HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset preset)
@@ -455,13 +682,22 @@ namespace Verpha.HierarchyDesigner
             HierarchyDesigner_Configurable_DesignSettings.LayerColor = preset.layerTextColor;
             HierarchyDesigner_Configurable_DesignSettings.LayerFontStyle = preset.layerFontStyle;
             HierarchyDesigner_Configurable_DesignSettings.LayerFontSize = preset.layerFontSize;
+            HierarchyDesigner_Configurable_DesignSettings.LayerTextAnchor = preset.layerTextAnchor;
         }
 
         public static void ApplyPresetToTree(HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset preset)
         {
-           HierarchyDesigner_Configurable_DesignSettings.HierarchyTreeColor = preset.treeColor;
+            HierarchyDesigner_Configurable_DesignSettings.HierarchyTreeColor = preset.treeColor;
         }
-       #endregion
+
+        public static void ApplyPresetToLockLabel(HierarchyDesigner_Configurable_Presets.HierarchyDesigner_Preset preset)
+        {
+            HierarchyDesigner_Configurable_DesignSettings.LockColor = preset.lockColor;
+            HierarchyDesigner_Configurable_DesignSettings.LockFontSize = preset.lockFontSize;
+            HierarchyDesigner_Configurable_DesignSettings.LockFontStyle = preset.lockFontStyle;
+            HierarchyDesigner_Configurable_DesignSettings.LockTextAnchor = preset.lockTextAnchor;
+        }
+        #endregion
     }
 }
 #endif

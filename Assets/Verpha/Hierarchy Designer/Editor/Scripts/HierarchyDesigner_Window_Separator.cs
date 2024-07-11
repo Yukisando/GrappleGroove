@@ -39,7 +39,7 @@ namespace Verpha.HierarchyDesigner
         private int newFontSize = 12;
         private FontStyle newFontStyle = FontStyle.Normal;
         private TextAnchor newTextAnchor = TextAnchor.MiddleCenter;
-        private HierarchyDesigner_Configurable_Separator.SeparatorImageType newImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
+        private HierarchyDesigner_Configurable_Separator.SeparatorImageType newSeparatorImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
         #endregion
         #region Separator Global Fields Values
         private Color tempGlobalTextColor = Color.white;
@@ -49,7 +49,7 @@ namespace Verpha.HierarchyDesigner
         private int tempGlobalFontSize = 12;
         private FontStyle tempGlobalFontStyle = FontStyle.Normal;
         private TextAnchor tempGlobalTextAnchor = TextAnchor.MiddleCenter;
-        private HierarchyDesigner_Configurable_Separator.SeparatorImageType tempGlobalImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
+        private HierarchyDesigner_Configurable_Separator.SeparatorImageType tempGlobalSeparatorImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
         #endregion
         #endregion
 
@@ -100,35 +100,71 @@ namespace Verpha.HierarchyDesigner
 
             #region Main
             #region Separator Creation
+            #region Fields
             EditorGUILayout.BeginVertical(contentBackgroundGUIStyle);
             EditorGUILayout.LabelField("Separator Creation:", contentGUIStyle);
             GUILayout.Space(4);
-            using (new HierarchyDesigner_Shared_GUI.LabelWidth(separatorCreationLabelWidth))
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Name", GUILayout.Width(separatorCreationLabelWidth));
+            newSeparatorName = EditorGUILayout.TextField(newSeparatorName);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Text Color", GUILayout.Width(separatorCreationLabelWidth));
+            newTextColor = EditorGUILayout.ColorField(newTextColor);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Is Gradient Background", GUILayout.Width(separatorCreationLabelWidth));
+            newIsGradient = EditorGUILayout.Toggle(newIsGradient);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            if (newIsGradient)
             {
-                newSeparatorName = EditorGUILayout.TextField("Name", newSeparatorName);
-                newTextColor = EditorGUILayout.ColorField("Text Color", newTextColor);
-                newIsGradient = EditorGUILayout.Toggle("Is Gradient Background", newIsGradient);
-                if (newIsGradient)
-                {
-                    newBackgroundGradient = EditorGUILayout.GradientField("Background Gradient", newBackgroundGradient);
-                }
-                else
-                {
-                    newBackgroundColor = EditorGUILayout.ColorField("Background Color", newBackgroundColor);
-                }
-                string[] newFontSizeOptionsStrings = Array.ConvertAll(fontSizeOptions, x => x.ToString());
-                int newFontSizeIndex = Array.IndexOf(fontSizeOptions, newFontSize);
-                newFontSize = fontSizeOptions[EditorGUILayout.Popup("Font Size", newFontSizeIndex, newFontSizeOptionsStrings)];
-                newFontStyle = (FontStyle)EditorGUILayout.EnumPopup("Font Style", newFontStyle);
-                newTextAnchor = (TextAnchor)EditorGUILayout.EnumPopup("Text Anchor", newTextAnchor);
-                newImageType = (HierarchyDesigner_Configurable_Separator.SeparatorImageType)EditorGUILayout.EnumPopup("Background Type", newImageType);
+                EditorGUILayout.LabelField("Background Gradient", GUILayout.Width(separatorCreationLabelWidth));
+                newBackgroundGradient = EditorGUILayout.GradientField(newBackgroundGradient);
             }
+            else
+            {
+                EditorGUILayout.LabelField("Background Color", GUILayout.Width(separatorCreationLabelWidth));
+                newBackgroundColor = EditorGUILayout.ColorField(newBackgroundColor);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            string[] newFontSizeOptionsStrings = Array.ConvertAll(fontSizeOptions, x => x.ToString());
+            int newFontSizeIndex = Array.IndexOf(fontSizeOptions, newFontSize);
+            EditorGUILayout.LabelField("Font Size", GUILayout.Width(separatorCreationLabelWidth));
+            newFontSize = fontSizeOptions[EditorGUILayout.Popup(newFontSizeIndex, newFontSizeOptionsStrings)];
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Font Style", GUILayout.Width(separatorCreationLabelWidth));
+            newFontStyle = (FontStyle)EditorGUILayout.EnumPopup(newFontStyle);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Text Anchor", GUILayout.Width(separatorCreationLabelWidth));
+            newTextAnchor = (TextAnchor)EditorGUILayout.EnumPopup(newTextAnchor);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Background Type", GUILayout.Width(separatorCreationLabelWidth));
+            if (GUILayout.Button(HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(newSeparatorImageType), EditorStyles.popup))
+            {
+                ShowSeparatorImageTypePopup();
+            }
+            EditorGUILayout.EndHorizontal();
+            #endregion
+            #region Button
             GUILayout.Space(4);
             if (GUILayout.Button("Create Separator", GUILayout.Height(25)))
             {
                 if (IsSeparatorNameValid(newSeparatorName))
                 {
-                    CreateSeparator(newSeparatorName, newTextColor, newIsGradient, newBackgroundColor, newBackgroundGradient, newFontSize, newFontStyle, newTextAnchor, newImageType);
+                    CreateSeparator(newSeparatorName, newTextColor, newIsGradient, newBackgroundColor, newBackgroundGradient, newFontSize, newFontStyle, newTextAnchor, newSeparatorImageType);
                 }
                 else
                 {
@@ -137,6 +173,7 @@ namespace Verpha.HierarchyDesigner
             }
             EditorGUILayout.EndVertical();
             GUILayout.Space(4);
+            #endregion
             #endregion
 
             #region Separators's Global Fields and List
@@ -171,9 +208,7 @@ namespace Verpha.HierarchyDesigner
                 EditorGUI.BeginChangeCheck();
                 tempGlobalTextAnchor = (TextAnchor)EditorGUILayout.EnumPopup(tempGlobalTextAnchor, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
                 if (EditorGUI.EndChangeCheck()) { UpdateGlobalSeparatorTextAnchor(tempGlobalTextAnchor); }
-                EditorGUI.BeginChangeCheck();
-                tempGlobalImageType = (HierarchyDesigner_Configurable_Separator.SeparatorImageType)EditorGUILayout.EnumPopup(tempGlobalImageType, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
-                if (EditorGUI.EndChangeCheck()) { UpdateGlobalSeparatorBackgroundType(tempGlobalImageType); }
+                if (GUILayout.Button(HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(tempGlobalSeparatorImageType), EditorStyles.popup, GUILayout.MinWidth(150), GUILayout.ExpandWidth(true))) { ShowSeparatorImageTypePopupGlobal(); }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
                 GUILayout.Space(4);
@@ -240,6 +275,71 @@ namespace Verpha.HierarchyDesigner
         }
         #endregion
 
+        #region GUI
+        #region Folder Image Type
+        private void ShowSeparatorImageTypePopup()
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(newSeparatorImageType), OnSeparatorImageTypeSelected, typeName);
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void ShowSeparatorImageTypePopupGlobal()
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(tempGlobalSeparatorImageType), OnSeparatorImageTypeGlobalSelected, typeName);
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void ShowSeparatorImageTypePopupForSeparator(HierarchyDesigner_Configurable_Separator.HierarchyDesigner_SeparatorData separatorData)
+        {
+            GenericMenu menu = new GenericMenu();
+            Dictionary<string, List<string>> groupedTypes = HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypesGrouped();
+            foreach (KeyValuePair<string, List<string>> group in groupedTypes)
+            {
+                foreach (string typeName in group.Value)
+                {
+                    menu.AddItem(new GUIContent($"{group.Key}/{typeName}"), typeName == HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(separatorData.ImageType), OnSeparatorImageTypeForSeparatorSelected, new KeyValuePair<HierarchyDesigner_Configurable_Separator.HierarchyDesigner_SeparatorData, string>(separatorData, typeName));
+                }
+            }
+            menu.ShowAsContext();
+        }
+
+        private void OnSeparatorImageTypeSelected(object imageTypeObj)
+        {
+            string typeName = (string)imageTypeObj;
+            newSeparatorImageType = HierarchyDesigner_Configurable_Separator.ParseSeparatorImageType(typeName);
+        }
+
+        private void OnSeparatorImageTypeGlobalSelected(object imageTypeObj)
+        {
+            string typeName = (string)imageTypeObj;
+            tempGlobalSeparatorImageType = HierarchyDesigner_Configurable_Separator.ParseSeparatorImageType(typeName);
+            UpdateGlobalSeparatorImageType(tempGlobalSeparatorImageType);
+        }
+
+        private void OnSeparatorImageTypeForSeparatorSelected(object separatorDataAndTypeObj)
+        {
+            KeyValuePair<HierarchyDesigner_Configurable_Separator.HierarchyDesigner_SeparatorData, string> separatorDataAndType = (KeyValuePair<HierarchyDesigner_Configurable_Separator.HierarchyDesigner_SeparatorData, string>)separatorDataAndTypeObj;
+            separatorDataAndType.Key.ImageType = HierarchyDesigner_Configurable_Separator.ParseSeparatorImageType(separatorDataAndType.Value);
+        }
+        #endregion
+        #endregion
+
         #region Operations
         private bool IsSeparatorNameValid(string separatorName)
         {
@@ -271,7 +371,7 @@ namespace Verpha.HierarchyDesigner
             newFontSize = 12;
             newFontStyle = FontStyle.Normal;
             newTextAnchor = TextAnchor.MiddleCenter;
-            newImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
+            newSeparatorImageType = HierarchyDesigner_Configurable_Separator.SeparatorImageType.Default;
             hasModifiedChanges = true;
             GUI.FocusControl(null);
         }
@@ -294,7 +394,7 @@ namespace Verpha.HierarchyDesigner
             separatorData.FontSize = fontSizeOptions[EditorGUILayout.Popup(fontSizeIndex, fontSizeOptionsStrings, GUILayout.Width(50))];
             separatorData.FontStyle = (FontStyle)EditorGUILayout.EnumPopup(separatorData.FontStyle, GUILayout.Width(100));
             separatorData.TextAnchor = (TextAnchor)EditorGUILayout.EnumPopup(separatorData.TextAnchor, GUILayout.Width(125));
-            separatorData.ImageType = (HierarchyDesigner_Configurable_Separator.SeparatorImageType)EditorGUILayout.EnumPopup(separatorData.ImageType, GUILayout.Width(150));
+            if (GUILayout.Button(HierarchyDesigner_Configurable_Separator.GetSeparatorImageTypeDisplayName(separatorData.ImageType), EditorStyles.popup, GUILayout.Width(150))) { ShowSeparatorImageTypePopupForSeparator(separatorData); }
             if (EditorGUI.EndChangeCheck()) { hasModifiedChanges = true; }
 
             if (GUILayout.Button("↑", GUILayout.Width(moveSeparatorButtonWidth)) && position > 0)
@@ -416,7 +516,7 @@ namespace Verpha.HierarchyDesigner
             hasModifiedChanges = true;
         }
 
-        private void UpdateGlobalSeparatorBackgroundType(HierarchyDesigner_Configurable_Separator.SeparatorImageType imageType)
+        private void UpdateGlobalSeparatorImageType(HierarchyDesigner_Configurable_Separator.SeparatorImageType imageType)
         {
             foreach (HierarchyDesigner_Configurable_Separator.HierarchyDesigner_SeparatorData separator in tempSeparators.Values)
             {

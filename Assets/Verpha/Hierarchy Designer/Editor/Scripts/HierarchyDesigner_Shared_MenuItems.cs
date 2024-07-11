@@ -128,6 +128,24 @@ namespace Verpha.HierarchyDesigner
         public const string Section_Select_Type_UI_Legacy = Section_Select_Type_UI + "/Legacy";
         public const string Section_Select_Type_UI_Effects = Section_Select_Type_UI + "/Effects";
         public const string Section_Sort = Group_Tools + "/Sort";
+        public const string Base_HierarchyDesigner_ContextMenu = "GameObject/Hierarchy Designer";
+        public const string ContextMenu_Folders = Base_HierarchyDesigner_ContextMenu + "/Folders";
+        public const string ContextMenu_Separators = Base_HierarchyDesigner_ContextMenu + "/Separators";
+        public const string ContextMenu_Select = Base_HierarchyDesigner_ContextMenu + "/Select";
+        public const string ContextMenu_Select_Type_2D = ContextMenu_Select + "/2D Objects";
+        public const string ContextMenu_Select_Type_2D_Sprites = ContextMenu_Select_Type_2D + "/Sprites";
+        public const string ContextMenu_Select_Type_2D_Physics = ContextMenu_Select_Type_2D + "/Physics";
+        public const string ContextMenu_Select_Type_3D = ContextMenu_Select + "/3D Objects";
+        public const string ContextMenu_Select_Type_3D_Legacy = ContextMenu_Select_Type_3D + "/Legacy";
+        public const string ContextMenu_Select_Type_Audio = ContextMenu_Select + "/Audio";
+        public const string ContextMenu_Select_Type_Effects = ContextMenu_Select + "/Effects";
+        public const string ContextMenu_Select_Type_Light = ContextMenu_Select + "/Light";
+        public const string ContextMenu_Select_Type_Video = ContextMenu_Select + "/Video";
+        public const string ContextMenu_Select_Type_UIToolkit = ContextMenu_Select + "/UI Toolkit";
+        public const string ContextMenu_Select_Type_UI = ContextMenu_Select + "/UI";
+        public const string ContextMenu_Select_Type_UI_Legacy = ContextMenu_Select_Type_UI + "/Legacy";
+        public const string ContextMenu_Select_Type_UI_Effects = ContextMenu_Select_Type_UI + "/Effects";
+        public const string ContextMenu_Sort = Base_HierarchyDesigner_ContextMenu + "/Sort";
         #endregion
         #endregion
     }

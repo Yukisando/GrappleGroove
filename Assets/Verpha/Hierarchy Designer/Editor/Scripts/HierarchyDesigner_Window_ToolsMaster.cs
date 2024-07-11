@@ -134,11 +134,11 @@ namespace Verpha.HierarchyDesigner
             if (availableActionNames.Count == 0) { GUILayout.Label("No tools available for this category."); }
             else
             {
-                EditorGUILayout.BeginVertical(contentBackgroundGUIStyle);
-                EditorGUILayout.LabelField("Action:", contentGUIStyle, GUILayout.ExpandWidth(true));
+                EditorGUILayout.BeginHorizontal(contentBackgroundGUIStyle);
+                EditorGUILayout.LabelField("Action:", contentGUIStyle, GUILayout.Width(60));
                 GUILayout.Space(4);
                 selectedActionIndex = EditorGUILayout.Popup(selectedActionIndex, availableActionNames.ToArray());
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
 
             #endregion
