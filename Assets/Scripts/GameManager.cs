@@ -51,8 +51,11 @@ public class GameManager : MonoBehaviour
 
     void CheckInputs() {
         if (Input.GetKeyDown(quitKey)) {
-            if (Application.isEditor) EditorApplication.isPlaying = false;
-            else Application.Quit();
+            #if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
         }
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);

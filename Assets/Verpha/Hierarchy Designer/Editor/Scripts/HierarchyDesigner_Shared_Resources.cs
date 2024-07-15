@@ -27,12 +27,18 @@ namespace Verpha.HierarchyDesigner
         private static readonly string separatorBackgroundImageDefaultName = "Hierarchy Designer Separator Background Image Default";
         private static readonly string separatorBackgroundImageDefaultFadedBottomName = "Hierarchy Designer Separator Background Image Default Faded Bottom";
         private static readonly string separatorBackgroundImageDefaultFadedLeftName = "Hierarchy Designer Separator Background Image Default Faded Left";
-        private static readonly string separatorBackgroundImageDefaultFadedLeftRightName = "Hierarchy Designer Separator Background Image Default Faded Left Right";
+        private static readonly string separatorBackgroundImageDefaultFadedSidewaysName = "Hierarchy Designer Separator Background Image Default Faded Sideways";
         private static readonly string separatorBackgroundImageDefaultFadedRightName = "Hierarchy Designer Separator Background Image Default Faded Right";
         private static readonly string separatorBackgroundImageDefaultFadedTopName = "Hierarchy Designer Separator Background Image Default Faded Top";
+        private static readonly string separatorBackgroundImageClassicIName = "Hierarchy Designer Separator Background Image Classic I";
+        private static readonly string separatorBackgroundImageClassicIIName = "Hierarchy Designer Separator Background Image Classic II";
         private static readonly string separatorBackgroundImageModernIName = "Hierarchy Designer Separator Background Image Modern I";
         private static readonly string separatorBackgroundImageModernIIName = "Hierarchy Designer Separator Background Image Modern II";
         private static readonly string separatorBackgroundImageModernIIIName = "Hierarchy Designer Separator Background Image Modern III";
+        private static readonly string separatorBackgroundImageNeoIName = "Hierarchy Designer Separator Background Image Neo I";
+        private static readonly string separatorBackgroundImageNeoIIName = "Hierarchy Designer Separator Background Image Neo II";
+        private static readonly string separatorBackgroundImageNextGenIName = "Hierarchy Designer Separator Background Image Next-Gen I";
+        private static readonly string separatorBackgroundImageNextGenIIName = "Hierarchy Designer Separator Background Image Next-Gen II";
         private static readonly string separatorInspectorIconName = "Hierarchy Designer Separator Icon Inspector";
         #endregion
         #endregion
@@ -67,18 +73,30 @@ namespace Verpha.HierarchyDesigner
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedBottomName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedLeft:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedLeftName);
-                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedLeftAndRight:
-                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedLeftRightName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedSideways:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedSidewaysName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedRight:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedRightName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.DefaultFadedTop:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultFadedTopName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.ClassicI:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageClassicIName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.ClassicII:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageClassicIIName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.ModernI:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageModernIName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.ModernII:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageModernIIName);
                 case HierarchyDesigner_Configurable_Separator.SeparatorImageType.ModernIII:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageModernIIIName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.NeoI:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageNeoIName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.NeoII:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageNeoIIName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.NextGenI:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageNextGenIName);
+                case HierarchyDesigner_Configurable_Separator.SeparatorImageType.NextGenII:
+                    return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageNextGenIIName);
                 default:
                     return HierarchyDesigner_Shared_TextureLoader.LoadTexture(separatorBackgroundImageDefaultName);
             }

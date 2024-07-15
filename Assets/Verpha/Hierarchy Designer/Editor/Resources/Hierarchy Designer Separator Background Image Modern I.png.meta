@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ffa059fefbc9a394c99763d383c9bcc2
+guid: 8ec66e67098ec2a4696eb9f148b69e6c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -142,7 +142,7 @@ AssetOrigin:
   serializedVersion: 1
   productId: 273928
   packageName: Hierarchy Designer
-  packageVersion: 1.1.1.2f
+  packageVersion: 1.1.2
   assetPath: Assets/Verpha/Hierarchy Designer/Editor/Resources/Hierarchy Designer
     Separator Background Image Modern I.png
-  uploadId: 674899
+  uploadId: 676475

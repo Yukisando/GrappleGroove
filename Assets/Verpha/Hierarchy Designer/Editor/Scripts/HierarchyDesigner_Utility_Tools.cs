@@ -37,7 +37,7 @@ namespace Verpha.HierarchyDesigner
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_General + "/Activate All GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerEight)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
-        public static void MenuItem_Activate_SlGameObjects() => Activate_AllGameObjects(true);
+        public static void MenuItem_Activate_AllGameObjects() => Activate_AllGameObjects(true);
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_General + "/Activate All Parent GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerEight)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
@@ -61,7 +61,7 @@ namespace Verpha.HierarchyDesigner
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_General + "/Deactivate All GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerTwelve)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
-        public static void MenuItem_Deactivate_GameObjects() => Activate_AllGameObjects(false);
+        public static void MenuItem_Deactivate_AllGameObjects() => Activate_AllGameObjects(false);
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_General + "/Deactivate All Parent GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerTwelve)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
@@ -250,7 +250,7 @@ namespace Verpha.HierarchyDesigner
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_Type_Effects + "/Activate All Lens Flares", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 3)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
-        public static void MenuIte_Activate_LensFlares() => Activate_AllComponentOfType<LensFlare>(true);
+        public static void MenuItem_Activate_LensFlares() => Activate_AllComponentOfType<LensFlare>(true);
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_Type_Effects + "/Activate All Projectors", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 3)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
@@ -388,7 +388,7 @@ namespace Verpha.HierarchyDesigner
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_Type_UI + "/Activate All Masks", false, HierarchyDesigner_Shared_MenuItems.LayerTwelve + 9)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
-        public static void MenuItem__Activate_Masks() => Activate_AllComponentOfType<Mask>(true);
+        public static void MenuItem_Activate_Masks() => Activate_AllComponentOfType<Mask>(true);
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Activate_Type_UI + "/Activate All Rect Masks 2D", false, HierarchyDesigner_Shared_MenuItems.LayerTwelve + 9)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
@@ -440,7 +440,7 @@ namespace Verpha.HierarchyDesigner
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Deactivate_Type_2D_Sprites + "/Deactivate All Hexagon Flat-Top Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 1)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
-        public static void MenuItem__Deactivate_HexagonFlatTopSprites() => Activate_All2DSpritesByType("Hexagon Flat-Top", false);
+        public static void MenuItem_Deactivate_HexagonFlatTopSprites() => Activate_All2DSpritesByType("Hexagon Flat-Top", false);
 
         [MenuItem(HierarchyDesigner_Shared_MenuItems.Section_Deactivate_Type_2D_Sprites + "/Deactivate All Hexagon Pointed-Top Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 1)]
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Activate)]
@@ -2311,6 +2311,392 @@ namespace Verpha.HierarchyDesigner
         [HierarchyDesigner_Shared_Attributes(HierarchyDesigner_Attribute_Tools.Sort)]
         public static void MenuItem_Sort_Randomly() => Sort_GameObjectChildrenRandomly("sort its children randomly");
         #endregion
+        #endregion
+        #endregion
+
+        #region Context menu
+        #region Folders
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Folders + "/Create All Folders", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Folder_CreateAllFolders() => HierarchyDesigner_Utility_Folder.CreateAllFolders();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Folders + "/Create Default Folder", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Folder_CreateDefaultFolder() => HierarchyDesigner_Utility_Folder.CreateDefaultFolder();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Folders + "/Create Missing Folders", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Folder_CreateMissingFolders() => HierarchyDesigner_Utility_Folder.CreateMissingFolders();
+        #endregion
+
+        #region Separators
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Separators + "/Create All Separators", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Separator_CreateAllSeparators() => HierarchyDesigner_Utility_Separator.CreateAllSeparators();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Separators + "/Create Default Separator", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Separator_CreateDefaultSeparator() => HierarchyDesigner_Utility_Separator.CreateDefaultSeparator();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Separators + "/Create Missing Separators", false, HierarchyDesigner_Shared_MenuItems.LayerZero)]
+        public static void ContextMenu_Separator_CreateMissingSeparators() => HierarchyDesigner_Utility_Separator.CreateMissingSeparators();
+        #endregion
+
+        #region Activate
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Activate Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Activate_SelectedGameObjects() => Activate_SelectedGameObjects(true);
+        #endregion
+
+        #region Deactivate
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Deactivate Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Deactivate_SelectedGameObjects() => Activate_SelectedGameObjects(false);
+        #endregion
+
+        #region Count
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Count Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Count_SelectedGameObjects() => Count_SelectedGameObjects();
+        #endregion
+
+        #region Lock
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Lock Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Lock_SelectedGameObjects() => Lock_SelectedGameObjects(true);
+        #endregion
+
+        #region Unlock
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Unlock Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Unlock_SelectedGameObjects() => Lock_SelectedGameObjects(false);
+        #endregion
+
+        #region Rename
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.Base_HierarchyDesigner_ContextMenu + "/Rename Selected", false, HierarchyDesigner_Shared_MenuItems.LayerOne)]
+        public static void ContextMenu_Rename_SelectedGameObjects() => Rename_SelectedGameObjects("rename with automatic indexing", true);
+        #endregion
+
+        #region Select
+        #region General
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerTwo)]
+        public static void ContextMenu_Select_GameObjects() => Select_AllGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Parent GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerTwo + 1)]
+        public static void ContextMenu_Select_ParentGameObjects() => Select_AllParentGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Empty GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerThree + 1)]
+        public static void ContextMenu_Select_EmptyGameObjects() => Select_AllEmptyGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Locked GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerThree + 1)]
+        public static void ContextMenu_Select_LockedGameObjects() => Select_AllLockedGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Active GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerFour + 1)]
+        public static void ContextMenu_Select_ActiveGameObjects() => Select_AllActiveGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Inactive GameObjects", false, HierarchyDesigner_Shared_MenuItems.LayerFour + 1)]
+        public static void ContextMenu_Select_InactiveGameObjects() => Select_AllInactiveGameObjects();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Folders", false, HierarchyDesigner_Shared_MenuItems.LayerFive + 1)]
+        public static void ContextMenu_Select_Folders() => Select_AllFolders();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Separators", false, HierarchyDesigner_Shared_MenuItems.LayerFive + 1)]
+        public static void ContextMenu_Select_Separators() => Select_AllSeparators();
+        #endregion
+
+        #region Types (Select)
+        #region 2D Objects
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D + "/Select All Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 1)]
+        public static void ContextMenu_Select_Sprites() => Select_AllComponentOfType<SpriteRenderer>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D + "/Select All Sprite Masks", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 2)]
+        public static void ContextMenu_Select_SpriteMasks() => Select_AllComponentOfType<SpriteMask>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All 9-Sliced Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_9SlicedSprites() => Select_All2DSpritesByType("9-Sliced");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Capsule Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_CapsuleSprites() => Select_All2DSpritesByType("Capsule");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Circle Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_CircleSprites() => Select_All2DSpritesByType("Circle");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Hexagon Flat-Top Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_HexagonFlatTopSprites() => Select_All2DSpritesByType("Hexagon Flat-Top");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Hexagon Pointed-Top Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_HexagonPointedTopSprites() => Select_All2DSpritesByType("Hexagon Pointed-Top");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Isometric Diamond Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_IsometricDiamondSprites() => Select_All2DSpritesByType("Isometric Diamond");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Square Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_SquareSprites() => Select_All2DSpritesByType("Square");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Sprites + "/Select All Triangle Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_TriangleSprites() => Select_All2DSpritesByType("Triangle");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Physics + "/Select All Dynamic Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_PhysicsDynamicSprites() => Select_AllPhysicsDynamicSprites();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_2D_Physics + "/Select All Static Sprites", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_PhysicsStaticSprites() => Select_AllPhysicsStaticSprites();
+        #endregion
+
+        #region 3D Objects
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Mesh Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 1)]
+        public static void ContextMenu_Select_MeshFilters() => Select_AllComponentOfType<MeshFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Mesh Renderers", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 1)]
+        public static void ContextMenu_Select_MeshRenderers() => Select_AllComponentOfType<MeshRenderer>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Skinned Mesh Renderer", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 1)]
+        public static void ContextMenu_Select_SkinnedMeshRenderers() => Select_AllComponentOfType<SkinnedMeshRenderer>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Cubes", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 1)]
+        public static void ContextMenu_Select_CubesObjects() => Select_All3DObjectsByType("Cube");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Spheres", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 1)]
+        public static void ContextMenu_Select_SpheresObjects() => Select_All3DObjectsByType("Sphere");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Capsules", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_CapsulesObjects() => Select_All3DObjectsByType("Capsule");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Cylinders", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_CylindersObjects() => Select_All3DObjectsByType("Cylinder");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Planes", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_PlanesObjects() => Select_All3DObjectsByType("Plane");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Quads", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_QuadsObjects() => Select_All3DObjectsByType("Quad");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Texts - TextMeshPro", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 3)]
+        public static void ContextMenu_Select_TextMeshProObjects() => Select_All3DObjectsByType("TextMeshPro Mesh");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D_Legacy + "/Select All Text Meshes", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 4)]
+        public static void ContextMenu_Select_TextMeshesObjects() => Select_AllComponentOfType<TextMesh>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Terrains", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 4)]
+        public static void ContextMenu_Select_TerrainsObjects() => Select_AllComponentOfType<Terrain>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Trees", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 4)]
+        public static void ContextMenu_Select_TreesObjects() => Select_AllComponentOfType<Tree>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_3D + "/Select All Wind Zones", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 4)]
+        public static void ContextMenu_Select_WindZonesObjects() => Select_AllComponentOfType<WindZone>();
+        #endregion
+
+        #region Audio
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Sources", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 2)]
+        public static void ContextMenu_Select_AudioSources() => Select_AllComponentOfType<AudioSource>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Reverb Zones", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 3)]
+        public static void ContextMenu_Select_AudioReverbZones() => Select_AllComponentOfType<AudioReverbZone>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Chorus Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioChorusFilters() => Select_AllComponentOfType<AudioChorusFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Distortion Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioDistortionFilters() => Select_AllComponentOfType<AudioDistortionFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Echo Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioEchoFilters() => Select_AllComponentOfType<AudioEchoFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio High Pass Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioHighPassFilters() => Select_AllComponentOfType<AudioHighPassFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Listeners", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioListeners() => Select_AllComponentOfType<AudioListener>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Low Pass Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioLowPassFilters() => Select_AllComponentOfType<AudioLowPassFilter>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Audio + "/Select All Audio Reverb Filters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_AudioReverbFilters() => Select_AllComponentOfType<AudioReverbFilter>();
+        #endregion
+
+        #region Effects
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Particle Systems", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 2)]
+        public static void ContextMenu_Select_ParticleSystems() => Select_AllComponentOfType<ParticleSystem>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Particle System Force Fields", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 3)]
+        public static void ContextMenu_Select_ParticleSystemForceFields() => Select_AllComponentOfType<ParticleSystemForceField>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Trail Renderers", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 3)]
+        public static void ContextMenu_Select_TrailRenderers() => Select_AllComponentOfType<TrailRenderer>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Line Renderers", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 4)]
+        public static void ContextMenu_Select_LineRenderers() => Select_AllComponentOfType<LineRenderer>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Halos", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 4)]
+        public static void ContextMenu_Select_Halos() => Select_AllHalos();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Lens Flares", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 4)]
+        public static void ContextMenu_Select_LensFlares() => Select_AllComponentOfType<LensFlare>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Projectors", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 4)]
+        public static void ContextMenu_Select_AllProjectors() => Select_AllComponentOfType<Projector>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Effects + "/Select All Visual Effects", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 4)]
+        public static void ContextMenu_Select_VisualEffects() => Select_AllComponentOfType<UnityEngine.VFX.VisualEffect>();
+        #endregion
+
+        #region Lights
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 2)]
+        public static void ContextMenu_Select_Lights() => Select_AllComponentOfType<Light>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Directional Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_DirectionalLights() => Select_AllComponentOfType<Light>(light => light.type == LightType.Directional);
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Point Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_PointLights() => Select_AllComponentOfType<Light>(light => light.type == LightType.Point);
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Spot Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 2)]
+        public static void ContextMenu_Select_SpotLights() => Select_AllComponentOfType<Light>(light => light.type == LightType.Spot);
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Rectangle Area Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_RectangleAreaLights() => Select_AllComponentOfType<Light>(light => light.type == LightType.Rectangle);
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Disc Area Lights", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 4)]
+        public static void ContextMenu_Select_DiscAreaLights() => Select_AllComponentOfType<Light>(light => light.type == LightType.Disc);
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Reflection Probes", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 4)]
+        public static void ContextMenu_Select_ReflectionProbes() => Select_AllComponentOfType<ReflectionProbe>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Light Probe Groups", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 5)]
+        public static void ContextMenu_Select_LightProbeGroups() => Select_AllComponentOfType<LightProbeGroup>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Light + "/Select All Light Probe Proxy Volumes", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 5)]
+        public static void ContextMenu_Select_LightProbeProxyVolumes() => Select_AllComponentOfType<LightProbeProxyVolume>();
+        #endregion
+
+        #region Video
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_Video + "/Select All Video Players", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 2)]
+        public static void ContextMenu_Select_VideoPlayers() => Select_AllComponentOfType<UnityEngine.Video.VideoPlayer>();
+        #endregion
+
+        #region UI Toolkit
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UIToolkit + "/Select All UI Documents", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 3)]
+        public static void ContextMenu_Select_UIDocuments() => Select_AllComponentOfType<UnityEngine.UIElements.UIDocument>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UIToolkit + "/Select All Panel Event Handlers", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_PanelEventHandlers() => Select_AllComponentOfType<UnityEngine.UIElements.PanelEventHandler>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UIToolkit + "/Select All Panel Raycasters", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 3)]
+        public static void ContextMenu_Select_PanelRaycasters() => Select_AllComponentOfType<UnityEngine.UIElements.PanelRaycaster>();
+        #endregion
+
+        #region Cameras
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select + "/Select All Cameras", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 4)]
+        public static void ContextMenu_Select_Cameras() => Select_AllComponentOfType<Camera>();
+        #endregion
+
+        #region UI
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Images", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 4)]
+        public static void ContextMenu_Select_Images() => Select_AllComponentOfType<Image>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Texts - TextMeshPro", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 4)]
+        public static void ContextMenu_Select_TextMeshPro() => Select_AllTMPComponentIfAvailable<TMPro.TMP_Text>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Raw Images", false, HierarchyDesigner_Shared_MenuItems.LayerSix + 5)]
+        public static void ContextMenu_Select_RawImages() => Select_AllComponentOfType<RawImage>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Toggles", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 5)]
+        public static void ContextMenu_Select_Toggles() => Select_AllComponentOfType<Toggle>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Sliders", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 6)]
+        public static void ContextMenu_Select_Sliders() => Select_AllComponentOfType<Slider>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Scrollbars", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 7)]
+        public static void ContextMenu_Select_Scrollbars() => Select_AllComponentOfType<Scrollbar>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Scroll Views", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 8)]
+        public static void ContextMenu_Select_ScrollViews() => Select_AllComponentOfType<ScrollRect>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Dropdowns - TextMeshPro", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 9)]
+        public static void ContextMenu_Select_DropdownTextMeshPro() => Select_AllTMPComponentIfAvailable<TMPro.TMP_Dropdown>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Input Fields - TextMeshPro", false, HierarchyDesigner_Shared_MenuItems.LayerSeven + 9)]
+        public static void ContextMenu_Select_InputFieldTextMeshPro() => Select_AllTMPComponentIfAvailable<TMPro.TMP_InputField>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Canvases", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 9)]
+        public static void ContextMenu_Select_Canvases() => Select_AllComponentOfType<Canvas>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Event Systems", false, HierarchyDesigner_Shared_MenuItems.LayerEight + 9)]
+        public static void ContextMenu_Select_EventSystems() => Select_AllComponentOfType<UnityEngine.EventSystems.EventSystem>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Legacy + "/Select All Texts", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 9)]
+        public static void ContextMenu_Select_Texts() => Select_AllComponentOfType<Text>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Legacy + "/Select All Buttons", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 10)]
+        public static void ContextMenu_Select_Buttons() => Select_AllComponentOfType<Button>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Legacy + "/Select All Dropdowns", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 10)]
+        public static void ContextMenu_Select_Dropdowns() => Select_AllComponentOfType<Dropdown>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Legacy + "/Select All Input Fields", false, HierarchyDesigner_Shared_MenuItems.LayerNine + 10)]
+        public static void ContextMenu_Select_InputFields() => Select_AllComponentOfType<InputField>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Masks", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_Masks() => Select_AllComponentOfType<Mask>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Rect Masks 2D", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_RectMasks2D() => Select_AllComponentOfType<RectMask2D>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Selectables", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_Selectables() => Select_AllComponentOfType<Selectable>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI + "/Select All Toggle Groups", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_ToggleGroups() => Select_AllComponentOfType<ToggleGroup>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Effects + "/Select All Outlines", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_Outlines() => Select_AllComponentOfType<Outline>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Effects + "/Select All Positions As UV1", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_PositionsAsUV1() => Select_AllComponentOfType<PositionAsUV1>();
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Select_Type_UI_Effects + "/Select All Shadows", false, HierarchyDesigner_Shared_MenuItems.LayerTen + 10)]
+        public static void ContextMenu_Select_Shadows() => Select_AllComponentOfType<Shadow>();
+        #endregion
+        #endregion
+        #endregion
+
+        #region Sort
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Alphabetically Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerTwo)]
+        public static void ContextMenu_Sort_AlphabeticallyAscending() => Sort_GameObjectChildren(AlphanumericComparison, "sort its children alphabetically ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Alphabetically Descending", false, HierarchyDesigner_Shared_MenuItems.LayerTwo)]
+        public static void ContextMenu_Sort_AlphabeticallyDescending() => Sort_GameObjectChildren((a, b) => -AlphanumericComparison(a, b), "sort its children alphabetically descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Components Amount Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerThree)]
+        public static void ContextMenu_Sort_ComponentsAmountAscending() => Sort_GameObjectChildren((a, b) => a.GetComponents<Component>().Length.CompareTo(b.GetComponents<Component>().Length), "sort its children by components amount ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Components Amount Descending", false, HierarchyDesigner_Shared_MenuItems.LayerThree)]
+        public static void ContextMenu_Sort_ComponentsAmountDescending() => Sort_GameObjectChildren((a, b) => b.GetComponents<Component>().Length.CompareTo(a.GetComponents<Component>().Length), "sort its children by components amount descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Length Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerFour)]
+        public static void ContextMenu_Sort_LengthAscending() => Sort_GameObjectChildren((a, b) => a.name.Length.CompareTo(b.name.Length), "sort its children by length ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Length Descending", false, HierarchyDesigner_Shared_MenuItems.LayerFour)]
+        public static void ContextMenu_Sort_LengthDescending() => Sort_GameObjectChildren((a, b) => b.name.Length.CompareTo(a.name.Length), "sort its children by length descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Tag Alphabetically Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerFive)]
+        public static void ContextMenu_Sort_TagAlphabeticallyAscending() => Sort_GameObjectChildrenByTag(true, "sort its children by tag ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Tag Alphabetically Descending", false, HierarchyDesigner_Shared_MenuItems.LayerFive)]
+        public static void ContextMenu_Sort_TagAlphabeticallyDescending() => Sort_GameObjectChildrenByTag(false, "sort its children by tag descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Tag List Order Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerSix)]
+        public static void ContextMenu_Sort_TagListOrderAscending() => Sort_GameObjectChildrenByTagListOrder(true, "sort its children by tag list order ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Tag List Order Descending", false, HierarchyDesigner_Shared_MenuItems.LayerSix)]
+        public static void ContextMenu_Sort_TagListOrderDescending() => Sort_GameObjectChildrenByTagListOrder(false, "sort its children by tag list order descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Layer Alphabetically Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerSeven)]
+        public static void ContextMenu_Sort_LayerAlphabeticallyAscending() => Sort_GameObjectChildrenByLayer(true, "sort its children by layer alphabetically ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Layer Alphabetically Descending", false, HierarchyDesigner_Shared_MenuItems.LayerSeven)]
+        public static void ContextMenu_Sort_LayerAlphabeticallyDescending() => Sort_GameObjectChildrenByLayer(false, "sort its children by layer alphabetically descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Layer List Order Ascending", false, HierarchyDesigner_Shared_MenuItems.LayerEight)]
+        public static void ContextMenu_Sort_LayerListOrderAscending() => Sort_GameObjectChildrenByLayerListOrder(true, "sort its children by layer list order ascending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Layer List Order Descending", false, HierarchyDesigner_Shared_MenuItems.LayerEight)]
+        public static void ContextMenu_Sort_LayerListOrderDescending() => Sort_GameObjectChildrenByLayerListOrder(false, "sort its children by layer list order descending");
+
+        [MenuItem(HierarchyDesigner_Shared_MenuItems.ContextMenu_Sort + "/Sort Randomly", false, HierarchyDesigner_Shared_MenuItems.LayerNine)]
+        public static void ContextMenu_Sort_Randomly() => Sort_GameObjectChildrenRandomly("sort its children randomly");
         #endregion
         #endregion
 

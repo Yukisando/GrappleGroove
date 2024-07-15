@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c73d42926079b1c428deb9aa61ab6e0b
+guid: 68db93fca9d917340a345fefbb796379
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -142,7 +142,7 @@ AssetOrigin:
   serializedVersion: 1
   productId: 273928
   packageName: Hierarchy Designer
-  packageVersion: 1.1.1.2f
+  packageVersion: 1.1.2
   assetPath: Assets/Verpha/Hierarchy Designer/Editor/Resources/Hierarchy Designer
     Tree Branch Icon L.png
-  uploadId: 674899
+  uploadId: 676475

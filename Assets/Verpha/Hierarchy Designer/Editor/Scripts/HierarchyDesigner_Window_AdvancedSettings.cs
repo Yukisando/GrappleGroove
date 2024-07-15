@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ namespace Verpha.HierarchyDesigner
         #endregion
         #region Const
         private const float enumPopupLabelWidth = 170;
-        private const float toggleLabelWidth = 335;
+        private const float toggleLabelWidth = 360;
         #endregion
         #region Temporary Values
         private HierarchyDesigner_Configurable_AdvancedSettings.HierarchyDesignerLocation tempHierarchyLocation;
@@ -29,6 +28,7 @@ namespace Verpha.HierarchyDesigner
         private bool tempEnableTooltipOnComponentIconHovered;
         private bool tempEnableActiveStateEffectForComponentIcons;
         private bool tempDisableComponentIconsForInactiveGameObjects;
+        private bool tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder;
         private bool tempIncludeBackgroundImageForGradientBackground;
         private bool tempExcludeFoldersFromCountSelectToolCalculations;
         private bool tempExcludeSeparatorsFromCountSelectToolCalculations;
@@ -61,6 +61,7 @@ namespace Verpha.HierarchyDesigner
             tempEnableTooltipOnComponentIconHovered = HierarchyDesigner_Configurable_AdvancedSettings.EnableTooltipOnComponentIconHovered;
             tempEnableActiveStateEffectForComponentIcons = HierarchyDesigner_Configurable_AdvancedSettings.EnableActiveStateEffectForComponentIcons;
             tempDisableComponentIconsForInactiveGameObjects = HierarchyDesigner_Configurable_AdvancedSettings.DisableComponentIconsForInactiveGameObjects;
+            tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = HierarchyDesigner_Configurable_AdvancedSettings.IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder;
             tempIncludeBackgroundImageForGradientBackground = HierarchyDesigner_Configurable_AdvancedSettings.IncludeBackgroundImageForGradientBackground;
             tempExcludeFoldersFromCountSelectToolCalculations = HierarchyDesigner_Configurable_AdvancedSettings.ExcludeFoldersFromCountSelectToolCalculations;
             tempExcludeSeparatorsFromCountSelectToolCalculations = HierarchyDesigner_Configurable_AdvancedSettings.ExcludeSeparatorsFromCountSelectToolCalculations;
@@ -115,6 +116,17 @@ namespace Verpha.HierarchyDesigner
             tempEnableTooltipOnComponentIconHovered = HierarchyDesigner_Shared_GUI.DrawToggle("Enable Tooltip For Component Icons", toggleLabelWidth, tempEnableTooltipOnComponentIconHovered);
             tempEnableActiveStateEffectForComponentIcons = HierarchyDesigner_Shared_GUI.DrawToggle("Enable Active State Effect For Component Icons", toggleLabelWidth, tempEnableActiveStateEffectForComponentIcons);
             tempDisableComponentIconsForInactiveGameObjects = HierarchyDesigner_Shared_GUI.DrawToggle("Disable Component Icons For Inactive GameObjects", toggleLabelWidth, tempDisableComponentIconsForInactiveGameObjects);
+            if (EditorGUI.EndChangeCheck()) { hasModifiedChanges = true; }
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(4);
+            #endregion
+
+            #region Folders
+            EditorGUILayout.BeginVertical(contentBackgroundGUIStyle);
+            EditorGUILayout.LabelField("Folders", contentGUIStyle);
+            GUILayout.Space(2);
+            EditorGUI.BeginChangeCheck();
+            tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = HierarchyDesigner_Shared_GUI.DrawToggle("Include Editor Utilities For Hierarchy Designer's Runtime Folder", toggleLabelWidth, tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder);
             if (EditorGUI.EndChangeCheck()) { hasModifiedChanges = true; }
             EditorGUILayout.EndVertical();
             GUILayout.Space(4);
@@ -195,6 +207,7 @@ namespace Verpha.HierarchyDesigner
             HierarchyDesigner_Configurable_AdvancedSettings.EnableTooltipOnComponentIconHovered = tempEnableTooltipOnComponentIconHovered;
             HierarchyDesigner_Configurable_AdvancedSettings.EnableActiveStateEffectForComponentIcons = tempEnableActiveStateEffectForComponentIcons;
             HierarchyDesigner_Configurable_AdvancedSettings.DisableComponentIconsForInactiveGameObjects = tempDisableComponentIconsForInactiveGameObjects;
+            HierarchyDesigner_Configurable_AdvancedSettings.IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder;
             HierarchyDesigner_Configurable_AdvancedSettings.IncludeBackgroundImageForGradientBackground = tempIncludeBackgroundImageForGradientBackground;
             HierarchyDesigner_Configurable_AdvancedSettings.ExcludeFoldersFromCountSelectToolCalculations = tempExcludeFoldersFromCountSelectToolCalculations;
             HierarchyDesigner_Configurable_AdvancedSettings.ExcludeSeparatorsFromCountSelectToolCalculations = tempExcludeSeparatorsFromCountSelectToolCalculations;
@@ -216,6 +229,7 @@ namespace Verpha.HierarchyDesigner
             tempEnableTooltipOnComponentIconHovered = enable;
             tempEnableActiveStateEffectForComponentIcons = enable;
             tempDisableComponentIconsForInactiveGameObjects = enable;
+            tempIncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = enable;
             tempIncludeBackgroundImageForGradientBackground = enable;
             tempExcludeFoldersFromCountSelectToolCalculations = enable;
             tempExcludeSeparatorsFromCountSelectToolCalculations = enable;

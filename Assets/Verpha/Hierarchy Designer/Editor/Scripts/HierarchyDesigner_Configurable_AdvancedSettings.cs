@@ -19,6 +19,7 @@ namespace Verpha.HierarchyDesigner
             public bool EnableTooltipOnComponentIconHovered = true;
             public bool EnableActiveStateEffectForComponentIcons = true;
             public bool DisableComponentIconsForInactiveGameObjects = true;
+            public bool IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = true;
             public bool IncludeBackgroundImageForGradientBackground = true;
             public bool ExcludeFoldersFromCountSelectToolCalculations = true;
             public bool ExcludeSeparatorsFromCountSelectToolCalculations = true;
@@ -215,6 +216,18 @@ namespace Verpha.HierarchyDesigner
             }
         }
 
+        public static bool IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder
+        {
+            get => advancedSettings.IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder;
+            set
+            {
+                if (advancedSettings.IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder != value)
+                {
+                    advancedSettings.IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = value;
+                }
+            }
+        }
+
         public static bool IncludeBackgroundImageForGradientBackground
         {
             get => advancedSettings.IncludeBackgroundImageForGradientBackground;
@@ -290,6 +303,7 @@ namespace Verpha.HierarchyDesigner
                 EnableTooltipOnComponentIconHovered = true,
                 EnableActiveStateEffectForComponentIcons = true,
                 DisableComponentIconsForInactiveGameObjects = true,
+                IncludeEditorUtilitiesForHierarchyDesignerRuntimeFolder = true,
                 IncludeBackgroundImageForGradientBackground = true,
                 ExcludeFoldersFromCountSelectToolCalculations = true,
                 ExcludeSeparatorsFromCountSelectToolCalculations = true,
