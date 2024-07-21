@@ -19,72 +19,71 @@ static class PlatformBuilder
 
     [MenuItem("Build/Windows/All selected scenes", priority = 100)]
     static void AllWindows() {
-        BuildWindows("Bundle", true);
+        BuildWindows(PlayerSettings.productName, true);
     }
 
     [MenuItem("Build/Windows/All selected scenes (packed)", priority = 100)]
     static void AllWindowsPacked() {
-        BuildWindows("Bundle_packed", true, true);
+        BuildWindows(PlayerSettings.productName, true, true);
     }
 
     [MenuItem("Build/Windows/Current scene", priority = 0)]
     static void Windows() {
-        BuildWindows(GetSceneName(), false);
+        BuildWindows(PlayerSettings.productName, false);
     }
 
     [MenuItem("Build/Windows/Current scene (packed)", priority = 0)]
     static void WindowsPacked() {
-        BuildWindows(GetSceneName(), false, true);
+        BuildWindows(PlayerSettings.productName, false, true);
     }
 
     [MenuItem("Build/Windows/Current scene (dev autostart)", priority = 1)]
     static void WindowsDev() {
-        BuildWindows(GetSceneName(), false, false, true);
+        BuildWindows(PlayerSettings.productName, false, false, true);
     }
 
     [MenuItem("Build/OSX/All selected scenes", priority = 2)]
     static void MacOSAll() {
-        BuildMacOS("Bundle", true);
+        BuildMacOS(PlayerSettings.productName, true);
     }
 
     [MenuItem("Build/OSX/Current scene", priority = 2)]
     static void MacOS() {
-        BuildMacOS(GetSceneName(), false);
+        BuildMacOS(PlayerSettings.productName, false);
     }
 
     [MenuItem("Build/OSX/Current scene (dev)", priority = 3)]
     static void MacOSDev() {
-        BuildMacOS(GetSceneName(), false, true);
+        BuildMacOS(PlayerSettings.productName, false, true);
     }
 
     [MenuItem("Build/Android/All selected scenes", priority = 4)]
     static void AndroidAll() {
-        BuildAndroid("Bundle", true);
+        BuildAndroid(PlayerSettings.productName, true);
     }
 
     [MenuItem("Build/Android/Current scene", priority = 4)]
     static void Android() {
-        BuildAndroid(GetSceneName(), false);
+        BuildAndroid(PlayerSettings.productName, false);
     }
 
     [MenuItem("Build/Android/Current scene (dev autostart)", priority = 5)]
     static void AndroidDev() {
-        BuildAndroid(GetSceneName(), false, true);
+        BuildAndroid(PlayerSettings.productName, false, true);
     }
 
     [MenuItem("Build/WebGL/Current scene", priority = 6)]
     static void WebGL() {
-        BuildWebGL(GetSceneName(), false);
+        BuildWebGL(PlayerSettings.productName, false);
     }
 
     [MenuItem("Build/WebGL/Current scene (dev autostart)", priority = 7)]
     static void WebGLDev() {
-        BuildWebGL(GetSceneName(), false, true);
+        BuildWebGL(PlayerSettings.productName, false, true);
     }
 
     static void BuildWindows(string productName, bool allScenes, bool packed = false, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
-        PlayerSettings.productName = productName;
         string sceneName = GetSceneNameDecorated();
         string appName = $"{productName}.exe";
         string buildPath = Path.GetFullPath($"{BUILDS_FOLDER}Windows/{(dev ? "DEV/" : "")}{sceneName}/");
@@ -112,7 +111,6 @@ static class PlatformBuilder
     static void BuildMacOS(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
         UserBuildSettings.architecture = OSArchitecture.x64ARM64;
-        PlayerSettings.productName = productName;
         string sceneName = GetSceneNameDecorated();
         string appName = $"{productName}.app";
         string buildPath = $"{BUILDS_FOLDER}OSX/{(dev ? "DEV/" : "")}";
@@ -136,7 +134,6 @@ static class PlatformBuilder
     static void BuildAndroid(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
         PlayerSettings.Android.bundleVersionCode++;
-        PlayerSettings.productName = productName;
         string sceneName = GetSceneNameDecorated();
         string apkName = $"{productName}.apk";
         string buildPath = $"{BUILDS_FOLDER}Android/{(dev ? "DEV/" : "")}";
@@ -159,7 +156,6 @@ static class PlatformBuilder
 
     static void BuildWebGL(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
-        PlayerSettings.productName = productName;
         string sceneName = GetSceneNameDecorated();
         string folderName = $"{sceneName}{(dev ? "_dev" : "")}";
         string buildPath = $"{BUILDS_FOLDER}WebGL/{folderName}";
@@ -200,32 +196,25 @@ static class PlatformBuilder
         Debug.Log($"Build Path: {buildPath}");
         Debug.Log($"App Name: {appName}");
 
-        string sfxFileName = $"{Path.GetFileNameWithoutExtension(appName)}_packed.exe";
+        string sceneName = GetSceneName();
+        string sfxFileName = $"{sceneName}_click_to_extract_game.exe";
         string sfxPath = Path.Combine(buildPath, sfxFileName);
         string configPath = Path.Combine(buildPath, "config.txt");
         string tempArchivePath = Path.Combine(buildPath, "temp.7z");
 
         Debug.Log($"SFX File Name: {sfxFileName}");
 
-        // Create a batch file to run the application
-        string batchFileName = "RunApp.bat";
-        File.WriteAllText(Path.Combine(buildPath, batchFileName), $@"@echo off
-cd ""%~dp0""
-start """" ""{appName}""
-exit");
-
         // Write config file
         File.WriteAllText(configPath, $@";!@Install@!UTF-8!
-Title=""Installing {appName}""
-BeginPrompt=""Do you want to install {appName}?""
-ExecuteFile=""{batchFileName}""
+Title=""Extracting {PlayerSettings.productName}""
+BeginPrompt=""Do you want to extract {PlayerSettings.productName}?""
+ExecuteFile=""{appName}""
 Silent=1
 OverwriteMode=""1""
 ;!@InstallEnd@!");
 
-        // Create archive
-        Debug.Log($"Running 7-Zip command: {SEVEN_ZIP_PATH} a -t7z \"{tempArchivePath}\" \"{buildPath}*\" \"{Path.Combine(buildPath, batchFileName)}\" -r -mx=9");
-        RunProcess(SEVEN_ZIP_PATH, $"a -t7z \"{tempArchivePath}\" \"{buildPath}*\" \"{Path.Combine(buildPath, batchFileName)}\" -r -mx=9", buildPath);
+        // Create archive with faster compression
+        RunProcess(SEVEN_ZIP_PATH, $"a -t7z \"{tempArchivePath}\" \"{buildPath}*\" -r -mx=1", buildPath);
 
         // Combine SFX module, config, and archive
         using (var stream = new FileStream(sfxPath, FileMode.Create)) {
@@ -245,26 +234,16 @@ OverwriteMode=""1""
         var startInfo = new ProcessStartInfo {
             FileName = fileName,
             Arguments = arguments,
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true,
+            UseShellExecute = true,
+            CreateNoWindow = false,
             WorkingDirectory = workingDirectory,
         };
 
         using var process = new Process {
             StartInfo = startInfo,
         };
-        process.OutputDataReceived += (sender, e) => {
-            if (e.Data != null) Debug.Log($"7-Zip: {e.Data}");
-        };
-        process.ErrorDataReceived += (sender, e) => {
-            if (e.Data != null) Debug.LogError($"7-Zip Error: {e.Data}");
-        };
 
         process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
         process.WaitForExit();
 
         Debug.Log($"7-Zip process exited with code: {process.ExitCode}");
