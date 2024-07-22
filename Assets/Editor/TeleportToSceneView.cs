@@ -46,11 +46,9 @@ public class TeleportPlayerOnPlay
         var sceneView = SceneView.lastActiveSceneView;
         if (sceneView != null) {
             var cameraPosition = sceneView.camera.transform.position;
-            var cameraRotation = sceneView.camera.transform.rotation;
 
             // Move the player to the scene view camera's position
             player.transform.position = cameraPosition;
-            player.transform.rotation = cameraRotation;
 
             Debug.Log("Player teleported to SceneView camera position.");
         }
