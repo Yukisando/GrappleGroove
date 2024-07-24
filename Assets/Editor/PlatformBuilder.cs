@@ -84,9 +84,9 @@ static class PlatformBuilder
 
     static void BuildWindows(string productName, bool allScenes, bool packed = false, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
-        string sceneName = GetSceneNameDecorated();
-        string appName = $"{productName}.exe";
-        string buildPath = Path.GetFullPath($"{BUILDS_FOLDER}Windows/{(dev ? "DEV/" : "")}{sceneName}/");
+        string outputName = GetOutputName(allScenes, productName);
+        string appName = $"{outputName}.exe";
+        string buildPath = Path.GetFullPath($"{BUILDS_FOLDER}Windows/{(dev ? "DEV/" : "")}{outputName}/");
 
         var buildPlayerOptions = new BuildPlayerOptions {
             scenes = allScenes
@@ -102,7 +102,7 @@ static class PlatformBuilder
         BuildPipeline.BuildPlayer(buildPlayerOptions);
 
         if (packed) {
-            Create7ZipSFX(buildPath, appName);
+            Create7ZipSFX(buildPath, appName, outputName);
         }
 
         if (!dev) OpenBuildLocation(BUILDS_FOLDER);
@@ -111,8 +111,8 @@ static class PlatformBuilder
     static void BuildMacOS(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
         UserBuildSettings.architecture = OSArchitecture.x64ARM64;
-        string sceneName = GetSceneNameDecorated();
-        string appName = $"{productName}.app";
+        string outputName = GetOutputName(allScenes, productName);
+        string appName = $"{outputName}.app";
         string buildPath = $"{BUILDS_FOLDER}OSX/{(dev ? "DEV/" : "")}";
 
         var buildPlayerOptions = new BuildPlayerOptions {
@@ -134,8 +134,8 @@ static class PlatformBuilder
     static void BuildAndroid(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
         PlayerSettings.Android.bundleVersionCode++;
-        string sceneName = GetSceneNameDecorated();
-        string apkName = $"{productName}.apk";
+        string outputName = GetOutputName(allScenes, productName);
+        string apkName = $"{outputName}.apk";
         string buildPath = $"{BUILDS_FOLDER}Android/{(dev ? "DEV/" : "")}";
 
         var buildPlayerOptions = new BuildPlayerOptions {
@@ -156,8 +156,8 @@ static class PlatformBuilder
 
     static void BuildWebGL(string productName, bool allScenes, bool dev = false) {
         SwitchBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
-        string sceneName = GetSceneNameDecorated();
-        string folderName = $"{sceneName}{(dev ? "_dev" : "")}";
+        string outputName = GetOutputName(allScenes, productName);
+        string folderName = $"{outputName}{(dev ? "_dev" : "")}";
         string buildPath = $"{BUILDS_FOLDER}WebGL/{folderName}";
 
         var buildPlayerOptions = new BuildPlayerOptions {
@@ -191,13 +191,12 @@ static class PlatformBuilder
         });
     }
 
-    static void Create7ZipSFX(string buildPath, string appName) {
+    static void Create7ZipSFX(string buildPath, string appName, string outputName) {
         Debug.Log("Starting 7-Zip SFX creation...");
         Debug.Log($"Build Path: {buildPath}");
         Debug.Log($"App Name: {appName}");
 
-        string sceneName = GetSceneName();
-        string sfxFileName = $"{sceneName}_click_to_extract_game.exe";
+        string sfxFileName = $"{outputName}_packed.exe";
         string sfxPath = Path.Combine(buildPath, sfxFileName);
         string configPath = Path.Combine(buildPath, "config.txt");
         string tempArchivePath = Path.Combine(buildPath, "temp.7z");
@@ -239,9 +238,8 @@ OverwriteMode=""1""
             WorkingDirectory = workingDirectory,
         };
 
-        using var process = new Process {
-            StartInfo = startInfo,
-        };
+        using var process = new Process();
+        process.StartInfo = startInfo;
 
         process.Start();
         process.WaitForExit();
@@ -262,12 +260,11 @@ OverwriteMode=""1""
         Debug.Log($"Cleanup complete, only {sfxFileName} remains in the build directory.");
     }
 
-    static string GetSceneName() {
-        return SceneManager.GetActiveScene().name;
+    static string GetOutputName(bool allScenes, string productName) {
+        return allScenes ? productName : GetSceneName();
     }
 
-    static string GetSceneNameDecorated() {
-        string name = GetSceneName();
-        return char.ToUpper(name[0]) + name[1..] + "_v0";
+    static string GetSceneName() {
+        return SceneManager.GetActiveScene().name;
     }
 }
