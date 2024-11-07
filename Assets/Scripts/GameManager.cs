@@ -1,6 +1,7 @@
 #region
 
 using PrototypeFPC;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
     public static GameManager I;
 
     [Header("Game dependencies")]
-    [SerializeField] PlayerDependencies playerDependencies;
+    [SerializeField] bool autoStartHost = true;
     [SerializeField] CheckpointManager checkpointManager;
     [SerializeField] Transform respawnPoint;
     [SerializeField] InfoPopup infoPopup;
@@ -29,20 +30,29 @@ public class GameManager : MonoBehaviour
     public AudioClip resetSound;
     public AudioClip checkpointSound;
     public AudioClip platformSound;
-
     CheckpointVolume[] checkpointVolumes;
     EmancipationVolume[] emancipationVolumes;
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
+
+    PlayerDependencies playerDependencies;
     ResetVolume[] resetVolumes;
 
     void Awake() {
         if (I == null) I = this;
         else Destroy(gameObject);
+    }
 
-        InitializeWorldObjects();
-        LoadLastCheckpoint();
+    void Start() {
+        NetworkManager.Singleton.OnServerStarted += () => {
+            Debug.Log("Server started!");
+            playerDependencies = FindAnyObjectByType<PlayerDependencies>(FindObjectsInactive.Include);
+            InitializeWorldObjects();
+            LoadLastCheckpoint();
+        };
+
+        if (autoStartHost) NetworkManager.Singleton.StartHost();
     }
 
     void Update() {
@@ -51,12 +61,13 @@ public class GameManager : MonoBehaviour
 
     void CheckInputs() {
         if (Input.GetKeyDown(quitKey)) {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             EditorApplication.isPlaying = false;
-            #else
+#else
             Application.Quit();
-            #endif
+#endif
         }
+
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -66,7 +77,8 @@ public class GameManager : MonoBehaviour
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        emancipationVolumes =
+            FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         grabbableObjects = FindObjectsByType<Grabbable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
@@ -141,7 +153,7 @@ public class GameManager : MonoBehaviour
         infoPopup.ShowPopup("Crap!");
     }
 
-    public void PrintLog(string _message) {
+    public void PopupMessage(string _message) {
         infoPopup.ShowPopup(_message);
     }
 }

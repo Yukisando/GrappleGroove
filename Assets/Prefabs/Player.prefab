@@ -2498,6 +2498,7 @@ GameObject:
   - component: {fileID: 8245302811132308742}
   - component: {fileID: 619021368732356237}
   - component: {fileID: 1733116686901082662}
+  - component: {fileID: 8390310941486214848}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2513,8 +2514,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643533470452205149}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21268673, y: -0.44599655, z: 0.110018425, w: 0.8624079}
-  m_LocalPosition: {x: 269.22632, y: -7.1105967, z: -112.17489}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2522,7 +2523,7 @@ Transform:
   - {fileID: 4020737450502963886}
   - {fileID: 2927831574506113995}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 27.709, y: -54.691, z: 0.003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &8245302811132308742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2586,6 +2587,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Player
+--- !u!114 &8390310941486214848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643533470452205149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 380513313
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &7753466973429341682
 GameObject:
   m_ObjectHideFlags: 0
