@@ -32,7 +32,7 @@ public class PlayerDependencies : MonoBehaviour
     public bool isInspecting;
     public bool isGrabbing;
     public bool isVaulting;
-    public float tilt;
+    [HideInInspector] public float tilt;
 
     public Perspective perspective;
     public Movement movement;
