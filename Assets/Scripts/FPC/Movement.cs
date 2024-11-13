@@ -1,13 +1,14 @@
 #region
 
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Movement : MonoBehaviour
+    public class Movement : NetworkBehaviour
     {
         //Input
         [Header("Input Properties")]
@@ -76,10 +77,12 @@ namespace PrototypeFPC
         }
 
         void Start() {
+            if (!IsOwner) return;
             Setup(); //- Line 113
         }
 
         void Update() {
+            if (!IsOwner) return;
             GroundCheck(); //- Line 132
             CalculateDirection(); //- Line 139
             CalculateSlope(); //- Line 151
@@ -90,6 +93,7 @@ namespace PrototypeFPC
         }
 
         void FixedUpdate() {
+            if (!IsOwner) return;
             Move(); //- Line 158
         }
 
@@ -133,7 +137,7 @@ namespace PrototypeFPC
         //Apply player movement
         void Move() {
             //Grounded & NOT on slope
-            if (playerDependencies.isGrounded && !playerDependencies.isInspecting && !OnSlope() && !playerDependencies.isSliding) rb.AddForce(moveDirection.normalized * moveAmount * multiplier, ForceMode.Acceleration);
+            if (playerDependencies.isGrounded && !playerDependencies.isInspecting && !OnSlope() && !playerDependencies.isSliding) rb.AddForce(moveDirection.normalized * (moveAmount * multiplier), ForceMode.Acceleration);
 
             //Grounded & on slope
             if (playerDependencies.isGrounded && OnSlope()) rb.AddForce(slopeMoveDirection.normalized * (moveAmount * multiplier), ForceMode.Acceleration);

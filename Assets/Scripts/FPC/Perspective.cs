@@ -1,12 +1,13 @@
 #region
 
+using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Perspective : MonoBehaviour
+    public class Perspective : NetworkBehaviour
     {
         [Header("Camera Properties")]
         [SerializeField] float fov = 60f;
@@ -34,6 +35,7 @@ namespace PrototypeFPC
         }
 
         void Start() {
+            if (!IsOwner) return;
             playerDependencies.cam.fieldOfView = fov;
 
             // Apply the initial rotation
@@ -41,6 +43,8 @@ namespace PrototypeFPC
         }
 
         void Update() {
+            if (!IsOwner) return;
+
             if (Cursor.lockState == CursorLockMode.Locked && !playerDependencies.isInspecting) {
                 GetMouseInput();
                 UpdateRotation();
@@ -49,6 +53,8 @@ namespace PrototypeFPC
         }
 
         void LateUpdate() {
+            if (!IsOwner) return;
+
             ApplyRotation();
             UpdateTilt();
         }

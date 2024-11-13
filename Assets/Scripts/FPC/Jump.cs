@@ -1,12 +1,13 @@
 #region
 
+using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Jump : MonoBehaviour
+    public class Jump : NetworkBehaviour
     {
         //Input
         [Header("Input Properties")]
@@ -43,10 +44,14 @@ namespace PrototypeFPC
         }
 
         void Start() {
+            if (!IsOwner) return;
+
             Setup(); //- Line 74
         }
 
         void Update() {
+            if (!IsOwner) return;
+
             Land(); //- Line 117
 
             // Check if jump key is released
@@ -54,6 +59,8 @@ namespace PrototypeFPC
         }
 
         void FixedUpdate() {
+            if (!IsOwner) return;
+
             SimulateJump(); //- Line 82
             Fall(); //- Line 102
         }

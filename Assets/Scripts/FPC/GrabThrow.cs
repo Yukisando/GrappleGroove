@@ -1,12 +1,13 @@
 #region
 
+using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class GrabThrow : MonoBehaviour
+    public class GrabThrow : NetworkBehaviour
     {
         [Header("Input Properties")]
         [SerializeField] KeyCode grabThrowKey = KeyCode.G;
@@ -38,10 +39,14 @@ namespace PrototypeFPC
         }
 
         void Update() {
+            if (!IsOwner) return;
+
             GrabHoldThrow();
         }
 
         void FixedUpdate() {
+            if (!IsOwner) return;
+
             Hold();
         }
 

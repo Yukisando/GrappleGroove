@@ -1,12 +1,13 @@
 #region
 
+using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Inspect : MonoBehaviour
+    public class Inspect : NetworkBehaviour
     {
         [Header("Input Properties")]
         [SerializeField] KeyCode inspectKey = KeyCode.F;
@@ -41,10 +42,14 @@ namespace PrototypeFPC
         }
 
         void Start() {
+            if (!IsOwner) return;
+
             Setup();
         }
 
         void Update() {
+            if (!IsOwner) return;
+
             Inspection();
         }
 

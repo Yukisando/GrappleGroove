@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -12,7 +13,7 @@ namespace PrototypeFPC
 {
     public enum RopeType { BOTH, LEFT, RIGHT }
 
-    public class GrapplingHook : MonoBehaviour
+    public class GrapplingHook : NetworkBehaviour
     {
         [Header("Assignments")]
         [SerializeField] KeyCode cutRopeKey;
@@ -77,11 +78,15 @@ namespace PrototypeFPC
         }
 
         void Start() {
+            if (!IsOwner) return;
+
             rb = playerDependencies.rb;
             audioSource = playerDependencies.audioSourceTop;
         }
 
         void Update() {
+            if (!IsOwner) return;
+
             InputCheck();
 
             if (!playerDependencies.isInspecting || !playerDependencies.isGrabbing) {
@@ -92,6 +97,8 @@ namespace PrototypeFPC
         }
 
         void FixedUpdate() {
+            if (!IsOwner) return;
+
             if (hooked) {
                 foreach (var rope in ropes) {
                     if (rope.type == RopeType.LEFT) {
@@ -102,6 +109,8 @@ namespace PrototypeFPC
         }
 
         void LateUpdate() {
+            if (!IsOwner) return;
+
             DrawRopes();
         }
 

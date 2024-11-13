@@ -2,12 +2,13 @@
 
 using PrototypeFPC;
 using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 #endregion
 
-class Crosshair : MonoBehaviour
+class Crosshair : NetworkBehaviour
 {
     [SerializeField] PlayerDependencies playerDependencies;
     [SerializeField] Image normal;
@@ -21,6 +22,7 @@ class Crosshair : MonoBehaviour
     Sprite defaultSprite;
 
     void LateUpdate() {
+        if (!IsOwner) return;
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         if (playerDependencies == null) return;
         SetCrosshair(normal);
