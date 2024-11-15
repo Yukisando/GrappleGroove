@@ -2176,6 +2176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   ifOwner: 1
+  component: {fileID: 548907423963366387}
 --- !u!1 &5801549147986860379
 GameObject:
   m_ObjectHideFlags: 0

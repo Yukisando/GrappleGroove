@@ -8,8 +8,9 @@ using UnityEngine;
 public class NetworkEnabler : NetworkBehaviour
 {
     [SerializeField] bool ifOwner = true;
+    [SerializeField] Behaviour component;
 
     void Start() {
-        gameObject.SetActive(IsOwner == ifOwner);
+        component.enabled = IsOwner == ifOwner;
     }
 }
