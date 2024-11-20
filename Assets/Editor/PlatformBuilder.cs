@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEditor.OSXStandalone;
+using UnityEditor.WindowsStandalone;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
