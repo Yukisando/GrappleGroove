@@ -1,186 +1,195 @@
 #region
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Build;
-using UnityEditor.WindowsStandalone;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 #endregion
 
-static class PlatformBuilder
+public class PlatformBuilder : EditorWindow
 {
-    const string BUILDS_FOLDER = "./Builds/";
-    const string SEVEN_ZIP_PATH = @"C:\Program Files\7-Zip\7z.exe";
-    const string SEVEN_ZIP_SFX_MODULE = @"C:\Program Files\7-Zip\7z.sfx";
+    static Action<string, BuildTarget, BuildOptions> onNameConfirmed;
+    string appName;
+    BuildTarget target;
+    BuildOptions options;
 
-    [MenuItem("Build/Windows/All selected scenes", priority = 100)]
-    static void AllWindows() {
-        BuildWindows(PlayerSettings.productName, true);
+    static void ShowDialog(string defaultName, BuildTarget target, BuildOptions options, Action<string, BuildTarget, BuildOptions> onConfirm) {
+        var window = GetWindow<PlatformBuilder>(true, "Enter App Name", true);
+        window.appName = defaultName;
+        window.target = target;
+        window.options = options;
+        onNameConfirmed = onConfirm;
+        window.minSize = new Vector2(300, 100);
+        window.ShowUtility();
     }
 
-    [MenuItem("Build/Windows/All selected scenes (packed)", priority = 100)]
-    static void AllWindowsPacked() {
-        BuildWindows(PlayerSettings.productName, true, true);
+    void OnGUI() {
+        GUILayout.Label("Name of the app will be: (Avoid spaces)", EditorStyles.boldLabel);
+        appName = EditorGUILayout.TextField(appName);
+
+        GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("OK")) {
+            if (!string.IsNullOrEmpty(appName)) onNameConfirmed?.Invoke(appName, target, options);
+            Close();
+        }
+
+        if (GUILayout.Button("Cancel")) Close();
+
+        GUILayout.EndHorizontal();
     }
 
-    [MenuItem("Build/Windows/Current scene", priority = 0)]
+    // --------------------------- BUILD SYSTEM ---------------------------
+
+    static void BuildForPlatform(BuildTarget target, BuildOptions options, string extension) {
+        string defaultAppName = GetSceneNameDecorated();
+        ShowDialog(defaultAppName, target, options, (appName, buildTarget, buildOptions) => {
+            if (string.IsNullOrEmpty(appName)) return;
+
+            PlayerSettings.productName = appName;
+
+            string buildPath = Path.GetFullPath($"./Builds/{buildTarget}/");
+            string appFolder = Path.Combine(buildPath, appName);
+            Directory.CreateDirectory(appFolder);
+
+            string outputPath = buildTarget == BuildTarget.WebGL
+                ? appFolder
+                : appFolder + extension;
+
+            string[] scenes = {
+                SceneManager.GetActiveScene().path,
+            };
+
+            if (buildTarget == BuildTarget.WebGL) {
+                // Warn if scene isn't in Build Settings
+                if (!EditorBuildSettings.scenes.Any(s => s.enabled && s.path == scenes[0])) Debug.LogWarning("The active scene is not listed/enabled in Build Settings. WebGL build may fail.");
+
+                // AutoRunPlayer is not supported in WebGL
+                buildOptions &= ~BuildOptions.AutoRunPlayer;
+            }
+
+            BuildPipeline.BuildPlayer(scenes, outputPath, buildTarget, buildOptions);
+            OpenBuildLocation(buildPath);
+        });
+    }
+
+    static void BuildAllSelectedScenesForPlatform(BuildTarget target, string extension) {
+        string defaultAppName = Application.productName + "_AllScenes";
+        ShowDialog(defaultAppName, target, BuildOptions.None, (appName, buildTarget, buildOptions) => {
+            if (string.IsNullOrEmpty(appName)) return;
+
+            PlayerSettings.productName = appName;
+
+            string buildPath = Path.GetFullPath($"./Builds/{buildTarget}/");
+            string appFolder = Path.Combine(buildPath, appName);
+            Directory.CreateDirectory(appFolder);
+
+            string outputPath = buildTarget == BuildTarget.WebGL
+                ? appFolder
+                : appFolder + extension;
+
+            string[] scenes = EditorBuildSettings.scenes
+                .Where(s => s.enabled)
+                .Select(s => s.path)
+                .ToArray();
+
+            if (scenes.Length == 0) {
+                Debug.LogWarning("No scenes selected in Build Settings!");
+                return;
+            }
+
+            if (buildTarget == BuildTarget.WebGL) buildOptions &= ~BuildOptions.AutoRunPlayer;
+
+            BuildPipeline.BuildPlayer(scenes, outputPath, buildTarget, buildOptions);
+            OpenBuildLocation(buildPath);
+        });
+    }
+
+    // ---- Windows ----
+    [MenuItem("Tools/Platform Builder/Windows/Current scene", priority = 0)]
     static void Windows() {
-        BuildWindows(PlayerSettings.productName, false);
+        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.None, ".exe");
     }
 
-    [MenuItem("Build/Windows/Current scene (packed)", priority = 0)]
-    static void WindowsPacked() {
-        BuildWindows(PlayerSettings.productName, false, true);
+    [MenuItem("Tools/Platform Builder/Windows/Current scene (autostart)", priority = 1)]
+    static void WindowsAutostart() {
+        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.AutoRunPlayer, ".exe");
     }
 
-    [MenuItem("Build/Windows/Current scene (dev autostart)", priority = 1)]
-    static void WindowsDev() {
-        BuildWindows(PlayerSettings.productName, false, false, true);
+    [MenuItem("Tools/Platform Builder/Windows/Current scene (dev autostart)", priority = 2)]
+    static void WindowsDevAutostart() {
+        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".exe");
     }
 
-    [MenuItem("Build/OSX/All selected scenes", priority = 2)]
-    static void MacOSAll() {
-        BuildMacOS(PlayerSettings.productName, true);
+    [MenuItem("Tools/Platform Builder/Windows/Build All Selected scenes", priority = 11)]
+    static void WindowsAllScenes() {
+        BuildAllSelectedScenesForPlatform(BuildTarget.StandaloneWindows64, ".exe");
     }
 
-    [MenuItem("Build/OSX/Current scene", priority = 2)]
+    // ---- MacOS ----
+    [MenuItem("Tools/Platform Builder/MacOS/Current scene", priority = 3)]
     static void MacOS() {
-        BuildMacOS(PlayerSettings.productName, false);
+        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.None, ".app");
     }
 
-    [MenuItem("Build/OSX/Current scene (dev)", priority = 3)]
-    static void MacOSDev() {
-        BuildMacOS(PlayerSettings.productName, false, true);
+    [MenuItem("Tools/Platform Builder/MacOS/Current scene (autostart)", priority = 4)]
+    static void MacOSAutostart() {
+        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer, ".app");
     }
 
-    [MenuItem("Build/Android/All selected scenes", priority = 4)]
-    static void AndroidAll() {
-        BuildAndroid(PlayerSettings.productName, true);
+    [MenuItem("Tools/Platform Builder/MacOS/Current scene (dev autostart)", priority = 5)]
+    static void MacOSDevAutostart() {
+        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".app");
     }
 
-    [MenuItem("Build/Android/Current scene", priority = 4)]
+    [MenuItem("Tools/Platform Builder/MacOS/Build All Selected scenes", priority = 12)]
+    static void MacOSAllScenes() {
+        BuildAllSelectedScenesForPlatform(BuildTarget.StandaloneOSX, ".app");
+    }
+
+    // ---- Android ----
+    [MenuItem("Tools/Platform Builder/Android/Current scene", priority = 6)]
     static void Android() {
-        BuildAndroid(PlayerSettings.productName, false);
-    }
-
-    [MenuItem("Build/Android/Current scene (dev autostart)", priority = 5)]
-    static void AndroidDev() {
-        BuildAndroid(PlayerSettings.productName, false, true);
-    }
-
-    [MenuItem("Build/WebGL/Current scene", priority = 6)]
-    static void WebGL() {
-        BuildWebGL(PlayerSettings.productName, false);
-    }
-
-    [MenuItem("Build/WebGL/Current scene (dev autostart)", priority = 7)]
-    static void WebGLDev() {
-        BuildWebGL(PlayerSettings.productName, false, true);
-    }
-
-    static void BuildWindows(string productName, bool allScenes, bool packed = false, bool dev = false) {
-        SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
-        string outputName = GetOutputName(allScenes, productName);
-        string appName = $"{outputName}.exe";
-        string buildPath = Path.GetFullPath($"{BUILDS_FOLDER}Windows/{(dev ? "DEV/" : "")}{outputName}/");
-
-        var buildPlayerOptions = new BuildPlayerOptions {
-            scenes = allScenes
-                ? EditorBuildSettings.scenes.Select(s => s.path).ToArray()
-                : new[] {
-                    SceneManager.GetActiveScene().path,
-                },
-            locationPathName = buildPath + appName,
-            target = BuildTarget.StandaloneWindows64,
-            options = dev ? BuildOptions.Development | BuildOptions.AutoRunPlayer : BuildOptions.None,
-        };
-
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        if (packed) {
-            Create7ZipSFX(buildPath, appName, outputName);
-        }
-
-        if (!dev) OpenBuildLocation(BUILDS_FOLDER);
-    }
-
-    static void BuildMacOS(string productName, bool allScenes, bool dev = false) {
-        SwitchBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
-        UserBuildSettings.architecture = OSArchitecture.x64ARM64;
-        string outputName = GetOutputName(allScenes, productName);
-        string appName = $"{outputName}.app";
-        string buildPath = $"{BUILDS_FOLDER}OSX/{(dev ? "DEV/" : "")}";
-
-        var buildPlayerOptions = new BuildPlayerOptions {
-            scenes = allScenes
-                ? EditorBuildSettings.scenes.Select(s => s.path).ToArray()
-                : new[] {
-                    SceneManager.GetActiveScene().path,
-                },
-            locationPathName = buildPath + appName,
-            target = BuildTarget.StandaloneOSX,
-            options = dev ? BuildOptions.Development | BuildOptions.AutoRunPlayer : BuildOptions.None,
-        };
-
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        if (!dev) OpenBuildLocation(BUILDS_FOLDER);
-    }
-
-    static void BuildAndroid(string productName, bool allScenes, bool dev = false) {
-        SwitchBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
         PlayerSettings.Android.bundleVersionCode++;
-        string outputName = GetOutputName(allScenes, productName);
-        string apkName = $"{outputName}.apk";
-        string buildPath = $"{BUILDS_FOLDER}Android/{(dev ? "DEV/" : "")}";
-
-        var buildPlayerOptions = new BuildPlayerOptions {
-            scenes = allScenes
-                ? EditorBuildSettings.scenes.Select(s => s.path).ToArray()
-                : new[] {
-                    SceneManager.GetActiveScene().path,
-                },
-            locationPathName = buildPath + apkName,
-            target = BuildTarget.Android,
-            options = dev ? BuildOptions.Development | BuildOptions.AutoRunPlayer : BuildOptions.None,
-        };
-
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        if (!dev) OpenBuildLocation(BUILDS_FOLDER);
+        BuildForPlatform(BuildTarget.Android, BuildOptions.None, ".apk");
     }
 
-    static void BuildWebGL(string productName, bool allScenes, bool dev = false) {
-        SwitchBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
-        string outputName = GetOutputName(allScenes, productName);
-        string folderName = $"{outputName}{(dev ? "_dev" : "")}";
-        string buildPath = $"{BUILDS_FOLDER}WebGL/{folderName}";
-
-        var buildPlayerOptions = new BuildPlayerOptions {
-            scenes = allScenes
-                ? EditorBuildSettings.scenes.Select(s => s.path).ToArray()
-                : new[] {
-                    SceneManager.GetActiveScene().path,
-                },
-            locationPathName = buildPath,
-            target = BuildTarget.WebGL,
-            options = dev ? BuildOptions.Development | BuildOptions.AutoRunPlayer : BuildOptions.None,
-        };
-
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        if (!dev) OpenBuildLocation(BUILDS_FOLDER);
+    [MenuItem("Tools/Platform Builder/Android/Current scene (autostart)", priority = 7)]
+    static void AndroidAutostart() {
+        PlayerSettings.Android.bundleVersionCode++;
+        BuildForPlatform(BuildTarget.Android, BuildOptions.AutoRunPlayer, ".apk");
     }
 
-    static void SwitchBuildTarget(BuildTargetGroup group, BuildTarget target) {
-        if (EditorUserBuildSettings.activeBuildTarget != target) {
-            EditorUserBuildSettings.SwitchActiveBuildTarget(group, target);
-        }
+    [MenuItem("Tools/Platform Builder/Android/Current scene (dev autostart)", priority = 8)]
+    static void AndroidDevAutostart() {
+        PlayerSettings.Android.bundleVersionCode++;
+        BuildForPlatform(BuildTarget.Android, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".apk");
     }
+
+    [MenuItem("Tools/Platform Builder/Android/Build All Selected scenes", priority = 13)]
+    static void AndroidAllScenes() {
+        PlayerSettings.Android.bundleVersionCode++;
+        BuildAllSelectedScenesForPlatform(BuildTarget.Android, ".apk");
+    }
+
+    // ---- WebGL ----
+    [MenuItem("Tools/Platform Builder/WebGL/Current scene", priority = 9)]
+    static void WebGL() {
+        BuildForPlatform(BuildTarget.WebGL, BuildOptions.None, "");
+    }
+
+    [MenuItem("Tools/Platform Builder/WebGL/Build All Selected scenes", priority = 14)]
+    static void WebGLAllScenes() {
+        BuildAllSelectedScenesForPlatform(BuildTarget.WebGL, "");
+    }
+
+    // --------------------------- HELPER FUNCTIONS ---------------------------
 
     static void OpenBuildLocation(string path) {
         string normalizedPath = Path.GetFullPath(path);
@@ -191,80 +200,17 @@ static class PlatformBuilder
         });
     }
 
-    static void Create7ZipSFX(string buildPath, string appName, string outputName) {
-        Debug.Log("Starting 7-Zip SFX creation...");
-        Debug.Log($"Build Path: {buildPath}");
-        Debug.Log($"App Name: {appName}");
-
-        string sfxFileName = $"{outputName}_packed.exe";
-        string sfxPath = Path.Combine(buildPath, sfxFileName);
-        string configPath = Path.Combine(buildPath, "config.txt");
-        string tempArchivePath = Path.Combine(buildPath, "temp.7z");
-
-        Debug.Log($"SFX File Name: {sfxFileName}");
-
-        // Write config file
-        File.WriteAllText(configPath, $@";!@Install@!UTF-8!
-Title=""Extracting {PlayerSettings.productName}""
-BeginPrompt=""Do you want to extract {PlayerSettings.productName}?""
-ExecuteFile=""{appName}""
-Silent=1
-OverwriteMode=""1""
-;!@InstallEnd@!");
-
-        // Create archive with faster compression
-        RunProcess(SEVEN_ZIP_PATH, $"a -t7z \"{tempArchivePath}\" \"{buildPath}*\" -r -mx=1", buildPath);
-
-        // Combine SFX module, config, and archive
-        using (var stream = new FileStream(sfxPath, FileMode.Create)) {
-            stream.Write(File.ReadAllBytes(SEVEN_ZIP_SFX_MODULE), 0, (int)new FileInfo(SEVEN_ZIP_SFX_MODULE).Length);
-            stream.Write(File.ReadAllBytes(configPath), 0, (int)new FileInfo(configPath).Length);
-            stream.Write(File.ReadAllBytes(tempArchivePath), 0, (int)new FileInfo(tempArchivePath).Length);
-        }
-
-        // Cleanup temporary files
-        File.Delete(tempArchivePath);
-        File.Delete(configPath);
-
-        CleanupBuildDirectory(buildPath, sfxFileName);
-    }
-
-    static void RunProcess(string fileName, string arguments, string workingDirectory) {
-        var startInfo = new ProcessStartInfo {
-            FileName = fileName,
-            Arguments = arguments,
-            UseShellExecute = true,
-            CreateNoWindow = false,
-            WorkingDirectory = workingDirectory,
-        };
-
-        using var process = new Process();
-        process.StartInfo = startInfo;
-
-        process.Start();
-        process.WaitForExit();
-
-        Debug.Log($"7-Zip process exited with code: {process.ExitCode}");
-    }
-
-    static void CleanupBuildDirectory(string buildPath, string sfxFileName) {
-        var directoryInfo = new DirectoryInfo(buildPath);
-        foreach (var file in directoryInfo.GetFiles()) {
-            if (file.Name != sfxFileName) {
-                file.Delete();
-            }
-        }
-        foreach (var subDirectory in directoryInfo.GetDirectories()) {
-            subDirectory.Delete(true);
-        }
-        Debug.Log($"Cleanup complete, only {sfxFileName} remains in the build directory.");
-    }
-
-    static string GetOutputName(bool allScenes, string productName) {
-        return allScenes ? productName : GetSceneName();
+    [MenuItem("Tools/Platform Builder/Open build folder", priority = 100)]
+    public static void OpenBuildFolder() {
+        OpenBuildLocation("./Builds/");
     }
 
     static string GetSceneName() {
         return SceneManager.GetActiveScene().name;
+    }
+
+    static string GetSceneNameDecorated() {
+        string name = GetSceneName();
+        return char.ToUpper(name[0]) + name[1..];
     }
 }
