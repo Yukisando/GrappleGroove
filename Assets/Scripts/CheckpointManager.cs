@@ -4,47 +4,45 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 #endregion
 
 public class CheckpointManager : MonoBehaviour
 {
-    private const string CheckpointFileFormat = "checkpoint_data_{0}.json";
-    
-    public void SaveCheckpoint(Vector3 position)
-    {
+    const string CheckpointFileFormat = "checkpoint_data_{0}.json";
+    [FormerlySerializedAs("lastCheckpointPosition")]
+    public Transform lastCheckpointTransform;
+
+    public void SaveCheckpoint(Vector3 position) {
         var data = CheckpointData.FromVector(position, SceneManager.GetActiveScene().name);
         string json = JsonUtility.ToJson(data);
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         File.WriteAllText(Path.Combine(Application.persistentDataPath, fileName), json);
         Debug.Log($"Checkpoint saved for scene: {SceneManager.GetActiveScene().name}");
     }
-    
-    public void DeleteSaveFile()
-    {
+
+    public void DeleteSaveFile() {
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, fileName);
-        if (File.Exists(path))
-        {
+        if (File.Exists(path)) {
             File.Delete(path);
             Debug.Log($"Checkpoint deleted for scene: {SceneManager.GetActiveScene().name}");
         }
     }
-    
-    public Vector3 LoadLastCheckpoint()
-    {
+
+    public Vector3 LoadLastCheckpoint() {
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, fileName);
-        if (File.Exists(path))
-        {
+        if (File.Exists(path)) {
             string json = File.ReadAllText(path);
             var data = JsonUtility.FromJson<CheckpointData>(json);
-            if (data.sceneName == SceneManager.GetActiveScene().name)
-            {
+            if (data.sceneName == SceneManager.GetActiveScene().name) {
+                lastCheckpointTransform.position = data.ToVector();
                 return data.ToVector();
             }
         }
-        return Vector3.zero; // Return a default position if no checkpoint is found for the current scene
+        return lastCheckpointTransform.position; // Return the inspector-set position if no checkpoint file exists
     }
 }
 
@@ -53,20 +51,17 @@ public class CheckpointData
 {
     public float x, y, z; // Position of the checkpoint
     public string sceneName; // Name of the scene
-    
-    public static CheckpointData FromVector(Vector3 position, string scene)
-    {
-        return new CheckpointData
-        {
+
+    public static CheckpointData FromVector(Vector3 position, string scene) {
+        return new CheckpointData {
             x = position.x,
             y = position.y,
             z = position.z,
-            sceneName = scene
+            sceneName = scene,
         };
     }
-    
-    public Vector3 ToVector()
-    {
+
+    public Vector3 ToVector() {
         return new Vector3(x, y, z);
     }
 }

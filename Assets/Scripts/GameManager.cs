@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
             playerDependencies = FindAnyObjectByType<PlayerDependencies>(FindObjectsInactive.Include);
             InitializeWorldObjects();
             LoadLastCheckpoint();
-            //Grab player and move it to respawn point
-            NetworkManager.Singleton.SpawnManager.PlayerObjects[0].transform.position = respawnPoint.position;
         };
 
         if (autoStartHost) NetworkManager.Singleton.StartHost();
