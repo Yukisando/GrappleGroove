@@ -2,13 +2,12 @@
 
 using PrototypeFPC;
 using Unity.Mathematics;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 #endregion
 
-public class Crosshair : NetworkBehaviour
+public class Crosshair : MonoBehaviour
 {
     [Header("Crosshair Images")]
     [SerializeField] Image normal;
@@ -36,42 +35,27 @@ public class Crosshair : NetworkBehaviour
     int raycastMask;
 
     void Awake() {
-        NetworkManager.Singleton.OnClientConnectedCallback += _ => {
-            if (IsOwner) Setup();
-        };
+        Setup();
     }
 
     void Setup() {
-        // Initialize dependencies
-        InitializeDependencies();
-
-        // Set up raycast mask (everything except Ignore Raycast and Player layers)
-        raycastMask = ~(1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Player"));
-
-        // Hide system cursor when game starts
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-        // Set default crosshair
-        SetCrosshair(normal);
-    }
-
-    void InitializeDependencies() {
-        // Cache camera reference
+        // Initialize components
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
+        if (playerDependencies != null) {
+            inspectComponent = playerDependencies.GetComponent<Inspect>();
+            grabThrowComponent = playerDependencies.GetComponent<GrabThrow>();
+            grapplingHookComponent = playerDependencies.GetComponent<GrapplingHook>();
+            playerCamera = playerDependencies.cam;
+        }
 
-        playerCamera = playerDependencies.cam;
+        // Set initial crosshair
+        currentCrosshair = normal;
 
-        // Cache component references
-        inspectComponent = playerDependencies.GetComponent<Inspect>();
-        grabThrowComponent = playerDependencies.GetComponent<GrabThrow>();
-        grapplingHookComponent = playerDependencies.GetComponent<GrapplingHook>();
+        // Setup raycast mask
+        raycastMask = ~LayerMask.GetMask("Player");
     }
 
     void LateUpdate() {
-        if (!IsOwner) return;
-        if (playerDependencies == null || playerCamera == null) return;
-
         // Default to normal crosshair
         var targetCrosshair = normal;
 

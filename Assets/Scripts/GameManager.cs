@@ -1,7 +1,6 @@
 #region
 
 using PrototypeFPC;
-using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -45,14 +44,9 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
-        NetworkManager.Singleton.OnServerStarted += () => {
-            Debug.Log("Server started!");
-            playerDependencies = FindAnyObjectByType<PlayerDependencies>(FindObjectsInactive.Include);
-            InitializeWorldObjects();
-            LoadLastCheckpoint();
-        };
-
-        if (autoStartHost) NetworkManager.Singleton.StartHost();
+        playerDependencies = FindAnyObjectByType<PlayerDependencies>();
+        InitializeWorldObjects();
+        LoadLastCheckpoint();
     }
 
     void Update() {

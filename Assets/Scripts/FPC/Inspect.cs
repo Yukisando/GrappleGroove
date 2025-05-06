@@ -1,13 +1,12 @@
 #region
 
-using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Inspect : NetworkBehaviour
+    public class Inspect : MonoBehaviour
     {
         [Header("Input Properties")]
         [SerializeField] KeyCode inspectKey = KeyCode.F;
@@ -42,14 +41,10 @@ namespace PrototypeFPC
         }
 
         void Start() {
-            if (!IsOwner) return;
-
             Setup();
         }
 
         void Update() {
-            if (!IsOwner) return;
-
             Inspection();
         }
 
@@ -63,22 +58,15 @@ namespace PrototypeFPC
             ray = cam.ScreenPointToRay(Input.mousePosition);
 
             if (playerDependencies.isInspecting) {
-                if (Input.GetKeyDown(inspectKey)) {
-                    EndInspection();
-                }
+                if (Input.GetKeyDown(inspectKey)) EndInspection();
             }
-            else if (!playerDependencies.isInspecting && !playerDependencies.isGrabbing) {
+            else if (!playerDependencies.isInspecting && !playerDependencies.isGrabbing)
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, maxPickupDistance)) {
                     var inspectable = hit.collider.gameObject.GetComponent<Inspectable>();
-                    if (inspectable != null && Input.GetKeyDown(inspectKey)) {
-                        StartInspection(inspectable.gameObject);
-                    }
+                    if (inspectable != null && Input.GetKeyDown(inspectKey)) StartInspection(inspectable.gameObject);
                 }
-            }
 
-            if (playerDependencies.isInspecting && inspectedObject != null) {
-                InspectObject();
-            }
+            if (playerDependencies.isInspecting && inspectedObject != null) InspectObject();
         }
 
         void StartInspection(GameObject obj) {
@@ -89,9 +77,7 @@ namespace PrototypeFPC
             originalDistance = inspectPoint.localPosition;
 
             var rb = inspectedObject.GetComponent<Rigidbody>();
-            if (rb != null) {
-                rb.isKinematic = true;
-            }
+            if (rb != null) rb.isKinematic = true;
 
             inspectedObject.GetComponent<Collider>().enabled = false;
             audioSource.PlayOneShot(pickUpSound);
@@ -113,9 +99,7 @@ namespace PrototypeFPC
             rotY = 0f;
 
             var rb = inspectedObject.GetComponent<Rigidbody>();
-            if (rb != null) {
-                rb.isKinematic = false;
-            }
+            if (rb != null) rb.isKinematic = false;
 
             inspectedObject = null;
         }

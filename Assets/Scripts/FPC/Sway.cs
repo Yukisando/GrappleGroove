@@ -1,13 +1,12 @@
 #region
 
-using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Sway : NetworkBehaviour
+    public class Sway : MonoBehaviour
     {
         // Sway properties
         [Header("Sway Properties")]
@@ -40,14 +39,10 @@ namespace PrototypeFPC
         }
 
         void Start() {
-            if (!IsOwner) return;
-
             Setup();
         }
 
         void LateUpdate() {
-            if (!IsOwner) return;
-
             ControlSway();
             ControlPositionDelay();
         }

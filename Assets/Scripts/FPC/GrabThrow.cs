@@ -1,13 +1,12 @@
 #region
 
-using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class GrabThrow : NetworkBehaviour
+    public class GrabThrow : MonoBehaviour
     {
         [Header("Input Properties")]
         [SerializeField] KeyCode grabThrowKey = KeyCode.G;
@@ -39,14 +38,10 @@ namespace PrototypeFPC
         }
 
         void Update() {
-            if (!IsOwner) return;
-
             GrabHoldThrow();
         }
 
         void FixedUpdate() {
-            if (!IsOwner) return;
-
             Hold();
         }
 
@@ -64,14 +59,11 @@ namespace PrototypeFPC
         }
 
         void HandleGrabAttempt() {
-            if (Input.GetKeyDown(grabThrowKey)) {
+            if (Input.GetKeyDown(grabThrowKey))
                 if (Physics.SphereCast(ray.origin, 0.25f, ray.direction, out hit, maxGrabDistance)) {
                     var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
-                    if (grabbable != null) {
-                        GrabObject(grabbable.GetComponent<Rigidbody>());
-                    }
+                    if (grabbable != null) GrabObject(grabbable.GetComponent<Rigidbody>());
                 }
-            }
         }
 
         void ThrowObject() {

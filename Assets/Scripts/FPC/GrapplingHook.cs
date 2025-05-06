@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -13,7 +12,7 @@ namespace PrototypeFPC
 {
     public enum RopeType { BOTH, LEFT, RIGHT }
 
-    public class GrapplingHook : NetworkBehaviour
+    public class GrapplingHook : MonoBehaviour
     {
         [Header("Assignments")]
         [SerializeField] KeyCode cutRopeKey;
@@ -78,15 +77,11 @@ namespace PrototypeFPC
         }
 
         void Start() {
-            if (!IsOwner) return;
-
             rb = playerDependencies.rb;
             audioSource = playerDependencies.audioSourceTop;
         }
 
         void Update() {
-            if (!IsOwner) return;
-
             InputCheck();
 
             if (!playerDependencies.isInspecting || !playerDependencies.isGrabbing) {
@@ -97,20 +92,13 @@ namespace PrototypeFPC
         }
 
         void FixedUpdate() {
-            if (!IsOwner) return;
-
-            if (hooked) {
+            if (hooked)
                 foreach (var rope in ropes) {
-                    if (rope.type == RopeType.LEFT) {
-                        ApplyLeftGrapplePull(rope);
-                    }
+                    if (rope.type == RopeType.LEFT) ApplyLeftGrapplePull(rope);
                 }
-            }
         }
 
         void LateUpdate() {
-            if (!IsOwner) return;
-
             DrawRopes();
         }
 
@@ -137,9 +125,7 @@ namespace PrototypeFPC
             if (mouseUp && controlNotHeld && mouseDownTimer >= holdDelayToSwing && executeHookSwing && notInspecting) {
                 executeHookSwing = false;
                 hookRelease = true;
-                if (!ropeCut) {
-                    ApplyReleaseImpulse();
-                }
+                if (!ropeCut) ApplyReleaseImpulse();
             }
 
             leftGrappleHeld = Input.GetMouseButton(0);
@@ -173,9 +159,7 @@ namespace PrototypeFPC
             rb.AddForce(upwardForce + forwardForce, ForceMode.Impulse);
 
             // Play a sound effect for the release (optional)
-            if (audioSource != null && releaseSound != null) {
-                audioSource.PlayOneShot(releaseSound);
-            }
+            if (audioSource != null && releaseSound != null) audioSource.PlayOneShot(releaseSound);
         }
 
         void CreateHooks(int mouseButton) {
@@ -405,13 +389,9 @@ namespace PrototypeFPC
                 return;
             }
 
-            if (Input.GetKey(cutRopeKey)) {
-                CutRopeWithRaycast();
-            }
+            if (Input.GetKey(cutRopeKey)) CutRopeWithRaycast();
 
-            if (Input.GetKeyDown(resetHookKey) && !playerDependencies.isInspecting) {
-                DestroyRopes();
-            }
+            if (Input.GetKeyDown(resetHookKey) && !playerDependencies.isInspecting) DestroyRopes();
         }
 
         void CutRopeWithRaycast() {
@@ -457,9 +437,7 @@ namespace PrototypeFPC
         }
 
         public void DestroyRopes(RopeType ropeType = RopeType.BOTH) {
-            if (hooked && (ropes.Last().type == ropeType || ropeType == RopeType.BOTH)) {
-                DestroyGrappleRope();
-            }
+            if (hooked && (ropes.Last().type == ropeType || ropeType == RopeType.BOTH)) DestroyGrappleRope();
 
             var ropesToRemove = ropes.Where(rope => ropeType == RopeType.BOTH || rope.type == ropeType).ToList();
 
@@ -468,9 +446,7 @@ namespace PrototypeFPC
                 ropes.Remove(rope);
             }
 
-            if (ropesToRemove.Count > 0) {
-                audioSource.PlayOneShot(releaseSound);
-            }
+            if (ropesToRemove.Count > 0) audioSource.PlayOneShot(releaseSound);
         }
 
         void DestroyRopeComponents(Rope rope) {
@@ -520,7 +496,7 @@ namespace PrototypeFPC
             var up = Quaternion.LookRotation((endPoint - startPoint).normalized) * Vector3.up;
             var right = Quaternion.LookRotation((endPoint - startPoint).normalized) * Vector3.right;
 
-            for (int t = 0; t <= segments; t++) {
+            for (var t = 0; t <= segments; t++) {
                 float delta = t / (float)segments;
                 var offset = CalculateRopeOffset(rope, delta, up, right);
                 rope.lineRenderer.SetPosition(t, Vector3.Lerp(startPoint, endPoint, delta) + offset);

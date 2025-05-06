@@ -1,14 +1,13 @@
 #region
 
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 #endregion
 
 namespace PrototypeFPC
 {
-    public class Movement : NetworkBehaviour
+    public class Movement : MonoBehaviour
     {
         //Input
         [Header("Input Properties")]
@@ -77,24 +76,21 @@ namespace PrototypeFPC
         }
 
         void Start() {
-            if (!IsOwner) return;
-            Setup(); //- Line 113
+            Setup();
         }
 
         void Update() {
-            if (!IsOwner) return;
-            GroundCheck(); //- Line 132
-            CalculateDirection(); //- Line 139
-            CalculateSlope(); //- Line 151
-            ControlSpeed(); //- Line 181
-            ControlDrag(); //- Line 198
-            StrafeTilt(); //- Line 215
-            Footsteps(); //- Line 235
+            GroundCheck();
+            CalculateDirection();
+            CalculateSlope();
+            ControlSpeed();
+            ControlDrag();
+            StrafeTilt();
+            Footsteps();
         }
 
         void FixedUpdate() {
-            if (!IsOwner) return;
-            Move(); //- Line 158
+            Move();
         }
 
         //---------------------------
@@ -204,7 +200,7 @@ namespace PrototypeFPC
                             if (playedRandom.Count == footstepSound.Length) playedRandom.Clear();
 
                             if (playedRandom.Count != footstepSound.Length) {
-                                for (int i = 0; i < footstepSound.Length; i++) {
+                                for (var i = 0; i < footstepSound.Length; i++) {
                                     if (!playedRandom.Contains(i)) randomFilter.Add(i);
                                 }
 
