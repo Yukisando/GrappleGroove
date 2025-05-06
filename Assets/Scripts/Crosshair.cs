@@ -36,7 +36,7 @@ public class Crosshair : NetworkBehaviour
     int raycastMask;
 
     void Awake() {
-        NetworkManager.Singleton.OnClientConnectedCallback += clientId => {
+        NetworkManager.Singleton.OnClientConnectedCallback += _ => {
             if (IsOwner) Setup();
         };
     }
