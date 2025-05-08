@@ -118,7 +118,8 @@ public class Move : MonoBehaviour
             LeanTween.cancel(tween.uniqueId);
 
         isFirstRun = true;
-        StartMoving();
+        if (startMovingOnStart)
+            StartMoving();
     }
 
     void OnDrawGizmos() {
