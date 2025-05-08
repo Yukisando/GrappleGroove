@@ -8,41 +8,35 @@ using UnityEngine;
 public class Move : MonoBehaviour
 {
     [SerializeReference] bool showGizmos;
-    [Space] [SerializeField] Vector3 destination; // Offset to the target position
+    [Space]
+    [SerializeField] Vector3 destination; // Offset to the target position
+    [SerializeField] bool startMovingOnStart;
     [SerializeField] bool useLocalPosition = true;
-    [SerializeField] bool loop = true;
-    [SerializeField] float duration = 5f; // Duration of the loop
-    [SerializeField] [Range(0, 1)] float startOffset; // Range from 0 (start) to 1 (destination)
+    [SerializeField] int loopCount = -1; // -1 = infinite loop, 0 = A to B once, 1+ = ping-pong loops
+    [SerializeField] float duration = 5f;
+    [SerializeField] [Range(0, 1)] float startOffset;
     [SerializeField] AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     Vector3 initialPosition;
-    bool isFirstLoop = true;
     Vector3 offsetStartPosition;
     AudioSource source;
     LTDescr tween;
+    int loopsRemaining;
+    bool isFirstRun = true;
 
     void Awake() {
         initialPosition = useLocalPosition ? transform.localPosition : transform.position;
-        offsetStartPosition = Vector3.Lerp(initialPosition, initialPosition + (useLocalPosition ? transform.TransformDirection(destination) : destination), startOffset);
+        offsetStartPosition = Vector3.Lerp(
+            initialPosition,
+            initialPosition + (useLocalPosition ? transform.TransformDirection(destination) : destination),
+            startOffset
+        );
         SetupAudio();
     }
 
     void Start() {
-        StartMoving();
-    }
-
-    void OnDrawGizmos() {
-        if (!showGizmos) return;
-        Gizmos.color = Color.green;
-
-        var gizmoStartPoint = useLocalPosition ? transform.localPosition : transform.position;
-        var gizmoEndPoint = useLocalPosition ? gizmoStartPoint + transform.TransformDirection(destination) : gizmoStartPoint + destination;
-
-        Gizmos.DrawLine(gizmoStartPoint, gizmoEndPoint);
-
-        var gizmoStartPosition = Vector3.Lerp(gizmoStartPoint, gizmoEndPoint, startOffset);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(gizmoStartPosition, 0.2f);
+        if (startMovingOnStart)
+            StartMoving();
     }
 
     void SetupAudio() {
@@ -52,77 +46,95 @@ public class Move : MonoBehaviour
         source.clip = GameManager.I.platformSound;
     }
 
-    void StartMoving() {
-        if (isFirstLoop) {
-            ApplyStartOffset();
-            isFirstLoop = false;
-            StartTweenFromOffset();
-        }
+    public void StartMoving() {
+        if (loopCount > 0)
+            loopsRemaining = loopCount * 2; // A→B→A = 2 steps per loop
+
+        ApplyStartOffset();
+
+        if (loopCount == 0)
+            MoveOnce();
+        else
+            MovePingPong();
+    }
+
+    void MoveOnce() {
+        var endPos = useLocalPosition
+            ? initialPosition + transform.TransformDirection(destination)
+            : initialPosition + destination;
+
+        var move = useLocalPosition
+            ? LeanTween.moveLocal(gameObject, endPos, duration)
+            : LeanTween.move(gameObject, endPos, duration);
+
+        tween = move.setEase(animationCurve);
+    }
+
+    void MovePingPong() {
+        var targetPos = isFirstRun
+            ? useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination
+            : GetNextPingPongTarget();
+
+        float dur = isFirstRun ? duration * (1 - startOffset) : duration;
+
+        var move = useLocalPosition
+            ? LeanTween.moveLocal(gameObject, targetPos, dur)
+            : LeanTween.move(gameObject, targetPos, dur);
+
+        tween = move.setEase(animationCurve).setOnComplete(OnPingPongStepComplete);
+
+        isFirstRun = false;
+    }
+
+    void OnPingPongStepComplete() {
+        if (loopCount == -1)
+            MovePingPong(); // infinite
         else {
-            StartTween();
+            loopsRemaining--;
+            if (loopsRemaining > 0)
+                MovePingPong();
         }
     }
 
-    void StartTween() {
-        var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
+    Vector3 GetNextPingPongTarget() {
+        var end = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
+        var current = useLocalPosition ? transform.localPosition : transform.position;
 
-        if (useLocalPosition) {
-            tween = LeanTween.moveLocal(gameObject, endPosition, duration)
-                .setEase(animationCurve)
-                .setLoopPingPong()
-                .setOnComplete(OnTweenComplete);
-        }
-        else {
-            tween = LeanTween.move(gameObject, endPosition, duration)
-                .setEase(animationCurve)
-                .setLoopPingPong()
-                .setOnComplete(OnTweenComplete);
-        }
-    }
+        float distToStart = Vector3.Distance(current, initialPosition);
+        float distToEnd = Vector3.Distance(current, end);
 
-    void StartTweenFromOffset() {
-        var endPosition = useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination;
-        float remainingDuration = duration * (1 - startOffset);
-
-        LeanTween.move(gameObject, endPosition, remainingDuration)
-            .setEase(animationCurve)
-            .setOnComplete(() => {
-                // Start the ping-pong tween after reaching the destination
-                if (useLocalPosition) {
-                    tween = LeanTween.moveLocal(gameObject, initialPosition, duration)
-                        .setEase(animationCurve)
-                        .setLoopPingPong()
-                        .setOnComplete(OnTweenComplete);
-                }
-                else {
-                    tween = LeanTween.move(gameObject, initialPosition, duration)
-                        .setEase(animationCurve)
-                        .setLoopPingPong()
-                        .setOnComplete(OnTweenComplete);
-                }
-            });
-    }
-
-    void OnTweenComplete() {
-        if (!loop) {
-            LeanTween.cancel(gameObject);
-        }
+        return distToStart < distToEnd ? end : initialPosition;
     }
 
     void ApplyStartOffset() {
-        if (useLocalPosition) {
+        if (useLocalPosition)
             transform.localPosition = offsetStartPosition;
-        }
-        else {
+        else
             transform.position = offsetStartPosition;
-        }
     }
 
     public void ResetObject() {
-        if (tween != null) {
+        if (tween != null)
             LeanTween.cancel(tween.uniqueId);
-            isFirstLoop = true;
-            StartMoving();
-        }
+
+        isFirstRun = true;
+        StartMoving();
+    }
+
+    void OnDrawGizmos() {
+        if (!showGizmos) return;
+
+        Gizmos.color = Color.green;
+
+        var startPoint = useLocalPosition ? transform.localPosition : transform.position;
+        var endPoint = useLocalPosition
+            ? startPoint + transform.TransformDirection(destination)
+            : startPoint + destination;
+
+        Gizmos.DrawLine(startPoint, endPoint);
+
+        var offset = Vector3.Lerp(startPoint, endPoint, startOffset);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(offset, 0.2f);
     }
 }
