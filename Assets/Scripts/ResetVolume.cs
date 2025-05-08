@@ -12,20 +12,39 @@ public class ResetVolume : MonoBehaviour
     [Header("Extras")]
     [SerializeField] float yMovement = .2f;
     [SerializeField] float xMovement = .1f;
+    [SerializeField] int updateFrameInterval = 2; // Only update every X frames
+    int frameCounter;
+    Material sharedMaterial;
     public Action<bool> onEnterVolume;
 
     MeshRenderer rd;
 
     void Awake() {
         rd = GetComponent<MeshRenderer>();
+
+        // Create a material instance to avoid affecting other objects
+        if (rd != null && rd.material != null) {
+            sharedMaterial = new Material(rd.material);
+            rd.material = sharedMaterial;
+        }
+    }
+
+    void OnDestroy() {
+        // Clean up the material instance
+        if (sharedMaterial != null) Destroy(sharedMaterial);
     }
 
     void LateUpdate() {
-        if (rd.material.HasProperty(BaseMap) == false) return;
-        var offset = rd.material.GetTextureOffset(BaseMap);
-        offset.y += yMovement * Time.deltaTime;
-        offset.x += xMovement * Time.deltaTime;
-        rd.material.SetTextureOffset(BaseMap, offset);
+        if (rd == null || sharedMaterial == null || !sharedMaterial.HasProperty(BaseMap)) return;
+
+        // Only update every X frames
+        frameCounter++;
+        if (frameCounter % updateFrameInterval != 0) return;
+
+        var offset = sharedMaterial.GetTextureOffset(BaseMap);
+        offset.y += yMovement * Time.deltaTime * updateFrameInterval;
+        offset.x += xMovement * Time.deltaTime * updateFrameInterval;
+        sharedMaterial.SetTextureOffset(BaseMap, offset);
     }
 
     void OnDrawGizmosSelected() {
