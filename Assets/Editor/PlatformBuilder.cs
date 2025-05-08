@@ -54,13 +54,16 @@ public class PlatformBuilder : EditorWindow
 
             PlayerSettings.productName = appName;
 
-            string buildPath = Path.GetFullPath($"./Builds/{buildTarget}/");
+            // Get a more user-friendly platform name
+            string platformName = GetFriendlyPlatformName(buildTarget);
+
+            string buildPath = Path.GetFullPath($"./Builds/{platformName}/");
             string appFolder = Path.Combine(buildPath, appName);
             Directory.CreateDirectory(appFolder);
 
             string outputPath = buildTarget == BuildTarget.WebGL
                 ? appFolder
-                : appFolder + extension;
+                : Path.Combine(appFolder, appName + extension);
 
             string[] scenes = {
                 SceneManager.GetActiveScene().path,
@@ -80,19 +83,25 @@ public class PlatformBuilder : EditorWindow
     }
 
     static void BuildAllSelectedScenesForPlatform(BuildTarget target, string extension) {
-        string defaultAppName = Application.productName + "_AllScenes";
+        // Remove any existing "_AllScenes" suffix before adding it once
+        string baseName = Application.productName.Replace("_AllScenes", "");
+        string defaultAppName = baseName + "_AllScenes";
+
         ShowDialog(defaultAppName, target, BuildOptions.None, (appName, buildTarget, buildOptions) => {
             if (string.IsNullOrEmpty(appName)) return;
 
             PlayerSettings.productName = appName;
 
-            string buildPath = Path.GetFullPath($"./Builds/{buildTarget}/");
+            // Get a more user-friendly platform name
+            string platformName = GetFriendlyPlatformName(buildTarget);
+
+            string buildPath = Path.GetFullPath($"./Builds/{platformName}/");
             string appFolder = Path.Combine(buildPath, appName);
             Directory.CreateDirectory(appFolder);
 
             string outputPath = buildTarget == BuildTarget.WebGL
                 ? appFolder
-                : appFolder + extension;
+                : Path.Combine(appFolder, appName + extension);
 
             string[] scenes = EditorBuildSettings.scenes
                 .Where(s => s.enabled)
@@ -212,5 +221,22 @@ public class PlatformBuilder : EditorWindow
     static string GetSceneNameDecorated() {
         string name = GetSceneName();
         return char.ToUpper(name[0]) + name[1..];
+    }
+
+    // Helper method to convert BuildTarget to a friendly name
+    static string GetFriendlyPlatformName(BuildTarget target) {
+        switch (target) {
+            case BuildTarget.StandaloneWindows:
+            case BuildTarget.StandaloneWindows64:
+                return "Windows";
+            case BuildTarget.StandaloneOSX:
+                return "OSX";
+            case BuildTarget.Android:
+                return "Android";
+            case BuildTarget.WebGL:
+                return "WebGL";
+            default:
+                return target.ToString();
+        }
     }
 }

@@ -1,8 +1,8 @@
 {
   "MonoBehaviour": {
-    "Version": 4,
-    "EnableBurstCompilation": true,
-    "EnableOptimisations": true,
+    "Version": 5,
+    "EnableBurstCompilation": false,
+    "EnableOptimisations": false,
     "EnableSafetyChecks": false,
     "EnableDebugInAllBuilds": false,
     "DebugDataKind": 1,

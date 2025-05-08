@@ -38,15 +38,37 @@ public class GameManager : MonoBehaviour
     PlayerDependencies playerDependencies;
     ResetVolume[] resetVolumes;
 
+    [Header("Performance")]
+    [SerializeField] int targetFrameRate = 60;
+    [SerializeField] bool limitFrameRateForWebGL = true;
+
     void Awake() {
         if (I == null) I = this;
         else Destroy(gameObject);
+
+        #if UNITY_WEBGL
+
+        // Lower quality settings for WebGL
+        QualitySettings.SetQualityLevel(1, true); // Use a lower quality setting
+        QualitySettings.shadows = ShadowQuality.HardOnly;
+        QualitySettings.shadowResolution = ShadowResolution.Low;
+        QualitySettings.shadowDistance = 50f;
+        QualitySettings.lodBias = 0.7f;
+        #endif
     }
 
     void Start() {
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
         LoadLastCheckpoint();
+
+        // Limit frame rate, especially for WebGL
+        #if UNITY_WEBGL
+        if (limitFrameRateForWebGL) {
+            Application.targetFrameRate = targetFrameRate;
+            QualitySettings.vSyncCount = 0; // Disable VSync to ensure frame rate cap works
+        }
+        #endif
     }
 
     void Update() {
