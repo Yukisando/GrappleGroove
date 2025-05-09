@@ -117,6 +117,12 @@ public class Move : MonoBehaviour
         if (tween != null)
             LeanTween.cancel(tween.uniqueId);
 
+        // Reset position to initial position
+        if (useLocalPosition)
+            transform.localPosition = initialPosition;
+        else
+            transform.position = initialPosition;
+
         isFirstRun = true;
         if (startMovingOnStart)
             StartMoving();
