@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a15c4c40e4c07884d883cbda2723b700
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/Proto_FPC/FPC_Resources/Scripts/FPC/Dependencies.cs
+  uploadId: 542059
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: -50
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

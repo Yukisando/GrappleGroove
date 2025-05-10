@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 76876f4059d128b4abc218ffbedfb39a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/Proto_FPC/FPC_Resources/Scripts/Other/ShrinkDestroy.cs
+  uploadId: 542059

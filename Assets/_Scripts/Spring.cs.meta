@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d28eda5d30d413b4c991279ece297e6c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236376
+  packageName: Prototype-FPC
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/Proto_FPC/FPC_Resources/Scripts/Other/Spring.cs
+  uploadId: 542059
