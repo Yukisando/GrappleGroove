@@ -17,15 +17,11 @@ public class CheckpointManager : MonoBehaviour
     public void SaveCheckpoint(Vector3 position) {
         var data = CheckpointData.FromVector(position, SceneManager.GetActiveScene().name);
         string json = JsonUtility.ToJson(data);
-        
-        #if UNITY_WEBGL && !UNITY_EDITOR
-        PlayerPrefs.SetString("Checkpoint_" + SceneManager.GetActiveScene().name, json);
-        PlayerPrefs.Save();
-        #else
+
+
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         File.WriteAllText(Path.Combine(Application.persistentDataPath, fileName), json);
-        #endif
-        
+
         Debug.Log($"Checkpoint saved for scene: {SceneManager.GetActiveScene().name}");
     }
 
@@ -39,17 +35,6 @@ public class CheckpointManager : MonoBehaviour
     }
 
     public Vector3 LoadLastCheckpoint() {
-        #if UNITY_WEBGL && !UNITY_EDITOR
-        string key = "Checkpoint_" + SceneManager.GetActiveScene().name;
-        if (PlayerPrefs.HasKey(key)) {
-            string json = PlayerPrefs.GetString(key);
-            var data = JsonUtility.FromJson<CheckpointData>(json);
-            if (data.sceneName == SceneManager.GetActiveScene().name) {
-                lastCheckpointTransform.position = data.ToVector();
-                return data.ToVector();
-            }
-        }
-        #else
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, fileName);
         if (File.Exists(path)) {
@@ -60,8 +45,7 @@ public class CheckpointManager : MonoBehaviour
                 return data.ToVector();
             }
         }
-        #endif
-        
+
         return lastCheckpointTransform.position;
     }
 }
