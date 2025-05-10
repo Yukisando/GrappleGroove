@@ -1,5 +1,6 @@
 #region
 
+using System.Collections;
 using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
@@ -52,6 +53,13 @@ public class GameManager : MonoBehaviour
     void Start() {
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
+
+        // Delay the checkpoint loading slightly to ensure all components are initialized
+        StartCoroutine(DelayedLoadCheckpoint());
+    }
+
+    IEnumerator DelayedLoadCheckpoint() {
+        yield return null;
         LoadLastCheckpoint();
     }
 
@@ -99,25 +107,36 @@ public class GameManager : MonoBehaviour
     }
 
     void LoadLastCheckpoint() {
+        if (playerDependencies == null) {
+            Debug.LogError("PlayerDependencies not found when loading checkpoint!");
+            return;
+        }
+
         bool validCheckpointLoaded = checkpointManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation);
 
         if (validCheckpointLoaded) {
             // Valid checkpoint found, use it
             spawnPoint.position = checkpointPosition;
             spawnPoint.rotation = checkpointRotation;
-            SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
+
+            // Find and deactivate the checkpoint at this position before resetting
+            DeactivateCheckpointAtPosition(checkpointPosition);
+
+            // Use ResetGameState instead of SafeTeleportToCheckpoint
+            ResetGameState(false); // Don't play sound when loading checkpoint
+
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
             // No valid checkpoint found, use the existing spawnPoint
             Debug.Log("No valid checkpoint found. Using default spawn point.");
 
-            // The spawnPoint is already set to its default position in the scene
-            SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
-
             // Update the lastCheckpointTransform to match the default spawn point
             checkpointManager.lastCheckpointTransform.position = spawnPoint.position;
             checkpointManager.lastCheckpointTransform.rotation = spawnPoint.rotation;
+
+            // Use ResetGameState instead of SafeTeleportToCheckpoint
+            ResetGameState(false); // Don't play sound when loading checkpoint
         }
     }
 
@@ -167,5 +186,22 @@ public class GameManager : MonoBehaviour
 
     public void PopupMessage(string _message) {
         infoPopup.ShowPopup(_message);
+    }
+
+    // Helper method to find and deactivate the checkpoint at a specific position
+    void DeactivateCheckpointAtPosition(Vector3 position) {
+        const float positionTolerance = 0.5f; // Adjust this value based on your needs
+
+        foreach (var checkpoint in checkpointVolumes) {
+            // Check if this checkpoint's position (plus offset) matches the spawn position
+            var checkpointPos = checkpoint.transform.position;
+
+            // Use distance check to account for small floating point differences
+            if (Vector3.Distance(checkpointPos, position) < positionTolerance) {
+                checkpoint.gameObject.SetActive(false);
+                Debug.Log($"Deactivated checkpoint at {checkpointPos}");
+                break;
+            }
+        }
     }
 }
