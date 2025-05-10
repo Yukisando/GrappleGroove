@@ -29,46 +29,30 @@ public class GameManager : MonoBehaviour
     public AudioClip resetSound;
     public AudioClip checkpointSound;
     public AudioClip platformSound;
+
     CheckpointVolume[] checkpointVolumes;
     EmancipationVolume[] emancipationVolumes;
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
-
-    PlayerDependencies playerDependencies;
     ResetVolume[] resetVolumes;
 
+    PlayerDependencies playerDependencies;
+
     [Header("Performance")]
-    [SerializeField] int targetFrameRate = 60;
+    [SerializeField] int targetFrameRate = 120;
     [SerializeField] bool limitFrameRateForWebGL = true;
 
     void Awake() {
         if (I == null) I = this;
         else Destroy(gameObject);
-
-        #if UNITY_WEBGL
-
-        // Lower quality settings for WebGL
-        QualitySettings.SetQualityLevel(1, true); // Use a lower quality setting
-        QualitySettings.shadows = ShadowQuality.HardOnly;
-        QualitySettings.shadowResolution = ShadowResolution.Low;
-        QualitySettings.shadowDistance = 50f;
-        QualitySettings.lodBias = 0.7f;
-        #endif
+        Application.targetFrameRate = targetFrameRate;
     }
 
     void Start() {
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
         LoadLastCheckpoint();
-
-        // Limit frame rate, especially for WebGL
-        #if UNITY_WEBGL
-        if (limitFrameRateForWebGL) {
-            Application.targetFrameRate = targetFrameRate;
-            QualitySettings.vSyncCount = 0; // Disable VSync to ensure frame rate cap works
-        }
-        #endif
     }
 
     void Update() {
@@ -93,8 +77,7 @@ public class GameManager : MonoBehaviour
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        emancipationVolumes =
-            FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         grabbableObjects = FindObjectsByType<Grabbable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
@@ -119,7 +102,7 @@ public class GameManager : MonoBehaviour
         var checkpointPosition = checkpointManager.LoadLastCheckpoint();
         if (checkpointPosition != Vector3.zero) {
             respawnPoint.position = checkpointPosition;
-            ResetGameState();
+            SafeTeleportToCheckpoint(respawnPoint.position, respawnPoint.rotation);
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
@@ -128,32 +111,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void SafeTeleportToCheckpoint(Vector3 position, Quaternion rotation) {
+        playerDependencies.grapplingHook.DestroyRopes();
+        playerDependencies.rb.linearVelocity = Vector3.zero;
+        playerDependencies.rb.angularVelocity = Vector3.zero;
+        playerDependencies.rb.MovePosition(position);
+        playerDependencies.perspective.ForceOrientation(rotation);
+    }
+
+    void ResetGameState(bool _playSound = true) {
+        if (_playSound)
+            playerDependencies.audioSourceTop.PlayOneShot(resetSound);
+
+        SafeTeleportToCheckpoint(respawnPoint.position, respawnPoint.rotation);
+
+        foreach (var movingObject in movingObjects) {
+            movingObject.ResetObject();
+        }
+
+        foreach (var grabbableObject in grabbableObjects) {
+            grabbableObject.ResetObject();
+        }
+    }
+
     void OnPlayerEnterEmancipationVolume(RopeType _ropeType) {
         playerDependencies.grapplingHook.DestroyRopes(_ropeType);
     }
 
     public void LoadLevel(string levelName) {
+        if (string.IsNullOrEmpty(levelName)) return;
         SceneManager.LoadScene(levelName);
-    }
-
-    void ResetGameState(bool _playSound = true) {
-        //Resets player
-        if (_playSound) playerDependencies.audioSourceTop.PlayOneShot(resetSound);
-        playerDependencies.grapplingHook.DestroyRopes();
-        playerDependencies.rb.linearVelocity = Vector3.zero;
-        playerDependencies.rb.angularVelocity = Vector3.zero;
-        playerDependencies.rb.MovePosition(respawnPoint.position);
-        playerDependencies.perspective.ForceOrientation(respawnPoint.rotation);
-
-        //Resets all moving objects
-        foreach (var movingObject in movingObjects) {
-            movingObject.ResetObject();
-        }
-
-        //Resets all grabbable objects
-        foreach (var grabbableObject in grabbableObjects) {
-            grabbableObject.ResetObject();
-        }
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
