@@ -99,15 +99,24 @@ public class GameManager : MonoBehaviour
     }
 
     void LoadLastCheckpoint() {
-        var checkpointPosition = checkpointManager.LoadLastCheckpoint();
-        if (checkpointPosition != Vector3.zero) {
+        Vector3 checkpointPosition;
+        bool validCheckpointLoaded = checkpointManager.TryLoadCheckpoint(out checkpointPosition);
+
+        if (validCheckpointLoaded) {
+            // Valid checkpoint found, use it
             spawnPoint.position = checkpointPosition;
             SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
         else {
-            Debug.Log("No checkpoint found.");
-            spawnPoint.position = playerDependencies.transform.position;
+            // No valid checkpoint found, use the existing spawnPoint
+            Debug.Log("No valid checkpoint found. Using default spawn point.");
+
+            // The spawnPoint is already set to its default position in the scene
+            SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
+
+            // Update the lastCheckpointTransform to match the default spawn point
+            checkpointManager.lastCheckpointTransform.position = spawnPoint.position;
         }
     }
 
