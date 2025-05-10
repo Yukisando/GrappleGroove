@@ -99,12 +99,12 @@ public class GameManager : MonoBehaviour
     }
 
     void LoadLastCheckpoint() {
-        Vector3 checkpointPosition;
-        bool validCheckpointLoaded = checkpointManager.TryLoadCheckpoint(out checkpointPosition);
+        bool validCheckpointLoaded = checkpointManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation);
 
         if (validCheckpointLoaded) {
             // Valid checkpoint found, use it
             spawnPoint.position = checkpointPosition;
+            spawnPoint.rotation = checkpointRotation;
             SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
         }
@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
 
             // Update the lastCheckpointTransform to match the default spawn point
             checkpointManager.lastCheckpointTransform.position = spawnPoint.position;
+            checkpointManager.lastCheckpointTransform.rotation = spawnPoint.rotation;
         }
     }
 
@@ -154,15 +155,14 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
-        checkpointManager.SaveCheckpoint(_spawnPoint.position);
+        checkpointManager.SaveCheckpoint(_spawnPoint);
         spawnPoint.position = _spawnPoint.position;
-        spawnPoint.forward = _spawnPoint.forward;
+        spawnPoint.rotation = _spawnPoint.rotation;
         infoPopup.ShowPopup("Checkpoint reached!");
     }
 
     void OnPlayerEnteredKillVolume() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        infoPopup.ShowPopup("Crap!");
     }
 
     public void PopupMessage(string _message) {

@@ -5,9 +5,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 #endregion
 
@@ -20,8 +17,8 @@ public class CheckpointManager : MonoBehaviour
     // Folder name to store checkpoints
     const string SaveFolderName = "Checkpoints";
 
-    public void SaveCheckpoint(Vector3 position) {
-        var data = CheckpointData.FromVector(position, SceneManager.GetActiveScene().name);
+    public void SaveCheckpoint(Transform checkpointTransform) {
+        var data = CheckpointData.FromTransform(checkpointTransform, SceneManager.GetActiveScene().name);
         string json = JsonUtility.ToJson(data);
 
         // Create directory if it doesn't exist
@@ -52,7 +49,7 @@ public class CheckpointManager : MonoBehaviour
     }
 
     // Returns true if a valid checkpoint was loaded, false otherwise
-    public bool TryLoadCheckpoint(out Vector3 position) {
+    public bool TryLoadCheckpoint(out Vector3 position, out Quaternion rotation) {
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, SaveFolderName, fileName);
 
@@ -62,8 +59,10 @@ public class CheckpointManager : MonoBehaviour
                 var data = JsonUtility.FromJson<CheckpointData>(json);
 
                 if (data != null && data.sceneName == SceneManager.GetActiveScene().name) {
-                    position = data.ToVector();
+                    position = data.ToPosition();
+                    rotation = data.ToRotation();
                     lastCheckpointTransform.position = position;
+                    lastCheckpointTransform.rotation = rotation;
                     return true;
                 }
             }
@@ -73,14 +72,8 @@ public class CheckpointManager : MonoBehaviour
 
         // No valid checkpoint found
         position = Vector3.zero;
+        rotation = Quaternion.identity;
         return false;
-    }
-
-    // For backward compatibility
-    public Vector3 LoadLastCheckpoint() {
-        Vector3 position;
-        if (TryLoadCheckpoint(out position)) return position;
-        return lastCheckpointTransform.position;
     }
 
     // Get the save directory path
@@ -93,62 +86,28 @@ public class CheckpointManager : MonoBehaviour
 public class CheckpointData
 {
     public float x, y, z; // Position of the checkpoint
+    public float rotX, rotY, rotZ; // Rotation of the checkpoint (Euler angles)
     public string sceneName; // Name of the scene
     public string timestamp; // When the checkpoint was saved
 
-    public static CheckpointData FromVector(Vector3 position, string scene) {
+    public static CheckpointData FromTransform(Transform transform, string scene) {
         return new CheckpointData {
-            x = position.x,
-            y = position.y,
-            z = position.z,
+            x = transform.position.x,
+            y = transform.position.y,
+            z = transform.position.z,
+            rotX = transform.eulerAngles.x,
+            rotY = transform.eulerAngles.y,
+            rotZ = transform.eulerAngles.z,
             sceneName = scene,
             timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
         };
     }
 
-    public Vector3 ToVector() {
+    public Vector3 ToPosition() {
         return new Vector3(x, y, z);
     }
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(CheckpointManager))]
-public class CheckpointManagerEditor : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-
-        var manager = (CheckpointManager)target;
-
-        EditorGUILayout.Space(10);
-        EditorGUILayout.LabelField("Editor Tools", EditorStyles.boldLabel);
-
-        if (GUILayout.Button("Delete Current Scene Checkpoint")) manager.DeleteSaveFile();
-
-        if (GUILayout.Button("Delete All Checkpoints"))
-            if (EditorUtility.DisplayDialog("Delete All Checkpoints",
-                    "Are you sure you want to delete all checkpoint saves?",
-                    "Yes", "Cancel"))
-                manager.DeleteAllSaveFiles();
-
-        EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("Save Location:", EditorStyles.miniLabel);
-        EditorGUILayout.SelectableLabel(CheckpointManager.GetSaveDirectory());
+    public Quaternion ToRotation() {
+        return Quaternion.Euler(rotX, rotY, rotZ);
     }
-
-    [MenuItem("Tools/Game/Delete All Checkpoint Saves", false, 100)]
-    static void DeleteAllCheckpointSaves() {
-        if (EditorUtility.DisplayDialog("Delete All Checkpoints",
-                "Are you sure you want to delete all checkpoint saves?",
-                "Yes", "Cancel")) {
-            string directory = Path.Combine(Application.persistentDataPath, "Checkpoints");
-            if (Directory.Exists(directory)) {
-                Directory.Delete(directory, true);
-                Debug.Log("All checkpoint saves deleted");
-            }
-            else
-                Debug.Log("No checkpoint saves found");
-        }
-    }
-#endif
 }
