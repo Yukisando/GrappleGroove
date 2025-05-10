@@ -4,6 +4,7 @@ using UnityEngine;
 
 #endregion
 
+[RequireComponent(typeof(Rigidbody))]
 public class Grabbable : MonoBehaviour
 {
     Vector3 initialPosition;
