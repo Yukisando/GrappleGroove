@@ -54,8 +54,17 @@ public class GameManager : MonoBehaviour
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
 
-        // Delay the checkpoint loading slightly to ensure all components are initialized
-        StartCoroutine(DelayedLoadCheckpoint());
+        // Check if teleport on play is enabled in editor preferences
+        bool skipCheckpointLoading = false;
+#if UNITY_EDITOR
+        skipCheckpointLoading = EditorPrefs.GetBool("TeleportPlayerOnPlay_Enabled", false);
+#endif
+
+        if (!skipCheckpointLoading) {
+            // Only load checkpoint if teleport on play is disabled
+            // Delay the checkpoint loading slightly to ensure all components are initialized
+            StartCoroutine(DelayedLoadCheckpoint());
+        }
     }
 
     IEnumerator DelayedLoadCheckpoint() {

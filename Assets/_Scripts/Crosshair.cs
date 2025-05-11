@@ -18,9 +18,6 @@ public class Crosshair : MonoBehaviour
     [SerializeField] Image grapple;
     [SerializeField] Image snipsnip;
 
-    [Header("Debug")]
-    [SerializeField] bool showDebugLogs = true;
-
     // Cached components
     Inspect inspectComponent;
     GrabThrow grabThrowComponent;

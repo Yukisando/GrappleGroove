@@ -45,7 +45,7 @@ namespace PrototypeFPC
         }
 
         void Update() {
-            Inspection();
+            // Inspection();
         }
 
         void Setup() {

@@ -46,11 +46,35 @@ public class TeleportPlayerOnPlay
         var sceneView = SceneView.lastActiveSceneView;
         if (sceneView != null) {
             var cameraPosition = sceneView.camera.transform.position;
+            var cameraRotation = sceneView.camera.transform.rotation;
 
-            // Move the player to the scene view camera's position
-            player.transform.position = cameraPosition;
+            // Get the player dependencies
+            var playerDependencies = player.GetComponent<PlayerDependencies>();
+            if (playerDependencies != null) {
+                // Reset physics state
+                if (playerDependencies.rb != null) {
+                    playerDependencies.rb.linearVelocity = Vector3.zero;
+                    playerDependencies.rb.angularVelocity = Vector3.zero;
+                    playerDependencies.rb.MovePosition(cameraPosition);
+                }
+                else
 
-            Debug.Log("Player teleported to SceneView camera position.");
+                    // Fallback if no rigidbody
+                    player.transform.position = cameraPosition;
+
+                // Set orientation if perspective component exists
+                if (playerDependencies.perspective != null) playerDependencies.perspective.ForceOrientation(cameraRotation);
+
+                // Destroy grappling hooks if they exist
+                if (playerDependencies.grapplingHook != null) playerDependencies.grapplingHook.DestroyRopes();
+
+                Debug.Log("Player teleported to SceneView camera position with proper physics reset.");
+            }
+            else {
+                // Fallback if no PlayerDependencies
+                player.transform.position = cameraPosition;
+                Debug.Log("Player teleported to SceneView camera position (basic teleport).");
+            }
         }
         else
             Debug.LogWarning("No active SceneView found. Make sure you have a SceneView open.");
