@@ -402,30 +402,30 @@ namespace PrototypeFPC
             // Use Physics.RaycastAll to see everything the ray hits
             var hits = Physics.RaycastAll(r.origin, r.direction, hookDistance);
 
-            if (hits.Length > 0) {
-                // Check each hit
-                foreach (var hitInfo in hits) {
-                    // First check if we hit a plank
-                    var plank = hitInfo.collider.GetComponent<Plank>();
-                    if (!plank) continue;
+            if (hits.Length <= 0) return;
 
-                    ropeCut = true;
-                    plank.Cut();
-                    return;
-                }
+            // Check each hit
+            foreach (var hitInfo in hits) {
+                // First check if we hit a plank
+                var plank = hitInfo.collider.GetComponent<Plank>();
+                if (!plank) continue;
 
-                // If no plank was hit, check for rope colliders
-                foreach (var hitInfo in hits) {
-                    if (ropeLayerMask != (ropeLayerMask | 1 << hitInfo.collider.gameObject.layer)) continue;
+                ropeCut = true;
+                plank.Cut();
+                return;
+            }
 
-                    int ropeIndex = GameObjectToIndex(hitInfo.collider.gameObject);
-                    if (ropeIndex == -1) continue;
+            // If no plank was hit, check for rope colliders
+            foreach (var hitInfo in hits) {
+                if (ropeLayerMask != (ropeLayerMask | 1 << hitInfo.collider.gameObject.layer)) continue;
 
-                    Debug.Log($"Found rope with index {ropeIndex}");
-                    ropeCut = true;
-                    DestroyRope(ropeIndex);
-                    return;
-                }
+                int ropeIndex = GameObjectToIndex(hitInfo.collider.gameObject);
+                if (ropeIndex == -1) continue;
+
+                Debug.Log($"Found rope with index {ropeIndex}");
+                ropeCut = true;
+                DestroyRope(ropeIndex);
+                return;
             }
         }
 
