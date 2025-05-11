@@ -2580,7 +2580,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!43 &1489668323
+--- !u!43 &1547154680
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2982,18 +2982,6 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 375800316}
-    - target: {fileID: 1290229815315683825, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 16.116581
-      objectReference: {fileID: 0}
-    - target: {fileID: 1290229815315683825, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8.64322
-      objectReference: {fileID: 0}
-    - target: {fileID: 1290229815315683825, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -12.117764
-      objectReference: {fileID: 0}
     - target: {fileID: 1545901667017739800, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3073,7 +3061,7 @@ PrefabInstance:
     - target: {fileID: 2677106151721621307, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1489668323}
+      objectReference: {fileID: 1547154680}
     - target: {fileID: 3168922540967017188, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Name
       value: Spawnpoint
@@ -3117,10 +3105,10 @@ PrefabInstance:
     - target: {fileID: 3854614312509471743, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1489668323}
+      objectReference: {fileID: 1547154680}
     - target: {fileID: 3854614312509471743, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_VersionIndex
-      value: 882
+      value: 888
       objectReference: {fileID: 0}
     - target: {fileID: 3854614312509471743, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -3165,7 +3153,7 @@ PrefabInstance:
     - target: {fileID: 8205223375716412753, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1489668323}
+      objectReference: {fileID: 1547154680}
     - target: {fileID: 8491756083004412008, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: throwForce
       value: 3
