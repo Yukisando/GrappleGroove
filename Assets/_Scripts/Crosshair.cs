@@ -97,6 +97,13 @@ public class Crosshair : MonoBehaviour
             return;
         }
 
+        // Check for reset buttons
+        var resetButton = hit.collider.GetComponent<ResetButton>();
+        if (resetButton != null && resetButton.interactionDistance >= hit.distance) {
+            targetCrosshair = grab; // Use grab icon for reset buttons
+            return;
+        }
+
         // Check for hookable objects
         var hookable = hit.collider.GetComponent<Hookable>();
         if (hookable != null && grapplingHookComponent != null && grapplingHookComponent.hookDistance >= hit.distance) {
