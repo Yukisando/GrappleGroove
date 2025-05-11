@@ -61,9 +61,8 @@ public class Crosshair : MonoBehaviour
 
         // Cast ray from camera
         var ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        RaycastHit hit;
 
-        bool hitSomething = Physics.Raycast(ray, out hit, math.INFINITY, raycastMask, QueryTriggerInteraction.Ignore);
+        bool hitSomething = Physics.Raycast(ray, out var hit, math.INFINITY, raycastMask, QueryTriggerInteraction.Ignore);
 
         if (hitSomething)
 
@@ -85,34 +84,35 @@ public class Crosshair : MonoBehaviour
     void CheckForInteractiveObjects(RaycastHit hit, ref Image targetCrosshair) {
         // Check for inspectable objects
         var inspectable = hit.collider.GetComponent<Inspectable>();
-        if (inspectable != null && inspectComponent != null && inspectComponent.maxPickupDistance >= hit.distance) {
+        if (inspectable && inspectComponent != null && inspectComponent.maxPickupDistance >= hit.distance) {
             targetCrosshair = inspect;
             return;
         }
 
         // Check for grabbable objects
         var grabbable = hit.collider.GetComponent<Grabbable>();
-        if (grabbable != null && grabThrowComponent != null && grabThrowComponent.maxGrabDistance >= hit.distance) {
+        if (grabbable && grabThrowComponent != null && grabThrowComponent.maxGrabDistance >= hit.distance) {
             targetCrosshair = grab;
             return;
         }
 
         // Check for reset buttons
         var resetButton = hit.collider.GetComponent<ResetButton>();
-        if (resetButton != null && resetButton.interactionDistance >= hit.distance) {
+        if (resetButton && resetButton.interactionDistance >= hit.distance) {
             targetCrosshair = grab; // Use grab icon for reset buttons
             return;
         }
 
         // Check for hookable objects
         var hookable = hit.collider.GetComponent<Hookable>();
-        if (hookable != null && grapplingHookComponent != null && grapplingHookComponent.hookDistance >= hit.distance) {
+        if (hookable && grapplingHookComponent.hookDistance >= hit.distance) {
             targetCrosshair = grapple;
             return;
         }
 
-        // Check for rope objects (this can override previous crosshairs)
-        if (hit.collider.CompareTag("Rope")) targetCrosshair = snipsnip;
+        // Check for plank objects
+        var plank = hit.collider.GetComponent<Plank>();
+        if (plank) targetCrosshair = snipsnip;
     }
 
     void SetCrosshair(Image newCrosshair) {

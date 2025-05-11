@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 #endregion
 
@@ -19,7 +20,8 @@ namespace PrototypeFPC
         [SerializeField] KeyCode resetHookKey;
         [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
-        [SerializeField] GameObject platformPrefab;
+        [FormerlySerializedAs("plnakPrefab")] [FormerlySerializedAs("platformPrefab")] [SerializeField]
+        GameObject plankPrefab;
 
         [Header("Settings")]
         [SerializeField] float minimumRopeLength = 1f;
@@ -355,23 +357,22 @@ namespace PrototypeFPC
                 return;
             }
 
-            rope.plank = Instantiate(platformPrefab, rope.hook.transform.position, Quaternion.identity);
+            rope.plank = Instantiate(plankPrefab, rope.hook.transform.position, Quaternion.identity);
             rope.plank.transform.parent = null;
 
-            UpdatePlankTransform(rope);
+            // Add and initialize the Plank component
+            var plankComponent = rope.plank.GetComponent<Plank>();
+            plankComponent.Initialize(this, ropes.Count - 1);
         }
 
-        void UpdatePlankTransform(Rope rope) {
-            var startPoint = rope.hook.transform.position;
-            var endPoint = hit.point;
+        void UpdatePlankTransform(Rope rope, Vector3 startPoint, Vector3 endPoint) {
             var midPoint = (startPoint + endPoint) / 2;
             rope.plank.transform.position = midPoint;
 
             float distance = Vector3.Distance(startPoint, endPoint);
-            rope.plank.transform.localScale = new Vector3(distance, rope.plank.transform.localScale.y, rope.plank.transform.localScale.z);
-
             rope.plank.transform.rotation = Quaternion.LookRotation(endPoint - startPoint);
-            rope.plank.transform.Rotate(0, 90, 0);
+            rope.plank.transform.Rotate(-90, 0, 0);
+            rope.plank.transform.localScale = new Vector3(.2f, distance / 2f, 0.2f);
         }
 
         void CheckRopeLimit() {
@@ -396,16 +397,40 @@ namespace PrototypeFPC
 
         void CutRopeWithRaycast() {
             var r = playerDependencies.cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(r.origin, r.direction, out hit, hookDistance, ropeLayerMask)) {
-                int ropeIndex = GameObjectToIndex(hit.collider.gameObject);
-                if (ropeIndex != -1) {
+            Debug.DrawRay(r.origin, r.direction * hookDistance, Color.red, 1f); // Debug ray visualization
+
+            // Use Physics.RaycastAll to see everything the ray hits
+            var hits = Physics.RaycastAll(r.origin, r.direction, hookDistance);
+
+            if (hits.Length > 0) {
+                // Check each hit
+                foreach (var hitInfo in hits) {
+                    // First check if we hit a plank
+                    var plank = hitInfo.collider.GetComponent<Plank>();
+                    if (!plank) continue;
+
+                    ropeCut = true;
+                    plank.Cut();
+                    return;
+                }
+
+                // If no plank was hit, check for rope colliders
+                foreach (var hitInfo in hits) {
+                    if (ropeLayerMask != (ropeLayerMask | 1 << hitInfo.collider.gameObject.layer)) continue;
+
+                    int ropeIndex = GameObjectToIndex(hitInfo.collider.gameObject);
+                    if (ropeIndex == -1) continue;
+
+                    Debug.Log($"Found rope with index {ropeIndex}");
                     ropeCut = true;
                     DestroyRope(ropeIndex);
+                    return;
                 }
             }
         }
 
         int GameObjectToIndex(GameObject ropeColliderObject) {
+            // Check if any rope's ropeCollider matches the hit object
             return ropes.FindIndex(rope => rope.ropeCollider == ropeColliderObject);
         }
 
@@ -420,7 +445,9 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(releaseSound);
         }
 
-        void DestroyRope(int index) {
+        public void DestroyRope(int index) {
+            if (index < 0 || index >= ropes.Count) return;
+
             var rope = ropes[index];
             Destroy(rope.hook.gameObject);
             if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
@@ -434,6 +461,14 @@ namespace PrototypeFPC
 
             if (ropes.Count == 0) hooked = false;
             audioSource.PlayOneShot(releaseSound);
+
+            // Update indices for remaining planks
+            for (var i = 0; i < ropes.Count; i++) {
+                if (ropes[i].plank != null) {
+                    var plankComponent = ropes[i].plank.GetComponent<Plank>();
+                    if (plankComponent != null) plankComponent.Initialize(this, i);
+                }
+            }
         }
 
         public void DestroyRopes(RopeType ropeType = RopeType.BOTH) {
@@ -463,12 +498,11 @@ namespace PrototypeFPC
             foreach (var rope in ropes) {
                 rope.spring.Update(Time.fixedDeltaTime);
 
-                Vector3 startPoint, endPoint;
-                if (!GetRopePoints(rope, out startPoint, out endPoint)) continue;
+                if (!GetRopePoints(rope, out var startPoint, out var endPoint)) continue;
 
                 UpdateRopeRenderer(rope, startPoint, endPoint);
                 UpdateRopeCollider(rope, startPoint, endPoint);
-                UpdatePlankPosition(rope, startPoint, endPoint);
+                if (rope.plank) UpdatePlankTransform(rope, startPoint, endPoint);
             }
         }
 
@@ -517,24 +551,14 @@ namespace PrototypeFPC
                 rope.ropeCollider.transform.position = startPoint;
                 rope.ropeCollider.transform.LookAt(endPoint);
                 float distance = Vector3.Distance(startPoint, endPoint);
-                rope.ropeCollider.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, distance);
-                rope.ropeCollider.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, distance / 2);
+                var collider = rope.ropeCollider.GetComponent<BoxCollider>();
+                collider.size = new Vector3(0.1f, 0.1f, distance);
+                collider.center = new Vector3(0f, 0f, distance / 2);
+                collider.enabled = true; // Make sure collider is enabled
 
+                // Ensure layer and tag are set correctly
                 rope.ropeCollider.layer = LayerMask.NameToLayer("Rope");
                 rope.ropeCollider.tag = "Rope";
-            }
-        }
-
-        void UpdatePlankPosition(Rope rope, Vector3 startPoint, Vector3 endPoint) {
-            if (rope.plank != null) {
-                var midPoint = (startPoint + endPoint) / 2;
-                rope.plank.transform.position = midPoint;
-
-                float distance = Vector3.Distance(startPoint, endPoint);
-                rope.plank.transform.localScale = new Vector3(distance, rope.plank.transform.localScale.y, rope.plank.transform.localScale.z);
-
-                rope.plank.transform.rotation = Quaternion.LookRotation(endPoint - startPoint);
-                rope.plank.transform.Rotate(0, 90, 0);
             }
         }
 
