@@ -1137,7 +1137,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
-  platformPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
+  plankPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
   minimumRopeLength: 0.75
   releaseJumpForce: 30
   upwardForceRatio: 10
@@ -1266,8 +1266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c77f0d538c20f24e9bc44cc29e1168f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 25
-  maxAmount: 30
+  amount: 5
+  maxAmount: 10
   positionDelay: 0.04
   smoothness: 4
 --- !u!1 &3320234535050604220

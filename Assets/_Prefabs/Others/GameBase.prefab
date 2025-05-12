@@ -1073,6 +1073,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHud
       objectReference: {fileID: 0}
+    - target: {fileID: 1481644382415820481, guid: 41d86049f0bbd80478e909f5a7e6661a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.00003
+      objectReference: {fileID: 0}
     - target: {fileID: 2777724774775850593, guid: 41d86049f0bbd80478e909f5a7e6661a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
