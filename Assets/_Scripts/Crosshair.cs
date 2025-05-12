@@ -18,17 +18,13 @@ public class Crosshair : MonoBehaviour
     [SerializeField] Image grapple;
     [SerializeField] Image snipsnip;
 
-    // Cached components
     Inspect inspectComponent;
     GrabThrow grabThrowComponent;
     GrapplingHook grapplingHookComponent;
     Camera playerCamera;
     PlayerDependencies playerDependencies;
-
-    // Current active crosshair
     Image currentCrosshair;
 
-    // Layer mask for raycasting
     int raycastMask;
 
     void Awake() {
@@ -36,7 +32,6 @@ public class Crosshair : MonoBehaviour
     }
 
     void Setup() {
-        // Initialize components
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         if (playerDependencies != null) {
             inspectComponent = playerDependencies.GetComponent<Inspect>();
@@ -45,90 +40,69 @@ public class Crosshair : MonoBehaviour
             playerCamera = playerDependencies.cam;
         }
 
-        // Set initial crosshair
         currentCrosshair = normal;
 
-        // Setup raycast mask
-        raycastMask = ~LayerMask.GetMask("Player");
+        raycastMask = ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox");
     }
 
     void LateUpdate() {
-        // Default to normal crosshair
         var targetCrosshair = normal;
 
-        // Cast ray from camera
-        var ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-
+        var ray = GetCameraRay();
         bool hitSomething = Physics.Raycast(ray, out var hit, math.INFINITY, raycastMask, QueryTriggerInteraction.Ignore);
 
         if (hitSomething)
-
-            // Check for different types of interactive objects
             CheckForInteractiveObjects(hit, ref targetCrosshair);
 
-        // Override with action states
         if (playerDependencies.isGrabbing) targetCrosshair = grabbing;
-
         if (playerDependencies.isInspecting) targetCrosshair = inspecting;
 
-        // Apply the crosshair change
         SetCrosshair(targetCrosshair);
-
-        // Update cursor visibility
         UpdateCursorVisibility();
     }
 
+    Ray GetCameraRay() {
+        return new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+    }
+
     void CheckForInteractiveObjects(RaycastHit hit, ref Image targetCrosshair) {
-        // Check for inspectable objects
-        var inspectable = hit.collider.GetComponent<Inspectable>();
-        if (inspectable && inspectComponent != null && inspectComponent.maxPickupDistance >= hit.distance) {
+        if (hit.collider.TryGetComponent(out Inspectable inspectable) &&
+            inspectComponent != null &&
+            inspectComponent.maxPickupDistance >= hit.distance) {
             targetCrosshair = inspect;
             return;
         }
 
-        // Check for grabbable objects
-        var grabbable = hit.collider.GetComponent<Grabbable>();
-        if (grabbable && grabThrowComponent != null && grabThrowComponent.maxGrabDistance >= hit.distance) {
+        if (hit.collider.TryGetComponent(out Grabbable grabbable) &&
+            grabThrowComponent != null &&
+            grabThrowComponent.maxGrabDistance >= hit.distance) {
             targetCrosshair = grab;
             return;
         }
 
-        // Check for reset buttons
-        var resetButton = hit.collider.GetComponent<ResetButton>();
-        if (resetButton && resetButton.interactionDistance >= hit.distance) {
-            targetCrosshair = grab; // Use grab icon for reset buttons
+        if (hit.collider.TryGetComponent(out ResetButton resetButton) &&
+            resetButton.interactionDistance >= hit.distance) {
+            targetCrosshair = grab;
             return;
         }
 
-        // Check for hookable objects
-        var hookable = hit.collider.GetComponent<Hookable>();
-        if (hookable && grapplingHookComponent.hookDistance >= hit.distance) {
+        if (hit.collider.TryGetComponent(out Hookable hookable) &&
+            grapplingHookComponent.hookDistance >= hit.distance) {
             targetCrosshair = grapple;
             return;
         }
 
-        // Check for plank objects
-        var plank = hit.collider.GetComponent<Plank>();
-        if (plank) targetCrosshair = snipsnip;
+        if (hit.collider.TryGetComponent(out Plank plank)) targetCrosshair = snipsnip;
     }
 
     void SetCrosshair(Image newCrosshair) {
-        // Skip if it's the same crosshair
         if (currentCrosshair == newCrosshair) return;
 
-        // Disable all crosshairs
-        normal.enabled = false;
-        grab.enabled = false;
-        grabbing.enabled = false;
-        inspect.enabled = false;
-        inspecting.enabled = false;
-        grapple.enabled = false;
-        snipsnip.enabled = false;
+        normal.enabled = grab.enabled = grabbing.enabled =
+            inspect.enabled = inspecting.enabled = grapple.enabled = snipsnip.enabled = false;
 
-        // Enable only the new one
         if (newCrosshair != null) newCrosshair.enabled = true;
 
-        // Update current crosshair reference
         currentCrosshair = newCrosshair;
     }
 

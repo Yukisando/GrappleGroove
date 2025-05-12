@@ -168,13 +168,13 @@ namespace PrototypeFPC
             if (!Input.GetMouseButtonDown(mouseButton) || Input.GetKey(KeyCode.LeftControl) || playerDependencies.isInspecting)
                 return;
 
-            ray = playerDependencies.cam.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance))
+            var r = GetCameraRay();
+            if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
-            if (hookable == null)
-                return;
+            if (hookable == null) return;
+
 
             EnsureRigidbodyOnHitObject();
 
@@ -267,6 +267,10 @@ namespace PrototypeFPC
             sj.massScale = 4.0f;
         }
 
+        Ray GetCameraRay() {
+            return new Ray(playerDependencies.cam.transform.position, playerDependencies.cam.transform.forward);
+        }
+
         void AddRopeCollider(Rope rope) {
             rope.ropeCollider = new GameObject("RopeCollider");
             rope.ropeCollider.transform.parent = rope.hook.transform;
@@ -281,12 +285,13 @@ namespace PrototypeFPC
         }
 
         void CreateHookLatch() {
-            if (!Physics.Raycast(ray.origin, ray.direction, out hit, hookDistance))
+            var r = GetCameraRay();
+            if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
-            if (hookable == null)
-                return;
+            if (hookable == null) return;
+
 
             var rope = ropes[^1];
             SetupHookLatch(rope);
