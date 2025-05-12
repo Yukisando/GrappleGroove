@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -368,6 +369,66 @@ namespace PrototypeFPC
             // Add and initialize the Plank component
             var plankComponent = rope.plank.GetComponent<Plank>();
             plankComponent.Initialize(this, ropes.Count - 1);
+
+            // Schedule collision ignoring for next frame to ensure all components are properly initialized
+            StartCoroutine(IgnoreCollisionsForRope(rope));
+        }
+
+        IEnumerator IgnoreCollisionsForRope(Rope rope) {
+            // Wait for the next frame to ensure all components are initialized
+            yield return null;
+
+            // Get all colliders from the plank
+            var plankColliders = rope.plank.GetComponentsInChildren<Collider>();
+
+            // Ignore collisions with connected object 1
+            if (rope.connectedObject1 != null) {
+                var obj1Colliders = rope.connectedObject1.GetComponentsInChildren<Collider>();
+                foreach (var plankCol in plankColliders) {
+                    foreach (var objCol in obj1Colliders) {
+                        if (plankCol != null && objCol != null) {
+                            Physics.IgnoreCollision(plankCol, objCol, true);
+                            Debug.Log($"Ignoring collision between {plankCol.name} and {objCol.name}");
+                        }
+                    }
+                }
+            }
+
+            // Ignore collisions with connected object 2
+            if (rope.connectedObject2 != null) {
+                var obj2Colliders = rope.connectedObject2.GetComponentsInChildren<Collider>();
+                foreach (var plankCol in plankColliders) {
+                    foreach (var objCol in obj2Colliders) {
+                        if (plankCol != null && objCol != null) {
+                            Physics.IgnoreCollision(plankCol, objCol, true);
+                            Debug.Log($"Ignoring collision between {plankCol.name} and {objCol.name}");
+                        }
+                    }
+                }
+            }
+
+            // Store the ignored colliders in the rope for later restoration
+            rope.ignoredCollisions = new List<ColliderPair>();
+
+            if (rope.connectedObject1 != null)
+                foreach (var plankCol in plankColliders) {
+                    foreach (var objCol in rope.connectedObject1.GetComponentsInChildren<Collider>()) {
+                        rope.ignoredCollisions.Add(new ColliderPair {
+                            first = plankCol,
+                            second = objCol,
+                        });
+                    }
+                }
+
+            if (rope.connectedObject2 != null)
+                foreach (var plankCol in plankColliders) {
+                    foreach (var objCol in rope.connectedObject2.GetComponentsInChildren<Collider>()) {
+                        rope.ignoredCollisions.Add(new ColliderPair {
+                            first = plankCol,
+                            second = objCol,
+                        });
+                    }
+                }
         }
 
         void UpdatePlankTransform(Rope rope, Vector3 startPoint, Vector3 endPoint) {
@@ -454,6 +515,16 @@ namespace PrototypeFPC
             if (index < 0 || index >= ropes.Count) return;
 
             var rope = ropes[index];
+
+            // Re-enable collisions before destroying objects
+            if (rope.ignoredCollisions != null)
+                foreach (var pair in rope.ignoredCollisions) {
+                    if (pair.first != null && pair.second != null) {
+                        Physics.IgnoreCollision(pair.first, pair.second, false);
+                        Debug.Log($"Restoring collision between {pair.first.name} and {pair.second.name}");
+                    }
+                }
+
             Destroy(rope.hook.gameObject);
             if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
             if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
@@ -580,6 +651,13 @@ namespace PrototypeFPC
             public GameObject connectedObject2;
             public GameObject plank;
             public Spring spring;
+            public List<ColliderPair> ignoredCollisions;
+        }
+
+        public struct ColliderPair
+        {
+            public Collider first;
+            public Collider second;
         }
     }
 }

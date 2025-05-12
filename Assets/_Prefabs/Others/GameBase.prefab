@@ -1087,11 +1087,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7262846353978981746, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: lookTiltSpeed
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7262846353978981746, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: lookTiltAmount
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7643533470452205149, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: m_Name
