@@ -10,9 +10,13 @@ namespace PrototypeFPC
     {
         // Sway properties
         [Header("Sway Properties")]
+        [Range(0f, 50f)]
         [SerializeField] float amount = 25f;
+        [Range(0f, 60f)]
         [SerializeField] float maxAmount = 30f;
+        [Range(0f, 0.2f)]
         [SerializeField] float positionDelay = 0.05f;
+        [Range(0.1f, 10f)]
         [SerializeField] float smoothness = 3f;
 
         Vector3 drag;
