@@ -429,6 +429,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box
@@ -495,9 +499,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 155009042}
-    - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 155009050}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
 --- !u!1 &155009041 stripped
@@ -505,19 +506,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
   m_PrefabInstance: {fileID: 155009040}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &155009042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155009041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: Box
 --- !u!114 &155009050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +683,7 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &305876449
+--- !u!21 &189248141
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -732,10 +720,10 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
+    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &333915224
+--- !u!21 &218080923
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -772,7 +760,7 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 400, g: 60, b: 50, a: 0}
+    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &386286043
@@ -783,6 +771,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (1)
@@ -835,7 +827,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 51560424}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
---- !u!21 &436986669
+--- !u!21 &596668143
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -872,7 +864,7 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
+    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &706196140
@@ -923,6 +915,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (4)
@@ -989,9 +985,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 715005323}
-    - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 715005331}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
 --- !u!1 &715005322 stripped
@@ -999,19 +992,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
   m_PrefabInstance: {fileID: 715005321}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &715005323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715005322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: Box
 --- !u!114 &715005331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2851,7 +2831,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87541b316d1f48045a3740fa55815da8, type: 3}
---- !u!21 &1037715395
+--- !u!21 &1049885334
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -2888,7 +2868,7 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
+    - _WidthHeightRadius: {r: 400, g: 60, b: 50, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1154765802
@@ -3269,6 +3249,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (5)
@@ -3335,9 +3319,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1457904887}
-    - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1457904895}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
 --- !u!1 &1457904886 stripped
@@ -3345,19 +3326,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
   m_PrefabInstance: {fileID: 1457904885}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1457904887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457904886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: Box
 --- !u!114 &1457904895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3841,6 +3809,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (3)
@@ -3907,9 +3879,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1773672390}
-    - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1773672398}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
 --- !u!1 &1773672389 stripped
@@ -3917,19 +3886,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
   m_PrefabInstance: {fileID: 1773672388}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1773672390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773672389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: Box
 --- !u!114 &1773672398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4444,6 +4400,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603199422168419362, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (2)
@@ -4510,9 +4470,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2087919821}
-    - targetCorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2087919829}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
 --- !u!1 &2087919820 stripped
@@ -4520,19 +4477,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
   m_PrefabInstance: {fileID: 2087919819}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2087919821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087919820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: Box
 --- !u!114 &2087919829
 MonoBehaviour:
   m_ObjectHideFlags: 0

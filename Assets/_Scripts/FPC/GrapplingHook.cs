@@ -386,10 +386,7 @@ namespace PrototypeFPC
                 var obj1Colliders = rope.connectedObject1.GetComponentsInChildren<Collider>();
                 foreach (var plankCol in plankColliders) {
                     foreach (var objCol in obj1Colliders) {
-                        if (plankCol != null && objCol != null) {
-                            Physics.IgnoreCollision(plankCol, objCol, true);
-                            Debug.Log($"Ignoring collision between {plankCol.name} and {objCol.name}");
-                        }
+                        if (plankCol != null && objCol != null) Physics.IgnoreCollision(plankCol, objCol, true);
                     }
                 }
             }
@@ -399,10 +396,7 @@ namespace PrototypeFPC
                 var obj2Colliders = rope.connectedObject2.GetComponentsInChildren<Collider>();
                 foreach (var plankCol in plankColliders) {
                     foreach (var objCol in obj2Colliders) {
-                        if (plankCol != null && objCol != null) {
-                            Physics.IgnoreCollision(plankCol, objCol, true);
-                            Debug.Log($"Ignoring collision between {plankCol.name} and {objCol.name}");
-                        }
+                        if (plankCol != null && objCol != null) Physics.IgnoreCollision(plankCol, objCol, true);
                     }
                 }
             }
