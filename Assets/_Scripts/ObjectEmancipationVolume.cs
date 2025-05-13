@@ -9,7 +9,7 @@ public class ObjectEmancipationVolume : MonoBehaviour
 {
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
-    [SerializeField] List<string> objectsIDs = new List<string>();
+    [SerializeField] List<string> idsToDestroy = new List<string>();
 
     [Header("Visuals")]
     [SerializeField] float yMovement = .2f;
@@ -42,12 +42,21 @@ public class ObjectEmancipationVolume : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider _other) {
-        Debug.Log($"{_other.gameObject.name} entered");
-        foreach (string o in objectsIDs) {
-            if (!_other.TryGetComponent<ID>(out var idObject)) continue;
+        HandleObjectEnter(_other.gameObject);
+    }
 
-            if (idObject.id == o)
-                Destroy(_other.gameObject);
+    void OnCollisionEnter(Collision _collision) {
+        HandleObjectEnter(_collision.gameObject);
+    }
+
+    void HandleObjectEnter(GameObject enteringObject) {
+        foreach (string o in idsToDestroy) {
+            if (!enteringObject.TryGetComponent<ID>(out var idObject)) continue;
+
+            if (idObject.id == o) {
+                Destroy(enteringObject);
+                Debug.Log($"{enteringObject.name} destroyed by {gameObject.name}");
+            }
         }
     }
 }

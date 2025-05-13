@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6829439801511805438}
   - component: {fileID: 5949430733731694069}
   - component: {fileID: 9053801320666953582}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: ObjectEmansipationVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,8 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c6a2ae8b17a2848bd505fcae33d6da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsIDs:
-  - Box
+  idsToDestroy: []
   yMovement: 0.2
   xMovement: 0.1
   updateFrameInterval: 2
