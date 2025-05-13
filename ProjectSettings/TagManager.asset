@@ -6,10 +6,6 @@ TagManager:
   tags:
   - ground
   - PlayerHitbox
-  - Grab
-  - Inspect
-  - Grapple
-  - Rope
   layers:
   - Default
   - TransparentFX
@@ -17,12 +13,12 @@ TagManager:
   - Player
   - Water
   - UI
-  - Grapple
-  - Static
-  - Plank
-  - Rope
-  - Inspect
   - Slip
+  - Static
+  - Block Grapple
+  - 
+  - 
+  - 
   - 
   - 
   - 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5004217648422848089}
   - component: {fileID: 4395594971786213239}
   m_Layer: 2
-  m_Name: EmansipationVolume
+  m_Name: RopeEmansipationVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

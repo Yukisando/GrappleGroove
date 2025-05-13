@@ -44,16 +44,14 @@ public class EmancipationVolume : MonoBehaviour
     }
 
     void LateUpdate() {
-        if (rd == null || sharedMaterial == null || !sharedMaterial.HasProperty(BaseMap)) return;
-
         // Only update every X frames
-        frameCounter++;
-        if (frameCounter % updateFrameInterval != 0) return;
+        if (frameCounter++ % updateFrameInterval != 0) return;
 
-        var offset = sharedMaterial.GetTextureOffset(BaseMap);
-        offset.y += yMovement * Time.deltaTime * updateFrameInterval; // Multiply by interval to maintain same speed
-        offset.x += xMovement * Time.deltaTime * updateFrameInterval;
-        sharedMaterial.SetTextureOffset(BaseMap, offset);
+        if (sharedMaterial.HasProperty(BaseMap)) {
+            var offset = sharedMaterial.GetTextureOffset(BaseMap);
+            offset += new Vector2(xMovement, yMovement) * (Time.deltaTime * updateFrameInterval);
+            sharedMaterial.SetTextureOffset(BaseMap, offset);
+        }
     }
 
     void OnTriggerEnter(Collider _other) {
@@ -62,17 +60,17 @@ public class EmancipationVolume : MonoBehaviour
     }
 
     void SetVolumeColor() {
-        rd.material.EnableKeyword("_BaseMap");
+        sharedMaterial.EnableKeyword("_BaseMap");
 
         switch (ropeTypeToDestroy) {
             case RopeType.BOTH:
-                rd.material.SetColor(BaseColor, Color.magenta);
+                sharedMaterial.SetColor(BaseColor, Color.magenta);
                 break;
             case RopeType.LEFT:
-                rd.material.SetColor(BaseColor, Color.blue);
+                sharedMaterial.SetColor(BaseColor, Color.blue);
                 break;
             case RopeType.RIGHT:
-                rd.material.SetColor(BaseColor, Color.red);
+                sharedMaterial.SetColor(BaseColor, Color.red);
                 break;
         }
     }

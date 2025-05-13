@@ -513,19 +513,10 @@ namespace PrototypeFPC
             // Re-enable collisions before destroying objects
             if (rope.ignoredCollisions != null)
                 foreach (var pair in rope.ignoredCollisions) {
-                    if (pair.first != null && pair.second != null) {
-                        Physics.IgnoreCollision(pair.first, pair.second, false);
-                        Debug.Log($"Restoring collision between {pair.first.name} and {pair.second.name}");
-                    }
+                    if (pair.first && pair.second) Physics.IgnoreCollision(pair.first, pair.second, false);
                 }
 
-            Destroy(rope.hook.gameObject);
-            if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
-            if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
-            if (rope.plank != null) Destroy(rope.plank);
-            foreach (var model in rope.hookModels) {
-                Destroy(model);
-            }
+            DestroyRopeComponents(rope);
 
             ropes.RemoveAt(index);
 
@@ -534,9 +525,9 @@ namespace PrototypeFPC
 
             // Update indices for remaining planks
             for (var i = 0; i < ropes.Count; i++) {
-                if (ropes[i].plank != null) {
+                if (ropes[i].plank) {
                     var plankComponent = ropes[i].plank.GetComponent<Plank>();
-                    if (plankComponent != null) plankComponent.Initialize(this, i);
+                    if (plankComponent) plankComponent.Initialize(this, i);
                 }
             }
         }
@@ -556,9 +547,9 @@ namespace PrototypeFPC
 
         void DestroyRopeComponents(Rope rope) {
             Destroy(rope.hook.gameObject);
-            if (rope.hookLatch != null) Destroy(rope.hookLatch.gameObject);
-            if (rope.ropeCollider != null) Destroy(rope.ropeCollider.gameObject);
-            if (rope.plank != null) Destroy(rope.plank);
+            Destroy(rope.hookLatch.gameObject);
+            Destroy(rope.ropeCollider.gameObject);
+            Destroy(rope.plank);
             foreach (var model in rope.hookModels) {
                 Destroy(model);
             }
@@ -617,19 +608,15 @@ namespace PrototypeFPC
         }
 
         void UpdateRopeCollider(Rope rope, Vector3 startPoint, Vector3 endPoint) {
-            if (rope.ropeCollider != null && rope.hook.GetComponent<SpringJoint>() != null) {
-                rope.ropeCollider.transform.position = startPoint;
-                rope.ropeCollider.transform.LookAt(endPoint);
-                float distance = Vector3.Distance(startPoint, endPoint);
-                var collider = rope.ropeCollider.GetComponent<BoxCollider>();
-                collider.size = new Vector3(0.1f, 0.1f, distance);
-                collider.center = new Vector3(0f, 0f, distance / 2);
-                collider.enabled = true; // Make sure collider is enabled
+            if (!rope.ropeCollider || !rope.hook.GetComponent<SpringJoint>()) return;
 
-                // Ensure layer and tag are set correctly
-                rope.ropeCollider.layer = LayerMask.NameToLayer("Rope");
-                rope.ropeCollider.tag = "Rope";
-            }
+            rope.ropeCollider.transform.position = startPoint;
+            rope.ropeCollider.transform.LookAt(endPoint);
+            float distance = Vector3.Distance(startPoint, endPoint);
+            var c = rope.ropeCollider.GetComponent<BoxCollider>();
+            c.size = new Vector3(0.1f, 0.1f, distance);
+            c.center = new Vector3(0f, 0f, distance / 2);
+            c.enabled = true;
         }
 
         [Serializable]
