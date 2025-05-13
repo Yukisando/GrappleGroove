@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1ce968227fb555542b8b340e7d75ebb6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 164690
+  packageName: ToDo Mini
+  packageVersion: 1.1
+  assetPath: Assets/Editor/ToDo Mini/ToDoMini.cs
+  uploadId: 372898
