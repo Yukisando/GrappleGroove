@@ -244,28 +244,28 @@ namespace PrototypeFPC
         }
 
         void SetupSpringJoint(Rope rope) {
-            rb.gameObject.AddComponent<SpringJoint>().connectedBody = rope.hook.GetComponent<Rigidbody>();
+            playerSpringJoint = rb.gameObject.AddComponent<SpringJoint>();
+            playerSpringJoint.connectedBody = rope.hook.GetComponent<Rigidbody>();
+
             rope.hook.AddComponent<FixedJoint>().connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
 
-            var sj = rb.GetComponent<SpringJoint>();
-            sj.autoConfigureConnectedAnchor = false;
-            sj.connectedAnchor = Vector3.zero;
+            playerSpringJoint.autoConfigureConnectedAnchor = false;
+            playerSpringJoint.connectedAnchor = Vector3.zero;
 
             float distanceFromHook = Vector3.Distance(rb.gameObject.transform.position, rope.hook.transform.position);
 
             if (rope.type == RopeType.LEFT) {
-                sj.maxDistance = distanceFromHook;
-                sj.minDistance = distanceFromHook * 0.25f;
+                playerSpringJoint.maxDistance = distanceFromHook;
+                playerSpringJoint.minDistance = distanceFromHook * 0.25f;
             }
-            else // RopeType.RIGHT
-            {
-                sj.minDistance = distanceFromHook; // Prevent retraction
-                sj.maxDistance = distanceFromHook + rightGrappleMaxExtension; // Allow extension
+            else {
+                playerSpringJoint.minDistance = distanceFromHook;
+                playerSpringJoint.maxDistance = distanceFromHook + rightGrappleMaxExtension;
             }
 
-            sj.spring = 4000f;
-            sj.damper = 200f;
-            sj.massScale = 4.0f;
+            playerSpringJoint.spring = 4000f;
+            playerSpringJoint.damper = 200f;
+            playerSpringJoint.massScale = 4.0f;
         }
 
         Ray GetCameraRay() {
@@ -496,7 +496,10 @@ namespace PrototypeFPC
 
         void DestroyGrappleRope() {
             if (ropes.Count > 0) {
-                Destroy(rb.GetComponent<SpringJoint>());
+                if (playerSpringJoint != null) {
+                    Destroy(playerSpringJoint);
+                    playerSpringJoint = null;
+                }
                 DestroyRope(ropes.Count - 1);
             }
 
@@ -546,10 +549,11 @@ namespace PrototypeFPC
         }
 
         void DestroyRopeComponents(Rope rope) {
-            Destroy(rope.hook.gameObject);
-            Destroy(rope.hookLatch.gameObject);
-            Destroy(rope.ropeCollider.gameObject);
-            Destroy(rope.plank);
+            if (rope.hook) Destroy(rope.hook.gameObject);
+            if (rope.hookLatch) Destroy(rope.hookLatch.gameObject);
+            if (rope.ropeCollider) Destroy(rope.ropeCollider.gameObject);
+            if (rope.plank) Destroy(rope.plank);
+
             foreach (var model in rope.hookModels) {
                 Destroy(model);
             }
@@ -567,15 +571,24 @@ namespace PrototypeFPC
             }
         }
 
+        SpringJoint playerSpringJoint;
+
         bool GetRopePoints(Rope rope, out Vector3 startPoint, out Vector3 endPoint) {
             startPoint = endPoint = Vector3.zero;
 
-            if (rb.GetComponent<SpringJoint>() != null && rb.GetComponent<SpringJoint>().connectedBody == rope.hook.GetComponent<Rigidbody>()) {
+            if (rope == null || rope.hook == null)
+                return false;
+
+            var ropeHookRb = rope.hook.GetComponent<Rigidbody>();
+
+            if (ropeHookRb != null && playerSpringJoint != null && playerSpringJoint.connectedBody == ropeHookRb) {
                 startPoint = rope.type == RopeType.LEFT ? playerDependencies.spawnPointLeft.position : playerDependencies.spawnPointRight.position;
                 endPoint = rope.hook.transform.position;
                 return true;
             }
-            if (rope.hook.GetComponent<SpringJoint>() != null && rope.hook.GetComponent<SpringJoint>().connectedBody != rb) {
+
+            var ropeSpring = rope.hook.GetComponent<SpringJoint>();
+            if (ropeSpring != null && ropeSpring.connectedBody != rb && rope.hookLatch != null) {
                 startPoint = rope.hook.transform.position;
                 endPoint = rope.hookLatch.transform.position;
                 return true;

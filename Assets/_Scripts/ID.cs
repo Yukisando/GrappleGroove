@@ -6,7 +6,7 @@ using UnityEngine;
 #endregion
 
 [RequireComponent(typeof(Collider))]
-public class TriggerObject : MonoBehaviour
+public class ID : MonoBehaviour
 {
     public string id;
 

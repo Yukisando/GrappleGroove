@@ -9,10 +9,10 @@ public class ResetVolume : MonoBehaviour
 {
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
-    [Header("Extras")]
+    [Header("Visuals")]
     [SerializeField] float yMovement = .2f;
     [SerializeField] float xMovement = .1f;
-    [SerializeField] int updateFrameInterval = 2; // Only update every X frames
+    [SerializeField] int updateFrameInterval = 2;
     int frameCounter;
     Material sharedMaterial;
     public Action<bool> onEnterVolume;
@@ -22,11 +22,9 @@ public class ResetVolume : MonoBehaviour
     void Awake() {
         rd = GetComponent<MeshRenderer>();
 
-        // Create a material instance to avoid affecting other objects
-        if (rd != null && rd.material != null) {
-            sharedMaterial = new Material(rd.material);
-            rd.material = sharedMaterial;
-        }
+
+        sharedMaterial = new Material(rd.material);
+        rd.material = sharedMaterial;
     }
 
     void OnDestroy() {
@@ -37,7 +35,7 @@ public class ResetVolume : MonoBehaviour
     void LateUpdate() {
         if (rd == null || sharedMaterial == null || !sharedMaterial.HasProperty(BaseMap)) return;
 
-        // Only update every X frames
+
         frameCounter++;
         if (frameCounter % updateFrameInterval != 0) return;
 

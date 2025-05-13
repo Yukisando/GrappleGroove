@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public AudioClip platformSound;
 
     CheckpointVolume[] checkpointVolumes;
-    EmancipationVolume[] emancipationVolumes;
+    RopeEmancipationVolume[] emancipationVolumes;
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
@@ -55,16 +55,16 @@ public class GameManager : MonoBehaviour
         InitializeWorldObjects();
 
         // Check if teleport on play is enabled in editor preferences
-        bool skipCheckpointLoading = false;
+        var skipCheckpointLoading = false;
 #if UNITY_EDITOR
         skipCheckpointLoading = EditorPrefs.GetBool("TeleportPlayerOnPlay_Enabled", false);
 #endif
 
-        if (!skipCheckpointLoading) {
+        if (!skipCheckpointLoading)
+
             // Only load checkpoint if teleport on play is disabled
             // Delay the checkpoint loading slightly to ensure all components are initialized
             StartCoroutine(DelayedLoadCheckpoint());
-        }
     }
 
     IEnumerator DelayedLoadCheckpoint() {
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        emancipationVolumes = FindObjectsByType<EmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        emancipationVolumes = FindObjectsByType<RopeEmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         grabbableObjects = FindObjectsByType<Grabbable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 

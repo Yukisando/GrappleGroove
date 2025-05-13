@@ -18,3 +18,5 @@ MonoBehaviour:
   items:
   - task: EmancipationObjects
     isComplete: 0
+  - task: Improve black texture
+    isComplete: 0

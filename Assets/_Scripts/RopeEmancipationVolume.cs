@@ -6,19 +6,19 @@ using UnityEngine;
 
 #endregion
 
-public class EmancipationVolume : MonoBehaviour
+public class RopeEmancipationVolume : MonoBehaviour
 {
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+
     [SerializeField] RopeType ropeTypeToDestroy;
 
-    [Header("Extras")]
-    [SerializeField] float yMovement = .2f;
-    [SerializeField] float xMovement = .1f;
     public Action<RopeType> onEnterVolume;
 
-    [Header("Performance")]
-    [SerializeField] int updateFrameInterval = 2; // Only update every X frames
+    [Header("Visuals")]
+    [SerializeField] float yMovement = .2f;
+    [SerializeField] float xMovement = .1f;
+    [SerializeField] int updateFrameInterval = 2;
     int frameCounter;
     Material sharedMaterial;
 
@@ -26,12 +26,8 @@ public class EmancipationVolume : MonoBehaviour
 
     void Awake() {
         rd = GetComponent<MeshRenderer>();
-
-        // Create a material instance to avoid affecting other objects
-        if (rd != null && rd.material != null) {
-            sharedMaterial = new Material(rd.material);
-            rd.material = sharedMaterial;
-        }
+        sharedMaterial = new Material(rd.material);
+        rd.material = sharedMaterial;
     }
 
     void OnDestroy() {
@@ -44,7 +40,6 @@ public class EmancipationVolume : MonoBehaviour
     }
 
     void LateUpdate() {
-        // Only update every X frames
         if (frameCounter++ % updateFrameInterval != 0) return;
 
         if (sharedMaterial.HasProperty(BaseMap)) {

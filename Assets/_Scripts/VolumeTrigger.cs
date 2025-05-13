@@ -15,7 +15,7 @@ public class VolumeTrigger : MonoBehaviour
     [Header("Material Offset")]
     [SerializeField] float yMovement = 0.2f;
     [SerializeField] float xMovement = 0.1f;
-    [SerializeField] int updateFrameInterval = 2; // Only update every X frames
+    [SerializeField] int updateFrameInterval = 2;
     int frameCounter;
     Material sharedMaterial;
     MeshRenderer meshRenderer;
@@ -23,7 +23,7 @@ public class VolumeTrigger : MonoBehaviour
     void Awake() {
         meshRenderer = GetComponent<MeshRenderer>();
 
-        // Create a material instance to avoid affecting other objects
+
         if (meshRenderer != null && meshRenderer.material != null) {
             sharedMaterial = new Material(meshRenderer.material);
             meshRenderer.material = sharedMaterial;
@@ -38,7 +38,7 @@ public class VolumeTrigger : MonoBehaviour
     void LateUpdate() {
         if (meshRenderer == null || sharedMaterial == null || !sharedMaterial.HasProperty(BaseMap)) return;
 
-        // Only update every X frames
+
         frameCounter++;
         if (frameCounter % updateFrameInterval != 0) return;
 
@@ -55,7 +55,7 @@ public class VolumeTrigger : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        other.TryGetComponent<TriggerObject>(out var triggerObject);
+        other.TryGetComponent<ID>(out var triggerObject);
         if (triggerObject == null || triggerObject.id != id) return;
         onEnter?.Invoke();
         if (destroyOnTrigger) Destroy(gameObject);
