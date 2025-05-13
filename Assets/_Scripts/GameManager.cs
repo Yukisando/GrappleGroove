@@ -1,6 +1,7 @@
 #region
 
 using System.Collections;
+using MoreMountains.Feedbacks;
 using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
@@ -13,12 +14,12 @@ public class GameManager : MonoBehaviour
     public static GameManager I;
 
     [Header("Game dependencies")]
-    [SerializeField] bool autoStartHost = true;
+    PlayerDependencies playerDependencies;
     [SerializeField] CheckpointManager checkpointManager;
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
-    [SerializeField] GameObject endUI;
     [SerializeField] GameObject playerUI;
+    [SerializeField] MMF_Player[] resetFeedbacks;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -31,18 +32,15 @@ public class GameManager : MonoBehaviour
     public AudioClip checkpointSound;
     public AudioClip platformSound;
 
+    [Header("Performance")]
+    [SerializeField] int targetFrameRate = 120;
+
     CheckpointVolume[] checkpointVolumes;
     RopeEmancipationVolume[] emancipationVolumes;
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
     ResetVolume[] resetVolumes;
-
-    PlayerDependencies playerDependencies;
-
-    [Header("Performance")]
-    [SerializeField] int targetFrameRate = 120;
-    [SerializeField] bool limitFrameRateForWebGL = true;
 
     void Awake() {
         if (I == null) I = this;
@@ -158,6 +156,10 @@ public class GameManager : MonoBehaviour
     }
 
     void ResetGameState(bool _playSound = true) {
+        foreach (var resetFeedback in resetFeedbacks) {
+            // resetFeedback.PlayFeedbacks();
+        }
+
         if (_playSound)
             playerDependencies.audioSourceTop.PlayOneShot(resetSound);
 

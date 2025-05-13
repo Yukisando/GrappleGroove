@@ -1,21 +1,23 @@
-//-------------------------------
-//--- Prototype FPC
-//--- Version 1.0
-//--- © The Famous Mouse™
-//-------------------------------
+#region
 
 using UnityEngine;
-using PrototypeFPC;
+
+#endregion
 
 namespace PrototypeFPC
 {
+    [RequireComponent(typeof(AudioSource))]
     public class HitSound : MonoBehaviour
     {
-        [SerializeField] AudioSource audioSource;
+        AudioSource audioSource;
         [SerializeField] AudioClip hitSound;
 
-        void OnCollisionEnter(Collision col)
-        {
+        void Awake() {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        void OnCollisionEnter(Collision col) {
+            audioSource.pitch = Random.Range(0.8f, 1.2f);
             audioSource.PlayOneShot(hitSound);
         }
     }

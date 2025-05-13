@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6494266027178087539}
   - component: {fileID: 8813232478397166505}
   - component: {fileID: 5012638908047808906}
-  - component: {fileID: 5773519132132690334}
+  - component: {fileID: 72264546429276673}
   m_Layer: 0
-  m_Name: ResetButton
+  m_Name: SpawnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8528234615977982814}
+  - {fileID: 1783086650310018221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6494266027178087539
@@ -110,7 +111,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5773519132132690334
+--- !u!114 &72264546429276673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,19 +120,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 219330193166144801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8470de0dd6b9c56428555d33ca3f2291, type: 3}
+  m_Script: {fileID: 11500000, guid: aa7907aca3e48504983c3ab3abae15f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 8528234615977982814}
   activationKey: 101
   interactionDistance: 2
-  buttonPressSound: {fileID: 8300000, guid: eee93e998efe24806a8ee64a4be7a67a, type: 3}
+  buttonPressSound: {fileID: 8300000, guid: 801a894d272f24eb5ad28f5219e62bfe, type: 3}
   onPress:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5773519132132690334}
-        m_TargetAssemblyTypeName: ResetButton, Assembly-CSharp
-        m_MethodName: ResetObjects
+      - m_Target: {fileID: 72264546429276673}
+        m_TargetAssemblyTypeName: SpawnerButton, Assembly-CSharp
+        m_MethodName: Spawn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -141,8 +142,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  objetsToReset:
-  - {fileID: 0}
+  prefab: {fileID: 4519377251956510237, guid: f9b556d57bd61c840b03b5db359cf121, type: 3}
+  spawnPoint: {fileID: 1783086650310018221}
 --- !u!1 &7539809244214783384
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +155,7 @@ GameObject:
   - component: {fileID: 8528234615977982814}
   - component: {fileID: 2348335493575742231}
   - component: {fileID: 6447104446349943663}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,13 +170,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7539809244214783384}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4999985, y: 0.50000006, z: -0.49999997, w: 0.50000155}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.6, y: 0.4, z: 0.01}
   m_LocalScale: {x: 0.1, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5306134721414882595}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!33 &2348335493575742231
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -229,3 +230,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8088116742635244689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1783086650310018221}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1783086650310018221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088116742635244689}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.000008, y: 2, z: 8.000006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5306134721414882595}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

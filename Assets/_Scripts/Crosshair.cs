@@ -80,7 +80,7 @@ public class Crosshair : MonoBehaviour
             return;
         }
 
-        if (hit.collider.TryGetComponent(out ResetButton resetButton) &&
+        if (hit.collider.TryGetComponent(out GameButton resetButton) &&
             resetButton.interactionDistance >= hit.distance) {
             targetCrosshair = grab;
             return;

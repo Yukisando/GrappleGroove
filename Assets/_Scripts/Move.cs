@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
-    [SerializeReference] bool showGizmos;
+    [SerializeReference] bool showGizmos = true;
     [Space]
     [SerializeField] Vector3 destination; // Offset to the target position
     [SerializeField] bool startMovingOnStart;
