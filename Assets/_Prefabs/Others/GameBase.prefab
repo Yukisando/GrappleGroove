@@ -52,12 +52,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e435e9f69b6be747818471b0a2f8922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoStartHost: 1
   checkpointManager: {fileID: 8768992807551303706}
   spawnPoint: {fileID: 321564022778021474}
   infoPopup: {fileID: 4377344527624188865}
-  endUI: {fileID: 0}
   playerUI: {fileID: 6112996217231031090}
+  resetFeedbacks:
+  - {fileID: 0}
   respawnKey: 113
   restartKey: 286
   quitKey: 27
@@ -66,7 +66,6 @@ MonoBehaviour:
   checkpointSound: {fileID: 8300000, guid: 3ae142e68f6eb1b45bb3bebf47d1d3c6, type: 3}
   platformSound: {fileID: 8300000, guid: 5da4506ba90b29a408a02365a3491537, type: 3}
   targetFrameRate: 60
-  limitFrameRateForWebGL: 1
 --- !u!114 &8768992807551303706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,13 +235,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3168922540967017188}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.52, y: 2.89, z: -24.06}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000058114523}
+  m_LocalPosition: {x: 21.39, y: 2.69, z: -17.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1617838702512332325}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &3611058629142678228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -771,7 +770,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 897
+  m_VersionIndex: 924
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1081,9 +1080,21 @@ PrefabInstance:
       propertyPath: rightRopeMaterial
       value: 
       objectReference: {fileID: 2100000, guid: c5ab77f201bd39e4d825a9ffd37dc3b7, type: 2}
+    - target: {fileID: 5039367071574727959, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 193
+      objectReference: {fileID: 0}
     - target: {fileID: 5048031487047790873, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: throwForce
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5834872879969371512, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: amount
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5834872879969371512, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: coolDownRate
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7262846353978981746, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: lookTiltSpeed

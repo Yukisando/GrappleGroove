@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c1b2a3b1b5a629449c731167c47a306, type: 2}
+  - {fileID: 2100000, guid: fb4d0bb2f732aa94fabaa3b10be31bce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 8528234615977982814}
   - component: {fileID: 2348335493575742231}
   - component: {fileID: 6447104446349943663}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}

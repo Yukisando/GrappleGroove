@@ -9,8 +9,11 @@ public class SpawnerButton : GameButton
     [SerializeField] GameObject prefab;
     [SerializeField] Transform spawnPoint;
 
+    GameObject spawnedObject;
+
     public void Spawn() {
-        Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        if (spawnedObject) Destroy(spawnedObject);
+        spawnedObject = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
     }
 
     void OnDrawGizmosSelected() {

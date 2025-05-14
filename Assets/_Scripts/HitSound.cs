@@ -14,6 +14,10 @@ namespace PrototypeFPC
 
         void Awake() {
             audioSource = GetComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1f;
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 20f;
         }
 
         void OnCollisionEnter(Collision col) {
