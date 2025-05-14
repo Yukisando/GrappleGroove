@@ -6,21 +6,20 @@ using UnityEngine;
 
 public class SpawnerButton : GameButton
 {
-    [SerializeField] GameObject prefab;
+    [SerializeField] ID prefab;
     [SerializeField] string idOnSpawn;
     [SerializeField] Transform spawnPoint;
 
-    GameObject spawnedObject;
+    ID spawnedObject;
+
+    void OnValidate() {
+        if (prefab && idOnSpawn == "") idOnSpawn = prefab.id;
+    }
 
     public void Spawn() {
-        if (spawnedObject) Destroy(spawnedObject);
+        if (spawnedObject != null) Destroy(spawnedObject);
         spawnedObject = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
-        var IDComponent = spawnedObject.GetComponent<ID>();
-        if (IDComponent) IDComponent.id = IDComponent.id == string.Empty ? idOnSpawn : IDComponent.id;
-        else {
-            IDComponent = spawnedObject.AddComponent<ID>();
-            IDComponent.id = idOnSpawn;
-        }
+        spawnedObject.id = idOnSpawn;
     }
 
     void OnDrawGizmosSelected() {
