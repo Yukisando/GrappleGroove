@@ -11,6 +11,7 @@ namespace PrototypeFPC
     {
         AudioSource audioSource;
         [SerializeField] AudioClip hitSound;
+        [SerializeField] float pitchRange = 0.3f;
 
         void Awake() {
             audioSource = GetComponent<AudioSource>();
@@ -21,7 +22,7 @@ namespace PrototypeFPC
         }
 
         void OnCollisionEnter(Collision col) {
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
+            audioSource.pitch = Random.Range(1 - pitchRange, 1 + pitchRange);
             audioSource.PlayOneShot(hitSound);
         }
     }

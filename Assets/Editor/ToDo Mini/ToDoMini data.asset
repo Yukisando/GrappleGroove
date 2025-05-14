@@ -17,6 +17,8 @@ MonoBehaviour:
   showCompletedTasks: 0
   items:
   - task: EmancipationObjects
-    isComplete: 0
+    isComplete: 1
   - task: Improve black texture
+    isComplete: 0
+  - task: fix spawnner not seting id
     isComplete: 0

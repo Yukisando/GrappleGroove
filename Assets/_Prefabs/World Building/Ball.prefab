@@ -275,3 +275,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitSound: {fileID: 8300000, guid: 54440253e69f3dc40971707d9e51d7da, type: 3}
+  pitchRange: 0.3

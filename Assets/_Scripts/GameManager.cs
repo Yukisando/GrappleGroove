@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         }
 
         foreach (var resetVolume in resetVolumes) {
-            resetVolume.onEnterVolume += ResetGameState;
+            resetVolume.onPlayerEntered += ResetGameState;
         }
 
         foreach (var killVolume in killVolumes) {
@@ -156,10 +156,6 @@ public class GameManager : MonoBehaviour
     }
 
     void ResetGameState(bool _playSound = true) {
-        foreach (var resetFeedback in resetFeedbacks) {
-            // resetFeedback.PlayFeedbacks();
-        }
-
         if (_playSound)
             playerDependencies.audioSourceTop.PlayOneShot(resetSound);
 

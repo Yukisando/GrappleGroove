@@ -1081,6 +1081,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: c5ab77f201bd39e4d825a9ffd37dc3b7, type: 2}
     - target: {fileID: 5039367071574727959, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: sprintSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039367071574727959, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 193
       objectReference: {fileID: 0}

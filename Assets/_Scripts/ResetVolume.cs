@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #endregion
@@ -9,13 +10,17 @@ public class ResetVolume : MonoBehaviour
 {
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
+    [SerializeField] List<string> ids = new List<string> {
+        "PlayerHitbox",
+    };
+
     [Header("Visuals")]
     [SerializeField] float yMovement = .2f;
     [SerializeField] float xMovement = .1f;
     [SerializeField] int updateFrameInterval = 2;
     int frameCounter;
     Material sharedMaterial;
-    public Action<bool> onEnterVolume;
+    public Action<bool> onPlayerEntered;
 
     MeshRenderer rd;
 
@@ -52,6 +57,6 @@ public class ResetVolume : MonoBehaviour
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        onEnterVolume?.Invoke(true);
+        onPlayerEntered?.Invoke(true);
     }
 }
