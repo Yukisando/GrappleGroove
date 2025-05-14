@@ -17,7 +17,7 @@ public class SpawnerButton : GameButton
     }
 
     public void Spawn() {
-        if (spawnedObject != null) Destroy(spawnedObject);
+        if (spawnedObject != null) Destroy(spawnedObject.gameObject);
         spawnedObject = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
         spawnedObject.id = idOnSpawn;
     }
