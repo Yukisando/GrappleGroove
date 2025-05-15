@@ -22,3 +22,7 @@ MonoBehaviour:
     isComplete: 0
   - task: fix spawnner not seting id
     isComplete: 0
+  - task: I would like the spawner to have a spawn count limit
+    isComplete: 0
+  - task: path for objects to follow
+    isComplete: 0
