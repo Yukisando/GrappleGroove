@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -14,13 +15,14 @@ public class ID : MonoBehaviour
     [ReadOnly] public bool spawned;
 
     TransformData transformData;
+    public event Action<bool> onReset;
 
     void Awake() {
         if (id.IsNullOrWhitespace()) id = name;
     }
 
     void Start() {
-        transformData = new TransformData(transform.position, transform.rotation);
+        transformData = new TransformData(transform.position, transform.rotation, transform.localScale);
     }
 
     void OnValidate() {
@@ -30,6 +32,7 @@ public class ID : MonoBehaviour
     public void ResetObject() {
         transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
             if (spawned) {
+                onReset?.Invoke(spawned);
                 Destroy(gameObject);
                 return;
             }
@@ -48,6 +51,8 @@ public class ID : MonoBehaviour
                 transform.position = transformData.Position;
                 transform.rotation = transformData.Rotation;
             }
+            onReset?.Invoke(spawned);
+            transform.LeanScale(transformData.Scale, .2f);
         });
     }
 
@@ -59,10 +64,12 @@ public class ID : MonoBehaviour
     {
         public readonly Vector3 Position;
         public readonly Quaternion Rotation;
+        public readonly Vector3 Scale;
 
-        public TransformData(Vector3 position, Quaternion rotation) {
+        public TransformData(Vector3 position, Quaternion rotation, Vector3 scale) {
             Position = position;
             Rotation = rotation;
+            Scale = scale;
         }
     }
 }

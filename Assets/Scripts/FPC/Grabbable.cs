@@ -5,7 +5,7 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Makes this object grabbable")] [RequireComponent(typeof(Rigidbody))]
+[InfoBox("Makes this object grabbable")] [RequireComponent(typeof(Rigidbody))] [RequireComponent(typeof(ID))]
 public class Grabbable : MonoBehaviour
 {
     Vector3 initialPosition;

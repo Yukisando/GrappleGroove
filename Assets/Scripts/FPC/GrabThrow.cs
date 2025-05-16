@@ -27,6 +27,7 @@ namespace PrototypeFPC
         RaycastHit hit;
         PlayerDependencies playerDependencies;
         Ray ray;
+        ID grabbedID;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -66,20 +67,29 @@ namespace PrototypeFPC
                 }
         }
 
-        void ThrowObject() {
-            grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
+        void ThrowObject(bool drop = false) {
+            if (drop == false) grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
             grabbedObject = null;
+            if (grabbedID) grabbedID.onReset -= OnGrabbedObjectReset;
+            grabbedID = null;
             playerDependencies.isGrabbing = false;
             audioSource.PlayOneShot(throwSound);
         }
 
         void GrabObject(Rigidbody hitRigidbody) {
+            hitRigidbody.TryGetComponent(out grabbedID);
+            if (grabbedID) grabbedID.onReset += OnGrabbedObjectReset;
+
             grabPoint.position = hit.point;
             grabbedObject = hitRigidbody;
             grabbedObject.linearVelocity = Vector3.zero;
             grabbedObject.angularVelocity = Vector3.zero;
             playerDependencies.isGrabbing = true;
             audioSource.PlayOneShot(grabSound);
+        }
+
+        void OnGrabbedObjectReset(bool wasSpawned) {
+            ThrowObject(true);
         }
 
         void Hold() {
