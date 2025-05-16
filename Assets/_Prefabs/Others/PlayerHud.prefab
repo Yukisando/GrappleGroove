@@ -407,7 +407,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1279,6 +1279,7 @@ MonoBehaviour:
   grab: {fileID: 7232661588507968661}
   grabbing: {fileID: 1807058153552612498}
   inspect: {fileID: 2488251200809336210}
+  interact: {fileID: 0}
   inspecting: {fileID: 3444713594527173456}
   grapple: {fileID: 6786460041333281683}
   snipsnip: {fileID: 9050926762394758355}
