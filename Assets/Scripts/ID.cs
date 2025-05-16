@@ -11,6 +11,8 @@ public class ID : MonoBehaviour
 {
     public string id;
 
+    [ReadOnly] public bool spawned;
+
     TransformData transformData;
 
     void Awake() {
@@ -26,20 +28,27 @@ public class ID : MonoBehaviour
     }
 
     public void ResetObject() {
-        // Reset position and rotation
-        var rb = GetComponent<Rigidbody>();
-        if (rb) {
-            // Reset physics if object has Rigidbody
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.MovePosition(transformData.Position);
-            rb.MoveRotation(transformData.Rotation);
-        }
-        else {
-            // Direct transform reset if no Rigidbody
-            transform.position = transformData.Position;
-            transform.rotation = transformData.Rotation;
-        }
+        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
+            if (spawned) {
+                Destroy(gameObject);
+                return;
+            }
+
+            // Reset position and rotation
+            var rb = GetComponent<Rigidbody>();
+            if (rb) {
+                // Reset physics if object has Rigidbody
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.MovePosition(transformData.Position);
+                rb.MoveRotation(transformData.Rotation);
+            }
+            else {
+                // Direct transform reset if no Rigidbody
+                transform.position = transformData.Position;
+                transform.rotation = transformData.Rotation;
+            }
+        });
     }
 
     public void Despawn() {
