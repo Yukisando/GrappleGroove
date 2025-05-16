@@ -1,21 +1,26 @@
 #region
 
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
 #endregion
 
+[InfoBox("Trigger specified events when objects with specified IDs enter")]
 public class VolumeTrigger : MonoBehaviour
 {
-    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
-    public string id = "Player";
     public bool destroyOnTrigger;
+    public string id = "Player";
     public UnityEvent onEnter;
 
-    [Header("Material Offset")]
+    [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = 0.2f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] float xMovement = 0.1f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] int updateFrameInterval = 2;
+
+    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     int frameCounter;
     Material sharedMaterial;
     MeshRenderer meshRenderer;

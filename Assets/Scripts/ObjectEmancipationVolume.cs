@@ -1,23 +1,26 @@
 #region
 
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
+[InfoBox("Destroys objects with the corresponding IDs")]
 public class ObjectEmancipationVolume : MonoBehaviour
 {
-    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
-
     [SerializeField] List<string> idsToDestroy = new List<string>();
 
-    [Header("Visuals")]
+    [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = .2f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] float xMovement = .1f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] int updateFrameInterval = 2;
+
+    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     int frameCounter;
     Material sharedMaterial;
-
     MeshRenderer rd;
 
     void Awake() {
@@ -50,13 +53,8 @@ public class ObjectEmancipationVolume : MonoBehaviour
     }
 
     void HandleObjectEnter(GameObject enteringObject) {
-        foreach (string o in idsToDestroy) {
-            if (!enteringObject.TryGetComponent<ID>(out var idObject)) continue;
+        if (!enteringObject.TryGetComponent<ID>(out var idObject)) return;
 
-            if (idObject.id == o) {
-                Destroy(enteringObject);
-                Debug.Log($"{enteringObject.name} destroyed by {gameObject.name}");
-            }
-        }
+        if (idsToDestroy.Contains(idObject.id)) idObject.Despawn();
     }
 }

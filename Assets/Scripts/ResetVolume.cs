@@ -2,22 +2,26 @@
 
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
+[InfoBox("Resets specified objects (including player) to their initial state when entered")]
 public class ResetVolume : MonoBehaviour
 {
-    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
-
-    [SerializeField] List<string> ids = new List<string> {
-        "PlayerHitbox",
+    [SerializeField] List<string> idsToReset = new List<string> {
+        "Player",
     };
 
-    [Header("Visuals")]
+    [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = .2f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] float xMovement = .1f;
+    [FoldoutGroup("Material settings")]
     [SerializeField] int updateFrameInterval = 2;
+
+    static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
     int frameCounter;
     Material sharedMaterial;
     public Action<bool> onPlayerEntered;
@@ -34,11 +38,11 @@ public class ResetVolume : MonoBehaviour
 
     void OnDestroy() {
         // Clean up the material instance
-        if (sharedMaterial != null) Destroy(sharedMaterial);
+        if (sharedMaterial) Destroy(sharedMaterial);
     }
 
     void LateUpdate() {
-        if (rd == null || sharedMaterial == null || !sharedMaterial.HasProperty(BaseMap)) return;
+        if (!rd || !sharedMaterial || !sharedMaterial.HasProperty(BaseMap)) return;
 
 
         frameCounter++;
@@ -56,7 +60,21 @@ public class ResetVolume : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider _other) {
-        if (!_other.CompareTag("PlayerHitbox")) return;
-        onPlayerEntered?.Invoke(true);
+        HandleObjectEnter(_other.gameObject);
+    }
+
+    void OnCollisionEnter(Collision _collision) {
+        HandleObjectEnter(_collision.gameObject);
+    }
+
+    void HandleObjectEnter(GameObject enteringObject) {
+        if (!enteringObject.TryGetComponent<ID>(out var idObject)) return;
+
+        if (idObject.id == "Player") {
+            onPlayerEntered?.Invoke(true);
+            return;
+        }
+
+        if (idsToReset.Contains(idObject.id)) idObject.ResetObject();
     }
 }

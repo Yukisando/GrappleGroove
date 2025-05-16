@@ -1,5 +1,6 @@
 #region
 
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,9 +8,13 @@ using UnityEngine.Events;
 
 public class GameButton : MonoBehaviour
 {
+    [FoldoutGroup("Assignements")]
     [SerializeField] Transform button;
+    [FoldoutGroup("Assignements")]
     [SerializeField] KeyCode activationKey = KeyCode.E;
+    [FoldoutGroup("Assignements")]
     [SerializeField] public float interactionDistance = 3f;
+    [FoldoutGroup("Assignements")]
     [SerializeField] AudioClip buttonPressSound;
 
     Camera playerCamera;

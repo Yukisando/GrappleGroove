@@ -1,7 +1,6 @@
 #region
 
 using System.Collections;
-using MoreMountains.Feedbacks;
 using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject playerUI;
-    [SerializeField] MMF_Player[] resetFeedbacks;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;

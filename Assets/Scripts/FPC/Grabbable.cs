@@ -1,10 +1,11 @@
 #region
 
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
-[RequireComponent(typeof(Rigidbody))]
+[InfoBox("Makes this object grabbable")] [RequireComponent(typeof(Rigidbody))]
 public class Grabbable : MonoBehaviour
 {
     Vector3 initialPosition;

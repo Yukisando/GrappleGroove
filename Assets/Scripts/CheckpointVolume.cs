@@ -1,11 +1,12 @@
 #region
 
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
-[Serializable]
+[InfoBox("Sets a checkpoint for the player when they enter the volume")]
 public class CheckpointVolume : MonoBehaviour
 {
     [SerializeField] Vector3 spawnOffset = Vector3.zero;

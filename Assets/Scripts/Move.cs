@@ -1,10 +1,11 @@
 #region
 
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
-[RequireComponent(typeof(AudioSource))]
+[InfoBox("Moves an object from A to B (-1 = A->B->A for ever, 0 = A->B, 1+ = loop cycles")] [RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
     [SerializeReference] bool showGizmos = true;

@@ -1,10 +1,12 @@
 #region
 
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #endregion
 
+[InfoBox("Restarts the entire level whent he player enters the volume")]
 public class KillVolume : MonoBehaviour
 {
     public Action onEnterVolume;
