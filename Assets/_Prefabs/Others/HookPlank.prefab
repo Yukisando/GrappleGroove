@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5927011503978786700}
   - component: {fileID: 7740065490810136247}
   - component: {fileID: 3620976193797101840}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HookPlank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 0.5}
+  m_LocalScale: {x: 4, y: 199, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 216990609328958030}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 4326412887525415933}
   - component: {fileID: 5020507364323714351}
   - component: {fileID: 1103684183341616527}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: HookPlank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
