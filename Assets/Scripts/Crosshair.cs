@@ -14,6 +14,7 @@ public class Crosshair : MonoBehaviour
     [SerializeField] Image grab;
     [SerializeField] Image grabbing;
     [SerializeField] Image inspect;
+    [SerializeField] Image interact;
     [SerializeField] Image inspecting;
     [SerializeField] Image grapple;
     [SerializeField] Image snipsnip;
@@ -82,7 +83,7 @@ public class Crosshair : MonoBehaviour
 
         if (hit.collider.TryGetComponent(out GameButton resetButton) &&
             resetButton.interactionDistance >= hit.distance) {
-            targetCrosshair = grab;
+            targetCrosshair = interact;
             return;
         }
 
@@ -99,7 +100,7 @@ public class Crosshair : MonoBehaviour
         if (currentCrosshair == newCrosshair) return;
 
         normal.enabled = grab.enabled = grabbing.enabled =
-            inspect.enabled = inspecting.enabled = grapple.enabled = snipsnip.enabled = false;
+            inspect.enabled = inspecting.enabled = grapple.enabled = snipsnip.enabled = interact.enabled = false;
 
         if (newCrosshair != null) newCrosshair.enabled = true;
 

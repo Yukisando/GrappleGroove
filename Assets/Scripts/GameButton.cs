@@ -15,9 +15,11 @@ public class GameButton : MonoBehaviour
     Camera playerCamera;
 
     public UnityEvent onPress;
+    Vector3 buttonInitPosition;
 
     void Awake() {
         playerCamera = Camera.main;
+        buttonInitPosition = button.localPosition;
     }
 
     void Update() {
@@ -44,6 +46,7 @@ public class GameButton : MonoBehaviour
         if (buttonPressSound) AudioSource.PlayClipAtPoint(buttonPressSound, transform.position);
 
         // Press animation
+        button.localPosition = buttonInitPosition;
         button.LeanMoveLocalX(.3f, 0.1f).setEaseInQuad().setLoopPingPong(1);
 
         // Play sound if available
