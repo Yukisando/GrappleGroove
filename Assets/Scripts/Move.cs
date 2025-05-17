@@ -8,11 +8,11 @@ using UnityEngine;
 [InfoBox("Moves an object from A to B (-1 = A->B->A for ever, 0 = A->B, 1+ = loop cycles")] [RequireComponent(typeof(AudioSource))]
 public class Move : MonoBehaviour
 {
-    [SerializeReference] bool showGizmos = true;
+    public bool showGizmos = true;
     [Space]
-    [SerializeField] Vector3 destination; // Offset to the target position
+    public Vector3 destination; // Offset to the target position
     [SerializeField] bool startMovingOnStart;
-    [SerializeField] bool useLocalPosition = true;
+    public bool useLocalPosition = true;
     [SerializeField] int loopCount = -1; // -1 = infinite loop, 0 = A to B once, 1+ = ping-pong loops
     [SerializeField] float duration = 5f;
     [SerializeField] [Range(0, 1)] float startOffset;
