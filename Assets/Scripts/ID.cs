@@ -30,6 +30,8 @@ public class ID : MonoBehaviour
     }
 
     public void ResetObject() {
+        onReset?.Invoke(spawned);
+
         transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
             if (spawned) {
                 onReset?.Invoke(spawned);
@@ -51,7 +53,6 @@ public class ID : MonoBehaviour
                 transform.position = transformData.Position;
                 transform.rotation = transformData.Rotation;
             }
-            onReset?.Invoke(spawned);
             transform.LeanScale(transformData.Scale, .2f);
         });
     }

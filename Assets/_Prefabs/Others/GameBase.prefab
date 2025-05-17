@@ -56,8 +56,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 321564022778021474}
   infoPopup: {fileID: 4377344527624188865}
   playerUI: {fileID: 6112996217231031090}
-  resetFeedbacks:
-  - {fileID: 0}
   respawnKey: 113
   restartKey: 286
   quitKey: 27
@@ -664,6 +662,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idsToReset:
   - Player
+  - Box
+  - Ball
   yMovement: 0.2
   xMovement: 0.1
   updateFrameInterval: 2

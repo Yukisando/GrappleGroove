@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Box
+  spawned: 0
 --- !u!114 &4937139574014022600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b72e3e28a2b5847b796013ddd21d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitSound: {fileID: 8300000, guid: c7348ace360ef934f965f061c2c4269e, type: 3}
+  hitSound: {fileID: 8300000, guid: 719572a06924d4ea79c4264834bd427b, type: 3}
   pitchRange: 0.3
 --- !u!82 &6584916869221499440
 AudioSource:

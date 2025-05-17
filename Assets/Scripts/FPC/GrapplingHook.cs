@@ -200,6 +200,7 @@ namespace PrototypeFPC
                 type = mouseButton == 0 ? RopeType.LEFT : RopeType.RIGHT,
                 connectedObject1 = hit.transform.gameObject,
             };
+            RegisterResetCallback(rope, ropes.Count);
 
             SetupHook(rope);
             SetupRopeRenderer(rope, mouseButton);
@@ -307,9 +308,17 @@ namespace PrototypeFPC
         }
 
         void SetupHookLatch(Rope rope) {
-            rope.hookLatch = new GameObject("HookLatch");
-            rope.hookLatch.transform.position = hit.point;
-            rope.hookLatch.transform.parent = hit.transform;
+            if (playerSpringJoint) {
+                Destroy(playerSpringJoint);
+                playerSpringJoint = null;
+            }
+
+            rope.hookLatch = new GameObject("HookLatch") {
+                transform = {
+                    position = hit.point,
+                    parent = hit.transform,
+                },
+            };
 
             var hlrb = rope.hookLatch.AddComponent<Rigidbody>();
             hlrb.useGravity = false;
@@ -353,6 +362,20 @@ namespace PrototypeFPC
             rope.lineRenderer.endWidth = endThickness;
             rope.ropeCollider.GetComponent<BoxCollider>().enabled = true;
             rope.connectedObject2 = hit.transform.gameObject;
+
+            RegisterResetCallback(rope, ropes.IndexOf(rope));
+        }
+
+        void UnregisterResetCallback(Rope rope) {
+            void TryUnsubscribe(GameObject obj) {
+                if (obj == null) return;
+                var idComponent = obj.GetComponent<ID>();
+                if (idComponent != null)
+                    idComponent.onReset -= spawned => DestroyRope(ropes.IndexOf(rope));
+            }
+
+            TryUnsubscribe(rope.connectedObject1);
+            TryUnsubscribe(rope.connectedObject2);
         }
 
         void CreatePlank(Rope rope) {
@@ -508,6 +531,18 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(releaseSound);
         }
 
+        void RegisterResetCallback(Rope rope, int ropeIndex) {
+            void TrySubscribe(GameObject obj) {
+                if (obj == null) return;
+                var idComponent = obj.GetComponent<ID>();
+                if (idComponent != null)
+                    idComponent.onReset += spawned => DestroyRope(ropeIndex);
+            }
+
+            TrySubscribe(rope.connectedObject1);
+            TrySubscribe(rope.connectedObject2);
+        }
+
         public void DestroyRope(int index) {
             if (index < 0 || index >= ropes.Count) return;
 
@@ -520,7 +555,7 @@ namespace PrototypeFPC
                 }
 
             DestroyRopeComponents(rope);
-
+            UnregisterResetCallback(rope);
             ropes.RemoveAt(index);
 
             if (ropes.Count == 0) hooked = false;
