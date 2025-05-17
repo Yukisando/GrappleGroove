@@ -279,7 +279,7 @@ namespace PrototypeFPC
             var collider = rope.ropeCollider.AddComponent<BoxCollider>();
             collider.size = new Vector3(0.1f, 0, 0.1f);
             collider.isTrigger = true;
-            collider.enabled = false;
+            collider.enabled = true;
         }
 
         void ApplyHookKnockback(Rope rope) {
@@ -595,7 +595,9 @@ namespace PrototypeFPC
         }
 
         void DrawRopes() {
-            foreach (var rope in ropes) {
+            for (int i = ropes.Count - 1; i >= 0; i--) {
+                var rope = ropes[i];
+
                 rope.spring.Update(Time.fixedDeltaTime);
 
                 if (!GetRopePoints(rope, out var startPoint, out var endPoint)) continue;
@@ -656,15 +658,34 @@ namespace PrototypeFPC
         }
 
         void UpdateRopeCollider(Rope rope, Vector3 startPoint, Vector3 endPoint) {
-            if (!rope.ropeCollider || !rope.hook.GetComponent<SpringJoint>()) return;
+            if (!rope.ropeCollider) return;
 
-            rope.ropeCollider.transform.position = startPoint;
-            rope.ropeCollider.transform.LookAt(endPoint);
-            float distance = Vector3.Distance(startPoint, endPoint);
-            var c = rope.ropeCollider.GetComponent<BoxCollider>();
-            c.size = new Vector3(0.1f, 0.1f, distance);
-            c.center = new Vector3(0f, 0f, distance / 2);
-            c.enabled = true;
+            var direction = endPoint - startPoint;
+            float distance = direction.magnitude;
+            var center = startPoint + direction / 2;
+            var halfExtents = new Vector3(0.05f, 0.05f, distance / 2f);
+
+            // Align orientation
+            var rotation = Quaternion.LookRotation(direction);
+
+            // Set up BoxCollider visually (optional)
+            rope.ropeCollider.transform.position = center;
+            rope.ropeCollider.transform.rotation = rotation;
+            var collider = rope.ropeCollider.GetComponent<BoxCollider>();
+            collider.size = new Vector3(0.1f, 0.1f, distance);
+            collider.center = Vector3.zero;
+            collider.enabled = true;
+
+            // Raycast-style collision check to detect CutsRope
+            var hits = Physics.OverlapBox(center, halfExtents, rotation, ~LayerMask.GetMask("Player", "IgnoreRaycast"));
+
+            foreach (var hit in hits) {
+                if (hit.GetComponent<CutsRopes>() != null) {
+                    Debug.Log("Rope intersected with CutsRope object: " + hit.name);
+                    DestroyRope(ropes.IndexOf(rope));
+                    return;
+                }
+            }
         }
 
         [Serializable]
