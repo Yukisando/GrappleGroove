@@ -40,15 +40,20 @@ public class Move : MonoBehaviour
     }
 
     public void StartMoving() {
-        if (loopCount > 0)
-            loopsRemaining = loopCount * 2; // A→B→A = 2 steps per loop
+        StopMoving(); // Ensure previous tween is cancelled
+        isFirstRun = true; // Always treat as a fresh start
 
-        ApplyStartOffset();
+        if (loopCount == 0) {
+            ApplyStartOffset();
+            MoveOnce(); // Only move once: A → B
+        }
+        else {
+            if (loopCount > 0)
+                loopsRemaining = loopCount * 2; // Each loop is 2 steps: A→B and B→A
 
-        if (loopCount == 0)
-            MoveOnce();
-        else
+            ApplyStartOffset();
             MovePingPong();
+        }
     }
 
     void MoveOnce() {
@@ -63,6 +68,14 @@ public class Move : MonoBehaviour
         tween = move.setEase(animationCurve);
     }
 
+    public void StopMoving() {
+        if (tween != null)
+            LeanTween.cancel(tween.uniqueId);
+
+
+        isFirstRun = true;
+    }
+
     void MovePingPong() {
         var targetPos = isFirstRun
             ? useLocalPosition ? initialPosition + transform.TransformDirection(destination) : initialPosition + destination
@@ -74,19 +87,23 @@ public class Move : MonoBehaviour
             ? LeanTween.moveLocal(gameObject, targetPos, dur)
             : LeanTween.move(gameObject, targetPos, dur);
 
-        tween = move.setEase(animationCurve).setOnComplete(OnPingPongStepComplete);
+        move.setEase(animationCurve).setOnComplete(() => {
+            if (!isFirstRun && loopCount > 0)
+                loopsRemaining--;
+
+            if (loopCount == -1 || loopsRemaining > 0) {
+                if (delayBetweenLoops > 0)
+                    LeanTween.delayedCall(gameObject, delayBetweenLoops, MovePingPong);
+                else
+                    MovePingPong();
+            }
+        });
+
+
+        if (!isFirstRun && loopCount > 0)
+            loopsRemaining--;
 
         isFirstRun = false;
-    }
-
-    void OnPingPongStepComplete() {
-        if (loopCount == -1)
-            MovePingPong(); // infinite
-        else {
-            loopsRemaining--;
-            if (loopsRemaining > 0)
-                MovePingPong();
-        }
     }
 
     Vector3 GetNextPingPongTarget() {

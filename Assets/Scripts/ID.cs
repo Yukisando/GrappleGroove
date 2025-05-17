@@ -58,7 +58,10 @@ public class ID : MonoBehaviour
     }
 
     public void Despawn() {
-        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => Destroy(gameObject));
+        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
+            onReset?.Invoke(spawned);
+            Destroy(gameObject);
+        });
     }
 
     class TransformData

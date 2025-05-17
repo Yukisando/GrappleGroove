@@ -4,15 +4,22 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 #endregion
 
 [InfoBox("Trigger specified events when objects with specified IDs enter")]
 public class VolumeTrigger : MonoBehaviour
 {
-    public bool destroyOnTrigger;
-    public List<string> ids = new List<string>();
-    public UnityEvent onEnter;
+    [FormerlySerializedAs("destroyOnTrigger")] [SerializeField]
+    bool destroyVolumeOnTrigger;
+    [SerializeField] bool destroyObjectOnTrigger;
+    [SerializeField] List<string> ids = new List<string>();
+    [FormerlySerializedAs("onEnter")] [SerializeField]
+    UnityEvent onAnyEnter;
+    [HideIf("@this.destroyObjectOnTrigger || this.destroyVolumeOnTrigger")]
+    [SerializeField]
+    UnityEvent onAllExit;
 
     [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = 0.2f;
@@ -60,11 +67,23 @@ public class VolumeTrigger : MonoBehaviour
         if (meshFilter != null && meshFilter.sharedMesh != null) Gizmos.DrawWireMesh(meshFilter.sharedMesh, transform.position, transform.rotation, transform.localScale);
     }
 
+    readonly List<ID> idsInside = new List<ID>();
+
     void OnTriggerEnter(Collider other) {
         other.TryGetComponent<ID>(out var triggerObject);
         if (triggerObject != null && ids.Contains(triggerObject.id)) {
-            onEnter?.Invoke();
-            if (destroyOnTrigger) Destroy(gameObject);
+            onAnyEnter?.Invoke();
+            if (destroyObjectOnTrigger) triggerObject.Despawn();
+            else idsInside.Add(triggerObject);
+            if (destroyVolumeOnTrigger) Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        other.TryGetComponent<ID>(out var triggerObject);
+        if (triggerObject != null && idsInside.Contains(triggerObject)) {
+            idsInside.Remove(triggerObject);
+            if (idsInside.Count == 0) onAllExit?.Invoke();
         }
     }
 }
