@@ -62,7 +62,7 @@ public class VolumeTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         other.TryGetComponent<ID>(out var triggerObject);
-        if (triggerObject == null && ids.Contains(triggerObject.id)) {
+        if (triggerObject != null && ids.Contains(triggerObject.id)) {
             onEnter?.Invoke();
             if (destroyOnTrigger) Destroy(gameObject);
         }
