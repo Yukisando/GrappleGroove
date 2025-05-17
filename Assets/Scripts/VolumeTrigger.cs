@@ -1,5 +1,6 @@
 #region
 
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,7 +11,7 @@ using UnityEngine.Events;
 public class VolumeTrigger : MonoBehaviour
 {
     public bool destroyOnTrigger;
-    public string id = "Player";
+    public List<string> ids = new List<string>();
     public UnityEvent onEnter;
 
     [FoldoutGroup("Material settings")]
@@ -61,8 +62,7 @@ public class VolumeTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         other.TryGetComponent<ID>(out var triggerObject);
-        if (triggerObject == null || triggerObject.id != id) return;
-        onEnter?.Invoke();
+        if (triggerObject == null && ids.Contains(triggerObject.id)) onEnter?.Invoke();
         if (destroyOnTrigger) Destroy(gameObject);
     }
 }
