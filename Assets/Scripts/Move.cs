@@ -5,16 +5,16 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Moves an object from A to B (-1 = A->B->A for ever, 0 = A->B, 1+ = loop cycles")] [RequireComponent(typeof(AudioSource))]
+[InfoBox("Moves an object from A to B (-1 = A->B->A for ever, 0 = A->B, 1+ = loop cycles")]
 public class Move : MonoBehaviour
 {
     public bool showGizmos = true;
-    [Space]
-    public Vector3 destination = new Vector3(1, 0, 0); // Offset to the target position
-    [SerializeField] bool startMovingOnStart;
     public bool useLocalPosition = true;
+    public Vector3 destination = new Vector3(1, 0, 0); // Offset to the target position
     [SerializeField] int loopCount = -1; // -1 = infinite loop, 0 = A to B once, 1+ = ping-pong loops
     [SerializeField] float duration = 5f;
+    [SerializeField] float delayBetweenLoops;
+    [SerializeField] bool startMovingOnStart;
     [SerializeField] [Range(0, 1)] float startOffset;
     [SerializeField] AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
@@ -32,19 +32,11 @@ public class Move : MonoBehaviour
             initialPosition + (useLocalPosition ? transform.TransformDirection(destination) : destination),
             startOffset
         );
-        SetupAudio();
     }
 
     void Start() {
         if (startMovingOnStart)
             StartMoving();
-    }
-
-    void SetupAudio() {
-        source = GetComponent<AudioSource>();
-        source.loop = true;
-        source.rolloffMode = AudioRolloffMode.Linear;
-        source.clip = GameManager.I.platformSound;
     }
 
     public void StartMoving() {
