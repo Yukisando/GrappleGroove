@@ -10,7 +10,7 @@ public class Move : MonoBehaviour
 {
     public bool showGizmos = true;
     [Space]
-    public Vector3 destination; // Offset to the target position
+    public Vector3 destination = new Vector3(1, 0, 0); // Offset to the target position
     [SerializeField] bool startMovingOnStart;
     public bool useLocalPosition = true;
     [SerializeField] int loopCount = -1; // -1 = infinite loop, 0 = A to B once, 1+ = ping-pong loops

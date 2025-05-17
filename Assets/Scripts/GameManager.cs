@@ -46,6 +46,13 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = targetFrameRate;
     }
 
+    public void DestroyObjectByID(string id) {
+        var allIDs = FindObjectsByType<ID>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var i in allIDs) {
+            if (i.id.Equals(id)) i.Despawn();
+        }
+    }
+
     void Start() {
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
