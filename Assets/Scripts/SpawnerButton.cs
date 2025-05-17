@@ -26,8 +26,8 @@ public class SpawnerButton : GameButton
     public void Spawn() {
         if (spawnedIDs.Count >= maxSpawnCount) {
             var objToDelete = spawnedIDs.First();
-            spawnedIDs.Remove(spawnedIDs.First());
-            objToDelete.Despawn();
+            spawnedIDs.Remove(objToDelete);
+            if (objToDelete) objToDelete.Despawn();
         }
         spawnedObject = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
         spawnedObject.id = idOnSpawn;
