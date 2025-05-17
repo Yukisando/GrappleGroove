@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5927011503978786700}
   - component: {fileID: 7740065490810136247}
   - component: {fileID: 3620976193797101840}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HookPlank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 4326412887525415933}
   - component: {fileID: 5020507364323714351}
   - component: {fileID: 1103684183341616527}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HookPlank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
