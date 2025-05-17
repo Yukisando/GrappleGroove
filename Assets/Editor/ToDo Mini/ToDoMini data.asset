@@ -26,3 +26,5 @@ MonoBehaviour:
     isComplete: 0
   - task: path for objects to follow
     isComplete: 0
+  - task: we need a cut volume!
+    isComplete: 0
