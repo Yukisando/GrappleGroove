@@ -57,8 +57,10 @@ namespace PrototypeFPC
         [SerializeField] AudioClip pushClip;
         [SerializeField] AudioClip pullClip;
 
-        [Header("Grapple Settings")]
-        [SerializeField] float leftGrapplePullForce = 1000f;
+        [Header("Settings")]
+        [SerializeField] float playerPushPullRatio = 0.1f; // 10% of current rope length
+        [SerializeField] float objectPushPullRatio = 0.1f; // 10% for objects
+
         [SerializeField] float rightGrappleMaxExtension = 20f;
 
         AudioSource audioSource;
@@ -90,48 +92,68 @@ namespace PrototypeFPC
                 CreateHooks(1);
                 CutRopes();
             }
-            
-            if (Input.GetKeyDown(pullKey)) {
-                ApplyRopePull();
-            }
 
+            if (Input.GetKeyDown(pullKey)) ApplyRopePull();
         }
-        
+
         void ApplyRopePull() {
-            var ropesCopy = new List<Rope>(ropes);
+            if (ropes.Count == 0) return;
 
-            foreach (var rope in ropesCopy) {
-                var rb1 = rope.connectedObject1 != null ? rope.connectedObject1.GetComponent<Rigidbody>() : null;
-                var rb2 = rope.connectedObject2 != null ? rope.connectedObject2.GetComponent<Rigidbody>() : null;
+            foreach (var rope in ropes) {
+                var didChange = false;
 
-                if (rb1 == null && rb2 == null) continue;
+                // 1. Handle player joint
+                if (playerSpringJoint != null && playerSpringJoint.connectedBody == rope.hook.GetComponent<Rigidbody>()) {
+                    float currentDistance = Vector3.Distance(transform.position, rope.hook.transform.position);
+                    float offset = currentDistance * playerPushPullRatio;
 
-                // Handle cases where one end is missing
-                Vector3 pos1 = rb1 ? rb1.position : rope.connectedObject1.transform.position;
-                Vector3 pos2 = rb2 ? rb2.position : rope.connectedObject2?.transform.position ?? transform.position;
+                    // Right = push (extend), Left = pull (shrink)
+                    float targetDistance = rope.type == RopeType.RIGHT
+                        ? currentDistance + offset
+                        : Mathf.Max(currentDistance - offset, minimumRopeLength);
 
-                Vector3 center = (pos1 + pos2) / 2f;
-                float pullStrength = 150f;
+                    playerSpringJoint.maxDistance = targetDistance;
+                    playerSpringJoint.minDistance = targetDistance;
+                    didChange = true;
+                }
 
-                // Destroy the rope first
-                int ropeIndex = ropes.IndexOf(rope);
-                if (ropeIndex >= 0) DestroyRope(ropeIndex);
+                // 2. Handle hook-to-latch joint (object spring)
+                var ropeSpring = rope.hook.GetComponent<SpringJoint>();
+                if (ropeSpring != null && ropeSpring.connectedBody == rope.hookLatch?.GetComponent<Rigidbody>()) {
+                    float currentDistance = Vector3.Distance(rope.hook.transform.position, rope.hookLatch.transform.position);
+                    float offset = currentDistance * objectPushPullRatio;
 
-                // Apply force to valid, movable objects
-                if (rb1 != null && !rb1.isKinematic)
-                    rb1.AddForce((center - rb1.position).normalized * pullStrength, ForceMode.Impulse);
+                    float targetDistance = rope.type == RopeType.RIGHT
+                        ? currentDistance + offset
+                        : Mathf.Max(currentDistance - offset, minimumRopeLength);
 
-                if (rb2 != null && !rb2.isKinematic)
-                    rb2.AddForce((center - rb2.position).normalized * pullStrength, ForceMode.Impulse);
+                    ropeSpring.maxDistance = targetDistance;
+                    ropeSpring.minDistance = targetDistance;
+                    didChange = true;
+                }
 
-                if (audioSource && pullClip)
-                    audioSource.PlayOneShot(pullClip);
+                // Schedule rope cleanup
+                if (didChange)
+                    StartCoroutine(SnapRopeAfterDelay(rope, 0.1f));
+            }
+
+            // Audio
+            if (audioSource) {
+                bool anyRight = ropes.Any(r => r.type == RopeType.RIGHT);
+                bool anyLeft = ropes.Any(r => r.type == RopeType.LEFT);
+
+                if (anyRight && pushClip) audioSource.PlayOneShot(pushClip);
+                else if (anyLeft && pullClip) audioSource.PlayOneShot(pullClip);
             }
         }
 
+        IEnumerator SnapRopeAfterDelay(Rope rope, float delay) {
+            yield return new WaitForSeconds(delay);
 
-
-
+            int ropeIndex = ropes.IndexOf(rope);
+            if (ropeIndex >= 0)
+                DestroyRope(ropeIndex);
+        }
 
         void LateUpdate() {
             DrawRopes();
