@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 #endregion
 
@@ -21,8 +20,7 @@ namespace PrototypeFPC
         [SerializeField] KeyCode resetHookKey;
         [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
-        [FormerlySerializedAs("plnakPrefab")] [FormerlySerializedAs("platformPrefab")] [SerializeField]
-        GameObject plankPrefab;
+        [SerializeField] GameObject plankPrefab;
 
         [Header("Settings")]
         [SerializeField] float minimumRopeLength = 1f;
@@ -72,7 +70,6 @@ namespace PrototypeFPC
         PlayerDependencies playerDependencies;
         Ray ray;
         Rigidbody rb;
-        bool rightGrappleHeld;
         bool ropeCut;
 
         void Awake() {
@@ -92,13 +89,6 @@ namespace PrototypeFPC
                 CreateHooks(1);
                 CutRopes();
             }
-        }
-
-        void FixedUpdate() {
-            if (hooked)
-                foreach (var rope in ropes) {
-                    if (rope.type == RopeType.LEFT) ApplyLeftGrapplePull(rope);
-                }
         }
 
         void LateUpdate() {
@@ -130,16 +120,6 @@ namespace PrototypeFPC
                 hookRelease = true;
                 if (!ropeCut) ApplyReleaseImpulse();
             }
-
-            leftGrappleHeld = Input.GetMouseButton(0);
-            rightGrappleHeld = Input.GetMouseButton(1);
-        }
-
-        void ApplyLeftGrapplePull(Rope rope) {
-            if (!leftGrappleHeld) return;
-
-            var pullDirection = (rope.hook.transform.position - transform.position).normalized;
-            rb.AddForce(pullDirection * (leftGrapplePullForce * Time.fixedDeltaTime), ForceMode.Force);
         }
 
         void ApplyReleaseImpulse() {
