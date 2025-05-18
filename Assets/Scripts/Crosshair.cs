@@ -43,7 +43,7 @@ public class Crosshair : MonoBehaviour
 
         currentCrosshair = normal;
 
-        raycastMask = ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox");
+        raycastMask = ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox", "Plank");
     }
 
     void LateUpdate() {

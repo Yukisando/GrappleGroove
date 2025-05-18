@@ -136,8 +136,8 @@ GameObject:
   - component: {fileID: 4326412887525415933}
   - component: {fileID: 5020507364323714351}
   - component: {fileID: 1103684183341616527}
-  m_Layer: 3
-  m_Name: HookPlank
+  m_Layer: 0
+  m_Name: HookRope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,7 +268,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8879984836591452508}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -285,5 +285,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 2

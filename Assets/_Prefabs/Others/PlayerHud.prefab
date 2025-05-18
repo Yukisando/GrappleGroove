@@ -903,10 +903,12 @@ MonoBehaviour:
 
     R: Clear ropes
 
-    X: ?
+    F: Pull ropes
 
-    F5: Restart
-    level
+    X:
+    Shoot
+
+    F5: Restart level
 
     ESC: Quit'
   m_isRightToLeft: 0

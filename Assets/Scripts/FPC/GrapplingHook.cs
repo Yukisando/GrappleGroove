@@ -16,8 +16,9 @@ namespace PrototypeFPC
     public class GrapplingHook : MonoBehaviour
     {
         [Header("Assignments")]
-        [SerializeField] KeyCode cutRopeKey;
-        [SerializeField] KeyCode resetHookKey;
+        [SerializeField] KeyCode cutRopeKey = KeyCode.C;
+        [SerializeField] KeyCode resetHookKey = KeyCode.R;
+        [SerializeField] KeyCode pullKey = KeyCode.F;
         [SerializeField] public LayerMask ropeLayerMask;
         [SerializeField] GameObject hookModel;
         [SerializeField] GameObject plankPrefab;
@@ -89,7 +90,48 @@ namespace PrototypeFPC
                 CreateHooks(1);
                 CutRopes();
             }
+            
+            if (Input.GetKeyDown(pullKey)) {
+                ApplyRopePull();
+            }
+
         }
+        
+        void ApplyRopePull() {
+            var ropesCopy = new List<Rope>(ropes);
+
+            foreach (var rope in ropesCopy) {
+                var rb1 = rope.connectedObject1 != null ? rope.connectedObject1.GetComponent<Rigidbody>() : null;
+                var rb2 = rope.connectedObject2 != null ? rope.connectedObject2.GetComponent<Rigidbody>() : null;
+
+                if (rb1 == null && rb2 == null) continue;
+
+                // Handle cases where one end is missing
+                Vector3 pos1 = rb1 ? rb1.position : rope.connectedObject1.transform.position;
+                Vector3 pos2 = rb2 ? rb2.position : rope.connectedObject2?.transform.position ?? transform.position;
+
+                Vector3 center = (pos1 + pos2) / 2f;
+                float pullStrength = 150f;
+
+                // Destroy the rope first
+                int ropeIndex = ropes.IndexOf(rope);
+                if (ropeIndex >= 0) DestroyRope(ropeIndex);
+
+                // Apply force to valid, movable objects
+                if (rb1 != null && !rb1.isKinematic)
+                    rb1.AddForce((center - rb1.position).normalized * pullStrength, ForceMode.Impulse);
+
+                if (rb2 != null && !rb2.isKinematic)
+                    rb2.AddForce((center - rb2.position).normalized * pullStrength, ForceMode.Impulse);
+
+                if (audioSource && pullClip)
+                    audioSource.PlayOneShot(pullClip);
+            }
+        }
+
+
+
+
 
         void LateUpdate() {
             DrawRopes();
