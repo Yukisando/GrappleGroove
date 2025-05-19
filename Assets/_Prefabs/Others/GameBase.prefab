@@ -1088,6 +1088,14 @@ PrefabInstance:
       value: -0.132
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: ids.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: 'ids.Array.data[0]'
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1490,6 +1498,10 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 5618644325099872008, guid: 0f830b4b35476a64095c922deaa35b72, type: 2}
+    - target: {fileID: 6378341179051376973, guid: 41d86049f0bbd80478e909f5a7e6661a, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
     - target: {fileID: 6378341179051376973, guid: 41d86049f0bbd80478e909f5a7e6661a, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
