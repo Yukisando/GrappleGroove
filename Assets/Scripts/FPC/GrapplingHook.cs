@@ -205,8 +205,7 @@ namespace PrototypeFPC
             // Apply both forces
             rb.AddForce(upwardForce + forwardForce, ForceMode.Impulse);
 
-            // Play a sound effect for the release (optional)
-            if (audioSource != null && releaseSound != null) audioSource.PlayOneShot(releaseSound);
+            audioSource.PlayOneShot(releaseSound);
         }
 
         void CreateHooks(int mouseButton) {

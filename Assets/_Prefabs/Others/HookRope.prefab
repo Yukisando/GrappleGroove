@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 4326412887525415933}
   - component: {fileID: 5020507364323714351}
   - component: {fileID: 1103684183341616527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HookRope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
