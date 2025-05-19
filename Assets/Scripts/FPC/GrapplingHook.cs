@@ -142,31 +142,37 @@ namespace PrototypeFPC
                     executeHookSwing = true;
             }
 
-            if (mouseUp && controlNotHeld && mouseDownTimer >= holdDelayToSwing && executeHookSwing && notInspecting) {
-                executeHookSwing = false;
-                hookRelease = true;
-                if (!ropeCut) ApplyReleaseImpulse();
-            }
+            if (mouseUp && controlNotHeld && notInspecting)
+                if (hooked)
+                    TryLatchOrDestroy();
         }
 
         void ApplyReleaseImpulse() {
             if (ropes.Count == 0 || playerDependencies.isGrounded) return;
 
             var lastRope = ropes[^1];
-            var ropeDirection = (lastRope.hook.transform.position - transform.position).normalized;
+            var ropeAnchor = lastRope.hook.transform.position;
 
-            // Calculate the release direction
-            var releaseDirection = (ropeDirection + Vector3.up).normalized;
+            // Calculate direction from player to rope anchor
+            var swingDirection = (ropeAnchor - transform.position).normalized;
 
-            // Apply the release force
-            var releaseForce = releaseDirection * releaseJumpForce;
+            // Blend in upward vector for a lift effect
+            var releaseDirection = (swingDirection + Vector3.up).normalized;
 
-            // Split the force between upward and forward components
-            var upwardForce = Vector3.up * (releaseForce.magnitude * upwardForceRatio);
-            var forwardForce = transform.forward * (releaseForce.magnitude * forwardForceRatio);
+            // Estimate swing speed (magnitude of current velocity)
+            float swingSpeed = rb.linearVelocity.magnitude;
 
-            // Apply both forces
-            rb.AddForce(upwardForce + forwardForce, ForceMode.Impulse);
+            // Clamp the swing factor to avoid extreme launches
+            float clampedSpeedFactor = Mathf.Clamp(swingSpeed, 5f, 20f);
+
+            // Scale the release force based on clamped swing velocity
+            float scaledForce = releaseJumpForce * (clampedSpeedFactor / 10f);
+
+            // Apply force in the release direction
+            rb.AddForce(releaseDirection * scaledForce, ForceMode.Impulse);
+
+            // // Optional: Add a little extra vertical boost
+            rb.AddForce(Vector3.up * (scaledForce * upwardForceRatio), ForceMode.Impulse);
 
             audioSource.PlayOneShot(releaseSound);
         }
@@ -182,13 +188,25 @@ namespace PrototypeFPC
             var hookable = hit.collider.GetComponent<Hookable>();
             if (hookable == null) return;
 
-
             EnsureRigidbodyOnHitObject();
 
             if (!hooked)
                 CreateInitialHook(mouseButton);
-            else if (hooked)
-                CreateHookLatch();
+        }
+
+        void TryLatchOrDestroy() {
+            var r = GetCameraRay();
+            if (Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore)) {
+                var hookable = hit.collider.GetComponent<Hookable>();
+                if (hookable != null) {
+                    CreateHookLatch(); // Success: connect second end
+                    return;
+                }
+            }
+
+            // Failed to find valid second connection
+            ApplyReleaseImpulse();
+            DestroyGrappleRope();
         }
 
         void EnsureRigidbodyOnHitObject() {
