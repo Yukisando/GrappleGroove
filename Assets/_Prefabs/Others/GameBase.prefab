@@ -1231,6 +1231,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: latchOnImpulse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: pullingStrength
       value: 120
       objectReference: {fileID: 0}
@@ -1257,6 +1261,14 @@ PrefabInstance:
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: leftGrapplePullForce
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: connectionDamperStrength
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: connectionSpringStrength
+      value: 15000
       objectReference: {fileID: 0}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: rightGrappleMaxExtension

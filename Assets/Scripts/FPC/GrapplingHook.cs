@@ -124,27 +124,16 @@ namespace PrototypeFPC
 
         void InputCheck() {
             bool mouseDown = Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0);
-            bool mouseHeld = Input.GetMouseButton(1) || Input.GetMouseButton(0);
             bool mouseUp = Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0);
             bool controlNotHeld = !Input.GetKey(KeyCode.LeftControl);
             bool notInspecting = !playerDependencies.isInspecting;
 
             if (mouseDown && controlNotHeld && notInspecting) {
-                mouseDownTimer = 0;
                 hookRelease = false;
-                executeHookSwing = false;
                 ropeCut = false;
             }
 
-            if (mouseHeld && controlNotHeld && notInspecting) {
-                mouseDownTimer += Time.deltaTime;
-                if (hooked && mouseDownTimer >= holdDelayToSwing && !executeHookSwing)
-                    executeHookSwing = true;
-            }
-
-            if (mouseUp && controlNotHeld && notInspecting)
-                if (hooked)
-                    TryLatchOrDestroy();
+            if (mouseUp && controlNotHeld && notInspecting && hooked) TryLatchOrDestroy();
         }
 
         void ApplyReleaseImpulse() {
@@ -231,7 +220,6 @@ namespace PrototypeFPC
             SetupRopeRenderer(rope, mouseButton);
             SetupSpringJoint(rope);
             AddRopeCollider(rope);
-            ApplyHookKnockback(rope);
 
             audioSource.PlayOneShot(grapplingSound);
             ropes.Add(rope);
@@ -307,10 +295,6 @@ namespace PrototypeFPC
             collider.enabled = true;
         }
 
-        void ApplyHookKnockback(Rope rope) {
-            rope.hook.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
-        }
-
         void CreateHookLatch() {
             var r = GetCameraRay();
             if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
@@ -374,8 +358,6 @@ namespace PrototypeFPC
             float ropeLength = Vector3.Distance(rope.hook.transform.position, hit.point);
             hsj.maxDistance = ropeLength;
             hsj.minDistance = ropeLength;
-
-            rope.hookLatch.GetComponent<Rigidbody>().AddForce(ray.direction * (latchOnImpulse * 0.2f), ForceMode.Impulse);
         }
 
         void UpdateRopeProperties(Rope rope) {
