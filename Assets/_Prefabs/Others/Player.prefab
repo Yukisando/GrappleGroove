@@ -1133,6 +1133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutRopeKey: 99
   resetHookKey: 114
+  pullKey: 102
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -1185,9 +1186,9 @@ MonoBehaviour:
   ropes: []
   grapplingSound: {fileID: 8300000, guid: 292b698b604132543be90af7c6434011, type: 3}
   releaseSound: {fileID: 8300000, guid: 7a79cf881113fff43830e30bd0e4dff3, type: 3}
-  pushClip: {fileID: 8300000, guid: b2c8d8abfb35a4c4c8e29d59104dec12, type: 3}
-  pullClip: {fileID: 8300000, guid: f8e8d0472913aa040842bbe7c71240d6, type: 3}
-  leftGrapplePullForce: 1000
+  pushPullClip: {fileID: 0}
+  playerPushPullRatio: 0.1
+  objectPushPullRatio: 0.1
   rightGrappleMaxExtension: 20
 --- !u!114 &9182015932909010048
 MonoBehaviour:
@@ -2686,6 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Player
+  spawned: 0
 --- !u!1 &7753466973429341682
 GameObject:
   m_ObjectHideFlags: 0

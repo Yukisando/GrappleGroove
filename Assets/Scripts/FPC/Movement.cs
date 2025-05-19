@@ -107,7 +107,6 @@ namespace PrototypeFPC
 
             //Set rigidbody properties
             rb.freezeRotation = true;
-            rb.mass = 50;
         }
 
         //Check if grounded

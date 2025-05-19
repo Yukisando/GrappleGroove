@@ -1227,6 +1227,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: pushPullClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
+    - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: pullingStrength
       value: 120
       objectReference: {fileID: 0}
@@ -1240,11 +1244,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c5ab77f201bd39e4d825a9ffd37dc3b7, type: 2}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: objectPushPullRatio
-      value: 3
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: playerPushPullRatio
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: leftGrapplePullForce

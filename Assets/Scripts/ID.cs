@@ -7,7 +7,7 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Needed to connect objects to other logic objects")] [RequireComponent(typeof(Collider))]
+[InfoBox("Needed to connect objects to other logic objects (Stack IDs with a comma)")] [RequireComponent(typeof(Collider))]
 public class ID : MonoBehaviour
 {
     public string id;
