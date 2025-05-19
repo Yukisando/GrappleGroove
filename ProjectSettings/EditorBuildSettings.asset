@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/_Levels/AdrienPortal/AdrienPortal_2.unity
     guid: f924621ce38640f4e8d86451deb6f13b
   - enabled: 1
+    path: Assets/_Levels/AdrienPortal/AdrienPortal_3.unity
+    guid: 39b7beb398269e648afac2961ed8fedc
+  - enabled: 1
     path: Assets/_Levels/Test.unity
     guid: 7f7dbc8b98d588b4195beb18bee4e789
   m_configObjects:
