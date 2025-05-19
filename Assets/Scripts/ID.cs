@@ -30,7 +30,9 @@ public class ID : MonoBehaviour
     }
 
     public void ResetObject() {
+        if (GetComponent<Move>()) return;
         onReset?.Invoke(spawned);
+
 
         transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
             if (spawned) {
