@@ -92,6 +92,14 @@ public class PlatformBuilder : EditorWindow
 
             PlayerSettings.productName = appName;
 
+            if (buildTarget == BuildTarget.StandaloneOSX)
+                EditorUserBuildSettings.SetPlatformSettings(
+                    "Standalone",
+                    "OSXUniversal",
+                    "Architecture",
+                    "x64ARM64"
+                );
+
             // Get a more user-friendly platform name
             string platformName = GetFriendlyPlatformName(buildTarget);
 
