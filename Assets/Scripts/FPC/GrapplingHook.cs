@@ -1,7 +1,6 @@
 #region
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -60,8 +59,6 @@ namespace PrototypeFPC
         [SerializeField] float playerPushPullRatio = 80f;
         [SerializeField] float objectPushPullRatio = 60f;
 
-        [SerializeField] float rightGrappleMaxExtension = 20f;
-
         AudioSource audioSource;
         bool executeHookSwing;
         RaycastHit hit;
@@ -85,6 +82,7 @@ namespace PrototypeFPC
 
         void Update() {
             InputCheck();
+            SnapRopesExceedingMaxLimit();
 
             if (!playerDependencies.isInspecting || !playerDependencies.isGrabbing) {
                 CreateHooks(0);
@@ -93,6 +91,23 @@ namespace PrototypeFPC
             }
 
             if (Input.GetKeyDown(pullKey)) ApplyRopePullPush();
+        }
+
+        void SnapRopesExceedingMaxLimit() {
+            if (ropes.Count == 0) return;
+
+            float maxAllowedLength = hookDistance + 5f;
+
+            for (int i = ropes.Count - 1; i >= 0; i--) {
+                var rope = ropes[i];
+
+                // Try to get the rope's endpoints
+                if (GetRopePoints(rope, out var startPoint, out var endPoint)) {
+                    float ropeLength = Vector3.Distance(startPoint, endPoint);
+
+                    if (ropeLength > maxAllowedLength) DestroyRope(i);
+                }
+            }
         }
 
         void ApplyRopePullPush() {
@@ -169,6 +184,10 @@ namespace PrototypeFPC
         void CreateHooks(int mouseButton) {
             if (!Input.GetMouseButtonDown(mouseButton) || Input.GetKey(KeyCode.LeftControl) || playerDependencies.isInspecting)
                 return;
+
+            // Cancel the opposite rope if it's held
+            var oppositeType = mouseButton == 0 ? RopeType.RIGHT : RopeType.LEFT;
+            DestroyRopes(oppositeType);
 
             var r = GetCameraRay();
             if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
@@ -270,11 +289,11 @@ namespace PrototypeFPC
 
             if (rope.type == RopeType.LEFT) {
                 playerSpringJoint.maxDistance = distanceFromHook;
-                playerSpringJoint.minDistance = distanceFromHook * 0.25f;
+                playerSpringJoint.minDistance = distanceFromHook * 0.05f;
             }
             else {
                 playerSpringJoint.minDistance = distanceFromHook;
-                playerSpringJoint.maxDistance = distanceFromHook + rightGrappleMaxExtension;
+                playerSpringJoint.maxDistance = distanceFromHook;
             }
 
             playerSpringJoint.spring = 4000f;
@@ -287,12 +306,15 @@ namespace PrototypeFPC
         }
 
         void AddRopeCollider(Rope rope) {
-            rope.ropeCollider = new GameObject("RopeCollider");
-            rope.ropeCollider.transform.parent = rope.hook.transform;
-            var collider = rope.ropeCollider.AddComponent<BoxCollider>();
-            collider.size = new Vector3(0.1f, 0, 0.1f);
-            collider.isTrigger = true;
-            collider.enabled = true;
+            rope.ropeCollider = new GameObject("RopeCollider") {
+                transform = {
+                    parent = rope.hook.transform,
+                },
+            };
+            var c = rope.ropeCollider.AddComponent<BoxCollider>();
+            c.size = new Vector3(0.1f, 0, 0.1f);
+            c.isTrigger = true;
+            c.enabled = true;
         }
 
         void CreateHookLatch() {
@@ -301,8 +323,11 @@ namespace PrototypeFPC
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
-            if (hookable == null) return;
-
+            if (!hookable) return;
+            if (!hookable.connectable) {
+                DestroyGrappleRope();
+                return;
+            }
 
             var rope = ropes[^1];
             SetupHookLatch(rope);
@@ -401,14 +426,12 @@ namespace PrototypeFPC
             plankComponent.Initialize(this, ropes.Count - 1);
 
             // Schedule collision ignoring for next frame to ensure all components are properly initialized
-            StartCoroutine(IgnoreCollisionsForRope(rope));
+            IgnoreCollisionsForRope(rope);
         }
 
-        IEnumerator IgnoreCollisionsForRope(Rope rope) {
-            // Wait for the next frame to ensure all components are initialized
-            yield return null;
-
+        void IgnoreCollisionsForRope(Rope rope) {
             // Get all colliders from the plank
+            // if (rope == null) return;
             var plankColliders = rope.plank.GetComponentsInChildren<Collider>();
 
             // Ignore collisions with connected object 1
