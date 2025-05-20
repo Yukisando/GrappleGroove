@@ -57,6 +57,7 @@ namespace PrototypeFPC
         [SerializeField] AudioClip pushPullClip;
 
         [Header("Settings")]
+        [SerializeField] float reelSpeed = 20f;
         [SerializeField] float playerPushPullRatio = 80f;
         [SerializeField] float objectPushPullRatio = 60f;
 
@@ -245,13 +246,26 @@ namespace PrototypeFPC
             audioSource.PlayOneShot(grapplingSound);
             ropes.Add(rope);
 
-            var reel = hit.collider.GetComponent<Reelable>();
-            // if (reel == null) StartCoroutine(ReelIn_(rope, hit));
+            if (hit.collider.GetComponent<Reelable>() != null)
+                StartCoroutine(ReelIn_(rope));
         }
 
-        // IEnumerator ReelIn(Rope rope, RaycastHit hit) {
-            // rope.yield return null;
-        // }
+        IEnumerator ReelIn_(Rope rope) {
+            var closeEnoughDistance = 2f;
+            var joint = playerSpringJoint;
+            if (!joint) yield break;
+
+            // Keep reeling while the joint exists and the player is far from the hook
+            while (joint && Vector3.Distance(rb.position, rope.hook.transform.position) > closeEnoughDistance) {
+                // Reduce the max distance to pull the player in
+                joint.maxDistance = Mathf.Max(joint.maxDistance - reelSpeed * Time.deltaTime, minimumRopeLength);
+
+                yield return null;
+            }
+
+            // Once close enough, destroy the rope
+            if (joint) DestroyGrappleRope();
+        }
 
         void SetupHook(Rope rope) {
             rope.hook.transform.position = hit.point;

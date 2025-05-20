@@ -46,10 +46,10 @@ namespace PrototypeFPC
         //Audio properties
         [Header("Audio Properties")]
         [SerializeField] AudioClip[] footstepSound;
-        [HideInInspector]
-        [SerializeField] List<int> playedRandom, randomFilter;
+        [HideInInspector] [SerializeField] List<int> playedRandom, randomFilter;
         readonly float playerHeight = 2f;
         AudioSource audioSource;
+        AudioSource audioSourceFeet;
 
         Camera cam;
         float curveTime;
@@ -73,6 +73,7 @@ namespace PrototypeFPC
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         void Start() {
@@ -87,6 +88,13 @@ namespace PrototypeFPC
             ControlDrag();
             StrafeTilt();
             Footsteps();
+            Wind();
+        }
+
+        void Wind() {
+            float velocitySquared = rb.linearVelocity.sqrMagnitude;
+            var maxVelocitySquared = 5000f;
+            audioSource.volume = Mathf.Clamp01(velocitySquared / maxVelocitySquared);
         }
 
         void FixedUpdate() {
@@ -103,7 +111,7 @@ namespace PrototypeFPC
             rb = playerDependencies.rb;
             cam = playerDependencies.cam;
             orientation = playerDependencies.orientation;
-            audioSource = playerDependencies.audioSourceBottom;
+            audioSourceFeet = playerDependencies.audioSourceBottom;
 
             //Set rigidbody properties
             rb.freezeRotation = true;
@@ -205,7 +213,7 @@ namespace PrototypeFPC
 
                                 randomNum = Random.Range(randomFilter[0], randomFilter.Count);
                                 playedRandom.Add(randomNum);
-                                audioSource.PlayOneShot(footstepSound[randomNum]);
+                                audioSourceFeet.PlayOneShot(footstepSound[randomNum]);
                                 randomFilter.Clear();
                             }
                         }
