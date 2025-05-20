@@ -47,15 +47,15 @@ namespace PrototypeFPC
         [Header("Audio Properties")]
         [SerializeField] AudioClip[] footstepSound;
         [HideInInspector] [SerializeField] List<int> playedRandom, randomFilter;
-        readonly float playerHeight = 2f;
-        AudioSource audioSource;
+        [SerializeField] float maxWindVelocitySquared = 5000f;
+        float previousVolume;
+        AudioSource audioSourceWind;
         AudioSource audioSourceFeet;
 
         Camera cam;
         float curveTime;
         float horizontalMovement;
-
-        //Helpers
+        readonly float playerHeight = 2f;
         float moveAmount;
 
         Vector3 moveDirection;
@@ -73,7 +73,6 @@ namespace PrototypeFPC
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
-            audioSource = GetComponent<AudioSource>();
         }
 
         void Start() {
@@ -93,8 +92,13 @@ namespace PrototypeFPC
 
         void Wind() {
             float velocitySquared = rb.linearVelocity.sqrMagnitude;
-            var maxVelocitySquared = 5000f;
-            audioSource.volume = Mathf.Clamp01(velocitySquared / maxVelocitySquared);
+
+            // Only update volume if there's a significant change
+            float newVolume = Mathf.Clamp01(velocitySquared / maxWindVelocitySquared);
+            if (Mathf.Abs(newVolume - previousVolume) > 0.01f) {
+                audioSourceWind.volume = newVolume;
+                previousVolume = newVolume;
+            }
         }
 
         void FixedUpdate() {
@@ -112,6 +116,7 @@ namespace PrototypeFPC
             cam = playerDependencies.cam;
             orientation = playerDependencies.orientation;
             audioSourceFeet = playerDependencies.audioSourceBottom;
+            audioSourceWind = playerDependencies.audioSourceWind;
 
             //Set rigidbody properties
             rb.freezeRotation = true;

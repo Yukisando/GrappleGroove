@@ -25,6 +25,7 @@ public class PlayerDependencies : MonoBehaviour
     public Transform swayPivotLeft;
     public AudioSource audioSourceTop;
     public AudioSource audioSourceBottom;
+    public AudioSource audioSourceWind;
 
     public bool isGrounded;
     public bool isSliding;
@@ -35,7 +36,6 @@ public class PlayerDependencies : MonoBehaviour
     [HideInInspector] public float tilt;
 
     public Perspective perspective;
-    public Movement movement;
     public GrapplingHook grapplingHook;
 
     //----------
