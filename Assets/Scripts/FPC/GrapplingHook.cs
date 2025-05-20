@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -84,10 +85,10 @@ namespace PrototypeFPC
             InputCheck();
             SnapRopesExceedingMaxLimit();
 
-            if (!playerDependencies.isInspecting || !playerDependencies.isGrabbing) {
+            if (!playerDependencies.isInspecting && !playerDependencies.isGrabbing) {
                 CreateHooks(0);
                 CreateHooks(1);
-                CutRopes();
+                RopeCutCheck();
             }
 
             if (Input.GetKeyDown(pullKey)) ApplyRopePullPush();
@@ -243,7 +244,14 @@ namespace PrototypeFPC
 
             audioSource.PlayOneShot(grapplingSound);
             ropes.Add(rope);
+
+            var reel = hit.collider.GetComponent<Reelable>();
+            // if (reel == null) StartCoroutine(ReelIn_(rope, hit));
         }
+
+        // IEnumerator ReelIn(Rope rope, RaycastHit hit) {
+            // rope.yield return null;
+        // }
 
         void SetupHook(Rope rope) {
             rope.hook.transform.position = hit.point;
@@ -496,7 +504,7 @@ namespace PrototypeFPC
             if (rightRopes.Count > maxRopes) DestroyRope(ropes.IndexOf(rightRopes[0]));
         }
 
-        void CutRopes() {
+        void RopeCutCheck() {
             if ((Input.GetKey(cutRopeKey) || hookRelease) && hooked) {
                 hookRelease = false;
                 ropeCut = true;
