@@ -53,6 +53,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetObjectByID(string id) {
+        var allIDs = FindObjectsByType<ID>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var i in allIDs) {
+            if (i.id.Equals(id)) i.ResetObject();
+        }
+    }
+
     void Start() {
         playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();

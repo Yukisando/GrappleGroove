@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class ResetButton : GameButton
 {
-    [SerializeField] List<ID> objetsToReset;
+    [SerializeField] List<string> idsToReset;
 
     public void ResetObjects() {
-        if (objetsToReset == null || objetsToReset.Count == 0) return;
+        if (idsToReset == null || idsToReset.Count == 0) return;
 
-        foreach (var obj in objetsToReset) {
-            obj.ResetObject();
+        foreach (string id in idsToReset) {
+            GameManager.I.ResetObjectByID(id);
         }
     }
 }
