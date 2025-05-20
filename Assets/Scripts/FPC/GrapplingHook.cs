@@ -187,7 +187,8 @@ namespace PrototypeFPC
 
             // Cancel the opposite rope if it's held
             var oppositeType = mouseButton == 0 ? RopeType.RIGHT : RopeType.LEFT;
-            DestroyRopes(oppositeType);
+            if (hooked && ropes.Count > 0 && ropes[^1].type == oppositeType) DestroyGrappleRope(); // only cancel the held rope (if it's the opposite type)
+
 
             var r = GetCameraRay();
             if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
