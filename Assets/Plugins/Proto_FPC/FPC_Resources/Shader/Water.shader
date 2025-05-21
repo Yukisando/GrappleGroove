@@ -9,10 +9,13 @@ Shader "Unlit/Water"
         _SurfaceNoise("Surface Noise", 2D) = "white" {}
         _SurfaceNoiseScroll("Surface Noise Scroll Amount", Vector) = (0.03, 0.03, 0, 0)
         _SurfaceNoiseCutoff("Surface Noise Cutoff", Range(0, 1)) = 0.777
-        _SurfaceDistortion("Surface Distortion", 2D) = "white" {}   
+        _SurfaceDistortion("Surface Distortion", 2D) = "white" {}
         _SurfaceDistortionAmount("Surface Distortion Amount", Range(0, 1)) = 0.27
         _FoamMaxDistance("Foam Maximum Distance", Float) = 0.4
-        _FoamMinDistance("Foam Minimum Distance", Float) = 0.04     
+        _FoamMinDistance("Foam Minimum Distance", Float) = 0.04
+        _WaveAmplitude("Wave Amplitude", Float) = 0.05
+        _WaveFrequency("Wave Frequency", Float) = 1.0
+        _WaveSpeed("Wave Speed", Float) = 1.0
     }
     SubShader
     {
@@ -42,16 +45,14 @@ Shader "Unlit/Water"
                 return float4(color, alpha);
             }
 
-            struct appdata
-            {
+            struct appdata {
                 float4 vertex : POSITION;
                 float4 uv : TEXCOORD0;
                 float3 normal : NORMAL;
             };
 
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;    
+            struct v2f {
+                float4 vertex : SV_POSITION;
                 float2 noiseUV : TEXCOORD0;
                 float2 distortUV : TEXCOORD1;
                 float4 screenPosition : TEXCOORD2;
@@ -60,13 +61,24 @@ Shader "Unlit/Water"
 
             sampler2D _SurfaceNoise;
             float4 _SurfaceNoise_ST;
+            float _WaveAmplitude;
+            float _WaveFrequency;
+            float _WaveSpeed;
 
             sampler2D _SurfaceDistortion;
             float4 _SurfaceDistortion_ST;
 
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
+
+                float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+
+                // Multiply position by wave frequency for tighter waves
+                float wave = sin(worldPos.x * _WaveFrequency + _Time.y * _WaveSpeed) *
+                    cos(worldPos.z * _WaveFrequency + _Time.y * _WaveSpeed);
+
+                v.vertex.y += wave * _WaveAmplitude;
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.screenPosition = ComputeScreenPos(o.vertex);
@@ -76,6 +88,7 @@ Shader "Unlit/Water"
 
                 return o;
             }
+
 
             float4 _DepthGradientShallow;
             float4 _DepthGradientDeep;
@@ -92,7 +105,7 @@ Shader "Unlit/Water"
             sampler2D _CameraDepthTexture;
             sampler2D _CameraNormalsTexture;
 
-            float4 frag (v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
                 float existingDepth01 = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPosition)).r;
                 float existingDepthLinear = LinearEyeDepth(existingDepth01);
@@ -101,9 +114,9 @@ Shader "Unlit/Water"
 
                 float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
                 float4 waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference01);
-                
+
                 float3 existingNormal = tex2Dproj(_CameraNormalsTexture, UNITY_PROJ_COORD(i.screenPosition));
-                
+
                 float3 normalDot = saturate(dot(existingNormal, i.viewNormal));
                 float foamDistance = lerp(_FoamMaxDistance, _FoamMinDistance, normalDot);
                 float foamDepthDifference01 = saturate(depthDifference / foamDistance);
@@ -112,8 +125,9 @@ Shader "Unlit/Water"
 
                 float2 distortSample = (tex2D(_SurfaceDistortion, i.distortUV).xy * 2 - 1) * _SurfaceDistortionAmount;
 
-                float2 noiseUV = float2((i.noiseUV.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x, 
-                (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) + distortSample.y);
+                float2 noiseUV = float2((i.noiseUV.x + _Time.y * _SurfaceNoiseScroll.x) + distortSample.x,
+                    (i.noiseUV.y + _Time.y * _SurfaceNoiseScroll.y) +
+                    distortSample.y);
                 float surfaceNoiseSample = tex2D(_SurfaceNoise, noiseUV).r;
 
                 float surfaceNoise = smoothstep(surfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample);
