@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
     [SerializeField] KeyCode restartKey = KeyCode.F5;
+    [SerializeField] KeyCode skipLevel = KeyCode.F9;
     [SerializeField] KeyCode quitKey = KeyCode.Escape;
     [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
 
     [Header("Audio")]
     public AudioClip resetSound;
     public AudioClip checkpointSound;
-    public AudioClip platformSound;
 
     [Header("Performance")]
     [SerializeField] int targetFrameRate = 120;
@@ -97,7 +97,14 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
+        if (Input.GetKeyDown(skipLevel)) SkipLevel();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void SkipLevel() {
+        int i = SceneManager.GetActiveScene().buildIndex + 1;
+        if (i == SceneManager.sceneCount) i = 0;
+        SceneManager.LoadScene(i);
     }
 
     void InitializeWorldObjects() {

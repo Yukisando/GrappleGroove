@@ -1288,7 +1288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5039367071574727959, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: groundLayer.m_Bits
-      value: 193
+      value: 129
       objectReference: {fileID: 0}
     - target: {fileID: 5048031487047790873, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: throwForce

@@ -721,14 +721,6 @@ namespace PrototypeFPC
             // Align orientation
             var rotation = Quaternion.LookRotation(direction);
 
-            // Set up BoxCollider visually (optional)
-            rope.ropeCollider.transform.position = center;
-            rope.ropeCollider.transform.rotation = rotation;
-            var collider = rope.ropeCollider.GetComponent<BoxCollider>();
-            collider.size = new Vector3(0.1f, 0.1f, distance);
-            collider.center = Vector3.zero;
-            collider.enabled = true;
-
             // Raycast-style collision check to detect CutsRope
             var hits = Physics.OverlapBox(center, halfExtents, rotation, ~LayerMask.GetMask("Player", "IgnoreRaycast"));
 
