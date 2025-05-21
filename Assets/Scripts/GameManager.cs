@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject endUI;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -97,11 +98,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
-        if (Input.GetKeyDown(skipLevel)) SkipLevel();
+        if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void SkipLevel() {
+    void LoadNextScene() {
         int i = SceneManager.GetActiveScene().buildIndex + 1;
         if (i == SceneManager.sceneCount) i = 0;
         SceneManager.LoadScene(i);
@@ -196,6 +197,21 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(string levelName) {
         if (string.IsNullOrEmpty(levelName)) return;
         SceneManager.LoadScene(levelName);
+    }
+
+    public void LoadNextLevel() {
+        StartCoroutine(LoadNextLevel_());
+    }
+
+    IEnumerator LoadNextLevel_() {
+        playerUI.SetActive(false);
+        endUI.SetActive(true);
+        playerDependencies.gameObject.SetActive(false);
+        Camera.main.enabled = false;
+        while (!Input.GetKeyDown(KeyCode.F)) {
+            yield return null;
+        }
+        LoadNextScene();
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
