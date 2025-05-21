@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Levels/Roland2.unity
     guid: 05231ee11c122d54e8d617c45875d907
+  - enabled: 1
+    path: Assets/_Levels/Roland3.unity
+    guid: 547bf2cb847eae1448f4b969ee9ea615
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
