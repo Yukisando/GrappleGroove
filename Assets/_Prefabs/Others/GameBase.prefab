@@ -56,7 +56,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 321564022778021474}
   infoPopup: {fileID: 4377344527624188865}
   playerUI: {fileID: 6112996217231031090}
-  endUI: {fileID: 0}
+  endUI: {fileID: 424504587394291595}
   respawnKey: 113
   restartKey: 286
   skipLevel: 290
@@ -1325,6 +1325,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e163015fc8027149af1c6119b9c3c08, type: 3}
+--- !u!1 &424504587394291595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2552155869710430089, guid: 3e163015fc8027149af1c6119b9c3c08, type: 3}
+  m_PrefabInstance: {fileID: 2778492896732362754}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6996434836972608875 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5158702930987459945, guid: 3e163015fc8027149af1c6119b9c3c08, type: 3}

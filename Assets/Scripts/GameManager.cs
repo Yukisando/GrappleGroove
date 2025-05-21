@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
 
     void LoadNextScene() {
         int i = SceneManager.GetActiveScene().buildIndex + 1;
-        if (i == SceneManager.sceneCount) i = 0;
+        if (i >= SceneManager.sceneCountInBuildSettings) i = 0;
         SceneManager.LoadScene(i);
     }
 
@@ -206,8 +206,7 @@ public class GameManager : MonoBehaviour
     IEnumerator LoadNextLevel_() {
         playerUI.SetActive(false);
         endUI.SetActive(true);
-        playerDependencies.gameObject.SetActive(false);
-        Camera.main.enabled = false;
+        playerDependencies.rb.gameObject.SetActive(false);
         while (!Input.GetKeyDown(KeyCode.F)) {
             yield return null;
         }
