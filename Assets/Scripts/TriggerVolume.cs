@@ -8,7 +8,7 @@ using UnityEngine.Events;
 #endregion
 
 [InfoBox("Trigger specified events when objects with specified IDs enters or collides")]
-public class VolumeTrigger : MonoBehaviour
+public class TriggerVolume : MonoBehaviour
 {
     [SerializeField] bool destroyVolumeOnTrigger;
     [SerializeField] bool destroyObjectOnTrigger;
