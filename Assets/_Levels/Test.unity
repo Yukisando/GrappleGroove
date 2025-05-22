@@ -919,6 +919,86 @@ Material:
     - _WidthHeightRadius: {r: 400, g: 60, b: 50, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!21 &520326708
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &680238309
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 400, g: 60, b: 50, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &715005321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1347,6 +1427,46 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!21 &830503548
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &896037965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2865,12 +2985,12 @@ Mesh:
     firstByte: 0
     indexCount: 36
     topology: 0
-EndReachedx: 0
+    baseVertex: 0
     firstVertex: 0
-    vertexCount: 24
+    vertexCount: 0
     localAABB:
       m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0.40568733, y: 4.4995246, z: 8.565003}
+      m_Extent: {x: 0, y: 0, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -2887,31 +3007,23 @@ EndReachedx: 0
   m_KeepVertices: 1
   m_KeepIndices: 1
   m_IndexFormat: 0
-  m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e00100011001200110013001200140015001600150017001600
+  m_IndexBuffer: 
   m_VertexData:
     serializedVersion: 3
-    m_VertexCount: 24
+    m_VertexCount: 0
     m_Channels:
     - stream: 0
       offset: 0
       format: 0
-      dimension: 3
-    - stream: 0
-      offset: 12
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 24
-      format: 0
-      dimension: 4
+      dimension: 0
     - stream: 0
       offset: 0
       format: 0
       dimension: 0
     - stream: 0
-      offset: 40
+      offset: 0
       format: 0
-      dimension: 2
+      dimension: 0
     - stream: 0
       offset: 0
       format: 0
@@ -2948,8 +3060,16 @@ EndReachedx: 0
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 1152
-    _typelessdata: 40b6cfbe1bfc8fc0410a094100000000000000000000803f000080bf0000000000000000000080bf40b64f3f36f8ffc040b6cf3e1bfc8fc0410a094100000000000000000000803f000080bf0000000000000000000080bf0000000036f8ffc040b6cfbe1bfc8f40410a094100000000000000000000803f000080bf0000000000000000000080bf40b64f3f0000803f40b6cf3e1bfc8f40410a094100000000000000000000803f000080bf0000000000000000000080bf000000000000803f40b6cf3e1bfc8fc0410a09410000803f000000000000000000000000000000000000803f000080bf410a894136f8ffc040b6cf3e1bfc8fc0410a09c10000803f000000000000000000000000000000000000803f000080bf0000000036f8ffc040b6cf3e1bfc8f40410a09410000803f000000000000000000000000000000000000803f000080bf410a89410000803f40b6cf3e1bfc8f40410a09c10000803f000000000000000000000000000000000000803f000080bf000000000000803f40b6cf3e1bfc8fc0410a09c10000000000000000000080bf0000803f0000000000000000000080bf40b64f3f36f8ffc040b6cfbe1bfc8fc0410a09c10000000000000000000080bf0000803f0000000000000000000080bf0000000036f8ffc040b6cf3e1bfc8f40410a09c10000000000000000000080bf0000803f0000000000000000000080bf40b64f3f0000803f40b6cfbe1bfc8f40410a09c10000000000000000000080bf0000803f0000000000000000000080bf000000000000803f40b6cfbe1bfc8fc0410a09c1000080bf00000000000000000000000000000000000080bf000080bf410a894136f8ffc040b6cfbe1bfc8fc0410a0941000080bf00000000000000000000000000000000000080bf000080bf0000000036f8ffc040b6cfbe1bfc8f40410a09c1000080bf00000000000000000000000000000000000080bf000080bf410a89410000803f40b6cfbe1bfc8f40410a0941000080bf00000000000000000000000000000000000080bf000080bf000000000000803f40b6cfbe1bfc8f40410a0941000000000000803f000000000000803f0000000000000000000080bf000000000000803f40b6cf3e1bfc8f40410a0941000000000000803f000000000000803f0000000000000000000080bf40b64f3f0000803f40b6cfbe1bfc8f40410a09c1000000000000803f000000000000803f0000000000000000000080bf00000000410a81c140b6cf3e1bfc8f40410a09c1000000000000803f000000000000803f0000000000000000000080bf40b64f3f410a81c140b6cfbe1bfc8fc0410a09c100000000000080bf00000000000080bf0000000000000000000080bf40b64f3f410a81c140b6cf3e1bfc8fc0410a09c100000000000080bf00000000000080bf0000000000000000000080bf00000000410a81c140b6cfbe1bfc8fc0410a094100000000000080bf00000000000080bf0000000000000000000080bf40b64f3f0000803f40b6cf3e1bfc8fc0410a094100000000000080bf00000000000080bf0000000000000000000080bf000000000000803f
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 0
+    _typelessdata: 
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -3004,7 +3124,7 @@ EndReachedx: 0
     m_UVInfo: 0
   m_LocalAABB:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.40568733, y: 4.4995246, z: 8.565003}
+    m_Extent: {x: 0, y: 0, z: 0}
   m_MeshUsageFlags: 0
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
@@ -3222,6 +3342,46 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!21 &1383071646
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &1457904885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3791,6 +3951,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1936805634779848263, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936805634779848263, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2079567331608431121, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Material
       value: 
@@ -4203,7 +4371,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1154765802}
+  m_Mesh: {fileID: 0}
 --- !u!33 &1908057632
 MeshFilter:
   m_ObjectHideFlags: 10
