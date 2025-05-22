@@ -83,9 +83,7 @@ public class PlatformBuilder : EditorWindow
     }
 
     static void BuildAllSelectedScenesForPlatform(BuildTarget target, string extension) {
-        // Remove any existing "_AllScenes" suffix before adding it once
-        string baseName = Application.productName.Replace("_AllScenes", "");
-        string defaultAppName = baseName + "_AllScenes";
+        string defaultAppName = Directory.GetParent(Application.dataPath).Name;
 
         ShowDialog(defaultAppName, target, BuildOptions.None, (appName, buildTarget, buildOptions) => {
             if (string.IsNullOrEmpty(appName)) return;

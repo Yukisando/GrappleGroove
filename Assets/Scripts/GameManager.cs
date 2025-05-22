@@ -29,7 +29,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode restartKey = KeyCode.F5;
     [SerializeField] KeyCode skipLevel = KeyCode.F9;
     [SerializeField] KeyCode menuKey = KeyCode.Escape;
-    [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
+    [SerializeField] KeyCode clearAllSaveKey = KeyCode.F6;
+    [SerializeField] KeyCode continueKey = KeyCode.F;
+    [SerializeField] KeyCode resetHSKey = KeyCode.R;
 
     [Header("Audio")]
     [SerializeField] AudioSource soundEffectSource;
@@ -183,7 +185,7 @@ public class GameManager : MonoBehaviour
 
     void CheckInputs() {
         if (Input.GetKeyDown(menuKey)) ShowMenu(!menuShown);
-        if (Input.GetKeyDown(clearSaveKey)) saveManager.DeleteSaveFile();
+        if (Input.GetKeyDown(clearAllSaveKey)) saveManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -304,6 +306,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitInputNextLevel_() {
         while (!Input.GetKeyDown(KeyCode.F)) {
+            if (Input.GetKeyDown(KeyCode.R)) PlayerPrefs.DeleteKey("best_" + SceneManager.GetActiveScene().name);
             yield return null;
         }
         LoadNextScene();
