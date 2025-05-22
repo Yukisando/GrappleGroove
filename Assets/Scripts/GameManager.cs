@@ -109,18 +109,21 @@ public class GameManager : MonoBehaviour
 
     bool menuShown;
 
-    public void ShowMenu(bool _show) {
+    void ShowMenu(bool _show) {
         Application.runInBackground = _show;
+        playerDependencies.grapplingHook.enabled = !_show;
         if (_show) {
             menuShown = true;
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             menuUI.SetActive(true);
         }
         else {
             menuShown = false;
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             menuUI.SetActive(false);
         }
     }
@@ -135,7 +138,8 @@ public class GameManager : MonoBehaviour
             timerRunning = false;
             if (timerCoroutine != null) StopCoroutine(timerCoroutine);
             soundEffectSource.PlayOneShot(stopTimerSound);
-            if (!PlayerPrefs.HasKey("bestTime") || elapsedTime < PlayerPrefs.GetFloat("bestTime")) PlayerPrefs.SetFloat("bestTime", elapsedTime);
+            if (!PlayerPrefs.HasKey($"bestTime_{SceneManager.GetActiveScene().name}") || elapsedTime < PlayerPrefs.GetFloat($"bestTime_{SceneManager.GetActiveScene().name}"))
+                PlayerPrefs.SetFloat($"bestTime_{SceneManager.GetActiveScene().name}", elapsedTime);
         }
     }
 

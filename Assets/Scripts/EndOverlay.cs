@@ -2,6 +2,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #endregion
 
@@ -18,6 +19,6 @@ public class EndOverlay : MonoBehaviour
 
     public void Populate() {
         time.text = "Current: " + PlayerOverlay.I.GetTimeString();
-        bestTime.text = "Best: " + PlayerPrefs.GetFloat("bestTime");
+        bestTime.text = "Best: " + (PlayerPrefs.HasKey($"bestTime_{SceneManager.GetActiveScene().name}") ? PlayerPrefs.GetFloat($"bestTime_{SceneManager.GetActiveScene().name}") : "NaN");
     }
 }
