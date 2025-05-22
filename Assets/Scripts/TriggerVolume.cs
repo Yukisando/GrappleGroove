@@ -80,7 +80,7 @@ public class TriggerVolume : MonoBehaviour
             onAnyEnter?.Invoke();
             if (destroyObjectOnTrigger) triggerObject.Despawn();
             else idsInside.Add(triggerObject);
-            if (destroyVolumeOnTrigger) Destroy(gameObject);
+            if (destroyVolumeOnTrigger) gameObject.SetActive(false);
         }
     }
 
