@@ -2270,7 +2270,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1224
+  m_VersionIndex: 1230
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3545,7 +3545,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -3563,6 +3563,10 @@ PrefabInstance:
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 3357019124213751804}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
@@ -3592,8 +3596,16 @@ PrefabInstance:
       value: LoadLevel
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadNextLevel
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -3608,6 +3620,10 @@ PrefabInstance:
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -3618,6 +3634,10 @@ PrefabInstance:
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Test
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
+      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: level 2
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument

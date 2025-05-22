@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartTimer() {
-        if (timerRunning) ResetTimer();
+        ResetTimer();
         timerRunning = true;
         timerCoroutine = StartCoroutine(UpdateTimer());
         soundEffectSource.PlayOneShot(startTimerSound);
