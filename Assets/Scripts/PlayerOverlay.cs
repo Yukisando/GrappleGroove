@@ -12,6 +12,8 @@ public class PlayerOverlay : MonoBehaviour
     [SerializeField] TextMeshProUGUI speedText;
     [SerializeField] TextMeshProUGUI timerText;
 
+    string timeString = "NaN";
+
     void Awake() {
         if (I == null) I = this;
         else Destroy(gameObject);
@@ -30,6 +32,11 @@ public class PlayerOverlay : MonoBehaviour
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
         int milliseconds = Mathf.FloorToInt(time % 1f * 1000f);
-        timerText.text = $"{minutes:00}:{seconds:00}:{milliseconds:000}";
+        timeString = $"{minutes:00}:{seconds:00}:{milliseconds:000}";
+        timerText.text = timeString;
+    }
+
+    public string GetTimeString() {
+        return timeString;
     }
 }

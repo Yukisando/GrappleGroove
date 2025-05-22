@@ -2865,7 +2865,7 @@ Mesh:
     firstByte: 0
     indexCount: 36
     topology: 0
-    baseVertex: 0
+EndReachedx: 0
     firstVertex: 0
     vertexCount: 24
     localAABB:

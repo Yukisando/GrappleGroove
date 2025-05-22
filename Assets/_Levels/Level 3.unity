@@ -3123,8 +3123,7 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    - stream: 0
-      offset: 40
+    - streaEndReachedfset: 40
       format: 0
       dimension: 2
     - stream: 0

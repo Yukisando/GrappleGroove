@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
             timerRunning = false;
             if (timerCoroutine != null) StopCoroutine(timerCoroutine);
             soundEffectSource.PlayOneShot(stopTimerSound);
+            if (!PlayerPrefs.HasKey("bestTime") || elapsedTime < PlayerPrefs.GetFloat("bestTime")) PlayerPrefs.SetFloat("bestTime", elapsedTime);
         }
     }
 
@@ -252,14 +253,15 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(levelName);
     }
 
-    public void LoadNextLevel() {
-        StartCoroutine(LoadNextLevel_());
-    }
-
-    IEnumerator LoadNextLevel_() {
+    public void EndReached() {
         crosshairUI.SetActive(false);
         endUI.SetActive(true);
+        EndOverlay.I.Populate();
         playerDependencies.rb.gameObject.SetActive(false);
+        StartCoroutine(WaitInputNextLevel_());
+    }
+
+    IEnumerator WaitInputNextLevel_() {
         while (!Input.GetKeyDown(KeyCode.F)) {
             yield return null;
         }
