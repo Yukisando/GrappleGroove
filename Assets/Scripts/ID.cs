@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -11,6 +13,12 @@ using UnityEngine;
 public class ID : MonoBehaviour
 {
     public string id;
+
+    public List<string> IDs => id?.Contains(",") == true
+        ? id.Split(',').Select(s => s.Trim()).ToList()
+        : new List<string> {
+            id,
+        };
 
     [ReadOnly] public bool spawned;
 

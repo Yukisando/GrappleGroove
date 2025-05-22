@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 #endregion
 
-[InfoBox("Trigger specified events when objects with specified IDs enter")]
+[InfoBox("Trigger specified events when objects with specified IDs enters or collides")]
 public class VolumeTrigger : MonoBehaviour
 {
-    [FormerlySerializedAs("destroyOnTrigger")] [SerializeField]
-    bool destroyVolumeOnTrigger;
+    [SerializeField] bool destroyVolumeOnTrigger;
     [SerializeField] bool destroyObjectOnTrigger;
     [SerializeField] List<string> ids = new List<string>();
-    [FormerlySerializedAs("onEnter")] [SerializeField]
-    UnityEvent onAnyEnter;
+    [SerializeField] UnityEvent onAnyEnter;
     [HideIf("@this.destroyObjectOnTrigger || this.destroyVolumeOnTrigger")]
     [SerializeField]
     UnityEvent onAllExit;
@@ -69,7 +66,15 @@ public class VolumeTrigger : MonoBehaviour
 
     readonly List<ID> idsInside = new List<ID>();
 
-    void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider _other) {
+        HandleObjectEnter(_other.gameObject);
+    }
+
+    void OnCollisionEnter(Collision _collision) {
+        HandleObjectEnter(_collision.gameObject);
+    }
+
+    void HandleObjectEnter(GameObject other) {
         other.TryGetComponent<ID>(out var triggerObject);
         if (triggerObject != null && ids.Contains(triggerObject.id)) {
             onAnyEnter?.Invoke();

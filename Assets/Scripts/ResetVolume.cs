@@ -54,11 +54,6 @@ public class ResetVolume : MonoBehaviour
         sharedMaterial.SetTextureOffset(BaseMap, offset);
     }
 
-    void OnDrawGizmosSelected() {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireMesh(GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
-    }
-
     void OnTriggerEnter(Collider _other) {
         HandleObjectEnter(_other.gameObject);
     }

@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] CheckpointManager checkpointManager;
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
-    [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject crosshairUI;
     [SerializeField] GameObject endUI;
 
     [Header("Settings")]
@@ -28,18 +28,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
 
     [Header("Audio")]
+    [SerializeField] AudioSource soundEffectSource;
     public AudioClip resetSound;
     public AudioClip checkpointSound;
+    public AudioClip startTimerSound;
+    public AudioClip stopTimerSound;
+    public AudioClip timerTickSound;
 
     [Header("Performance")]
     [SerializeField] int targetFrameRate = 120;
 
+    //Volumes
     CheckpointVolume[] checkpointVolumes;
     RopeEmancipationVolume[] emancipationVolumes;
     Grabbable[] grabbableObjects;
     KillVolume[] killVolumes;
     Move[] movingObjects;
     ResetVolume[] resetVolumes;
+
+    //timer
+    float elapsedTime;
+    bool timerRunning;
+    Coroutine timerCoroutine;
 
     void Awake() {
         if (I == null) I = this;
@@ -85,6 +95,49 @@ public class GameManager : MonoBehaviour
 
     void Update() {
         CheckInputs();
+        CheckSpeed();
+    }
+
+    public void StartTimer() {
+        if (timerRunning) ResetTimer();
+        timerRunning = true;
+        timerCoroutine = StartCoroutine(UpdateTimer());
+        soundEffectSource.PlayOneShot(startTimerSound);
+    }
+
+    public void StopTimer() {
+        if (timerRunning) {
+            timerRunning = false;
+            if (timerCoroutine != null) StopCoroutine(timerCoroutine);
+            soundEffectSource.PlayOneShot(stopTimerSound);
+        }
+    }
+
+    public void ResetTimer() {
+        StopTimer();
+        elapsedTime = 0f;
+        PlayerOverlay.I.SetTimer(elapsedTime);
+    }
+
+    IEnumerator UpdateTimer() {
+        float lastSecond = -1f;
+        while (timerRunning) {
+            elapsedTime += Time.deltaTime;
+            PlayerOverlay.I.SetTimer(elapsedTime);
+
+            // Check if we've crossed into a new second
+            int currentSecond = Mathf.FloorToInt(elapsedTime);
+            if (currentSecond > lastSecond) {
+                soundEffectSource.PlayOneShot(timerTickSound);
+                lastSecond = currentSecond;
+            }
+
+            yield return null;
+        }
+    }
+
+    void CheckSpeed() {
+        PlayerOverlay.I.SetSpeed(playerDependencies.rb.linearVelocity.magnitude);
     }
 
     void CheckInputs() {
@@ -204,7 +257,7 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator LoadNextLevel_() {
-        playerUI.SetActive(false);
+        crosshairUI.SetActive(false);
         endUI.SetActive(true);
         playerDependencies.rb.gameObject.SetActive(false);
         while (!Input.GetKeyDown(KeyCode.F)) {
