@@ -12,7 +12,7 @@ namespace PrototypeFPC
         [SerializeField] float fov = 60f;
         [SerializeField] float minRotationLimit = -90f;
         [SerializeField] float maxRotationLimit = 90f;
-        [SerializeField] float sensitivity = 180f;
+        public float sensitivity = 180f;
         [SerializeField] float lookTiltAmount = 6f;
         [SerializeField] float lookTiltSpeed = 12f;
         [SerializeField] float tiltResetSpeed = 10f;

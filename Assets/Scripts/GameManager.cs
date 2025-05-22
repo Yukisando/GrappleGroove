@@ -5,6 +5,7 @@ using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 #endregion
 
@@ -18,13 +19,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject crosshairUI;
+    [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject menuUI;
     [SerializeField] GameObject endUI;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
     [SerializeField] KeyCode restartKey = KeyCode.F5;
     [SerializeField] KeyCode skipLevel = KeyCode.F9;
-    [SerializeField] KeyCode quitKey = KeyCode.Escape;
+    [FormerlySerializedAs("quitKey")] [SerializeField]
+    KeyCode menuKey = KeyCode.Escape;
     [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
 
     [Header("Audio")]
@@ -81,11 +85,9 @@ public class GameManager : MonoBehaviour
         skipCheckpointLoading = EditorPrefs.GetBool("TeleportPlayerOnPlay_Enabled", false);
 #endif
 
-        if (!skipCheckpointLoading)
+        if (!skipCheckpointLoading) StartCoroutine(DelayedLoadCheckpoint());
 
-            // Only load checkpoint if teleport on play is disabled
-            // Delay the checkpoint loading slightly to ensure all components are initialized
-            StartCoroutine(DelayedLoadCheckpoint());
+        playerDependencies.perspective.sensitivity = PlayerPrefs.HasKey("sensitivity") ? PlayerPrefs.GetFloat("sensitivity") : 180f;
     }
 
     IEnumerator DelayedLoadCheckpoint() {
@@ -103,6 +105,29 @@ public class GameManager : MonoBehaviour
         timerRunning = true;
         timerCoroutine = StartCoroutine(UpdateTimer());
         soundEffectSource.PlayOneShot(startTimerSound);
+    }
+
+    bool menuShown;
+
+    public void ShowMenu(bool _show) {
+        Application.runInBackground = _show;
+        if (_show) {
+            menuShown = true;
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            menuUI.SetActive(true);
+        }
+        else {
+            menuShown = false;
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            menuUI.SetActive(false);
+        }
+    }
+
+    public void SetMouseSensitivity(float value) {
+        playerDependencies.perspective.sensitivity = value;
+        PlayerPrefs.SetFloat("sensitivity", value);
     }
 
     public void StopTimer() {
@@ -142,18 +167,19 @@ public class GameManager : MonoBehaviour
     }
 
     void CheckInputs() {
-        if (Input.GetKeyDown(quitKey)) {
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
-
+        if (Input.GetKeyDown(menuKey)) ShowMenu(!menuShown);
         if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitGame() {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
     }
 
     void LoadNextScene() {
