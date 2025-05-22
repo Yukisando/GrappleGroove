@@ -19,6 +19,6 @@ public class EndOverlay : MonoBehaviour
 
     public void Populate() {
         time.text = "Current: " + PlayerOverlay.I.GetTimeString();
-        bestTime.text = "Best: " + (PlayerPrefs.HasKey($"bestTime_{SceneManager.GetActiveScene().name}") ? PlayerPrefs.GetFloat($"bestTime_{SceneManager.GetActiveScene().name}") : "NaN");
+        bestTime.text = "Best: " + (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}") ? PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}") : "NaN");
     }
 }

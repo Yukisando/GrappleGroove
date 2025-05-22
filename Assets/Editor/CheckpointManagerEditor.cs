@@ -6,13 +6,13 @@ using UnityEngine;
 
 #endregion
 
-[CustomEditor(typeof(CheckpointManager))]
+[CustomEditor(typeof(SaveManager))]
 public class CheckpointManagerEditor : Editor
 {
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
 
-        var manager = (CheckpointManager)target;
+        var manager = (SaveManager)target;
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Editor Tools", EditorStyles.boldLabel);
@@ -27,7 +27,7 @@ public class CheckpointManagerEditor : Editor
 
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Save Location:", EditorStyles.miniLabel);
-        EditorGUILayout.SelectableLabel(CheckpointManager.GetSaveDirectory());
+        EditorGUILayout.SelectableLabel(SaveManager.GetSaveDirectory());
     }
 
     [MenuItem("Tools/Game/Delete All Checkpoint Saves", false, 100)]

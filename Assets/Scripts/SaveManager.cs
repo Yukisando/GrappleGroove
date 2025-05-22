@@ -4,14 +4,12 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 #endregion
 
-public class CheckpointManager : MonoBehaviour
+public class SaveManager : MonoBehaviour
 {
     const string CheckpointFileFormat = "checkpoint_data_{0}.json";
-    [FormerlySerializedAs("lastCheckpointPosition")]
     public Transform lastCheckpointTransform;
 
     // Folder name to store checkpoints

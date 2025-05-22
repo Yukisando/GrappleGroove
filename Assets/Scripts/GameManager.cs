@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Game dependencies")]
     PlayerDependencies playerDependencies;
-    [SerializeField] CheckpointManager checkpointManager;
+    [FormerlySerializedAs("checkpointManager")] [SerializeField]
+    SaveManager saveManager;
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject crosshairUI;
@@ -27,8 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
     [SerializeField] KeyCode restartKey = KeyCode.F5;
     [SerializeField] KeyCode skipLevel = KeyCode.F9;
-    [FormerlySerializedAs("quitKey")] [SerializeField]
-    KeyCode menuKey = KeyCode.Escape;
+    [SerializeField] KeyCode menuKey = KeyCode.Escape;
     [SerializeField] KeyCode clearSaveKey = KeyCode.F6;
 
     [Header("Audio")]
@@ -95,6 +95,12 @@ public class GameManager : MonoBehaviour
         LoadLastCheckpoint();
     }
 
+    public void ActivateCheckpoints(bool state) {
+        foreach (var cv in checkpointVolumes) {
+            cv.gameObject.SetActive(state);
+        }
+    }
+
     void Update() {
         CheckInputs();
         CheckSpeed();
@@ -133,13 +139,14 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("sensitivity", value);
     }
 
-    public void StopTimer() {
+    public void StopTimer(bool finished = true) {
         if (timerRunning) {
             timerRunning = false;
             if (timerCoroutine != null) StopCoroutine(timerCoroutine);
             soundEffectSource.PlayOneShot(stopTimerSound);
-            if (!PlayerPrefs.HasKey($"bestTime_{SceneManager.GetActiveScene().name}") || elapsedTime < PlayerPrefs.GetFloat($"bestTime_{SceneManager.GetActiveScene().name}"))
-                PlayerPrefs.SetFloat($"bestTime_{SceneManager.GetActiveScene().name}", elapsedTime);
+            if (finished)
+                if (!PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}") || elapsedTime < PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}"))
+                    PlayerPrefs.SetFloat($"best_{SceneManager.GetActiveScene().name}", elapsedTime);
         }
     }
 
@@ -176,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     void CheckInputs() {
         if (Input.GetKeyDown(menuKey)) ShowMenu(!menuShown);
-        if (Input.GetKeyDown(clearSaveKey)) checkpointManager.DeleteSaveFile();
+        if (Input.GetKeyDown(clearSaveKey)) saveManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -227,7 +234,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        bool validCheckpointLoaded = checkpointManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation);
+        bool validCheckpointLoaded = saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation);
 
         if (validCheckpointLoaded) {
             // Valid checkpoint found, use it
@@ -247,8 +254,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("No valid checkpoint found. Using default spawn point.");
 
             // Update the lastCheckpointTransform to match the default spawn point
-            checkpointManager.lastCheckpointTransform.position = spawnPoint.position;
-            checkpointManager.lastCheckpointTransform.rotation = spawnPoint.rotation;
+            saveManager.lastCheckpointTransform.position = spawnPoint.position;
+            saveManager.lastCheckpointTransform.rotation = spawnPoint.rotation;
 
             // Use ResetGameState instead of SafeTeleportToCheckpoint
             ResetGameState(false); // Don't play sound when loading checkpoint
@@ -304,7 +311,7 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
         playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
-        checkpointManager.SaveCheckpoint(_spawnPoint);
+        saveManager.SaveCheckpoint(_spawnPoint);
         spawnPoint.position = _spawnPoint.position;
         spawnPoint.rotation = _spawnPoint.rotation;
         infoPopup.ShowPopup("Checkpoint reached!");
