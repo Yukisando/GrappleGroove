@@ -145,6 +145,10 @@ public class GameManager : MonoBehaviour
         PlayerOverlay.I.SetTimer(elapsedTime);
     }
 
+    void OnApplicationQuit() {
+        PlayerPrefs.Save();
+    }
+
     IEnumerator UpdateTimer() {
         float lastSecond = -1f;
         while (timerRunning) {
