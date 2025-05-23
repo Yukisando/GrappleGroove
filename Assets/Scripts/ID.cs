@@ -13,6 +13,7 @@ using UnityEngine;
 public class ID : MonoBehaviour
 {
     public string id;
+    bool initActiveState;
 
     public List<string> IDs => id?.Contains(",") == true
         ? id.Split(',').Select(s => s.Trim()).ToList()
@@ -25,8 +26,11 @@ public class ID : MonoBehaviour
     TransformData transformData;
     public event Action<bool> onReset;
 
-    void Awake() {
+    void OnEnable() {
         if (id.IsNullOrWhitespace()) id = name;
+        initActiveState = !(Time.timeSinceLevelLoad > 0.1f);
+
+        Debug.Log($"{id} - {initActiveState}");
     }
 
     void Start() {
@@ -38,9 +42,10 @@ public class ID : MonoBehaviour
     }
 
     public void ResetObject() {
+        Debug.Log($"RESET {name} - {initActiveState}");
+        gameObject.SetActive(initActiveState);
         if (GetComponent<Move>()) return;
         onReset?.Invoke(spawned);
-
 
         transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
             if (spawned) {
