@@ -20,12 +20,10 @@ public class Hookable : MonoBehaviour
     void Update() {
         switch (isHooked) {
             case true when hookState != isHooked:
-                Debug.Log("Hooked!");
                 hookState = isHooked;
                 onHooked?.Invoke();
                 break;
             case false when hookState != isHooked:
-                Debug.Log("Unhooked!");
                 hookState = isHooked;
                 onUnhooked?.Invoke();
                 break;

@@ -731,7 +731,6 @@ namespace PrototypeFPC
 
             foreach (var hit in hits) {
                 if (hit.GetComponent<CutsRopes>() != null) {
-                    Debug.Log("Rope intersected with CutsRope object: " + hit.name);
                     DestroyRope(ropes.IndexOf(rope));
                     return;
                 }
