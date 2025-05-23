@@ -34,7 +34,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode resetHSKey = KeyCode.R;
 
     [Header("Audio")]
+    [SerializeField] bool raceWithMusic = true;
     [SerializeField] AudioSource soundEffectSource;
+    [SerializeField] AudioSource musicSequenceSource;
+    public AudioClip defaultRaceClip;
     public AudioClip resetSound;
     public AudioClip checkpointSound;
     public AudioClip startTimerSound;
@@ -113,6 +116,7 @@ public class GameManager : MonoBehaviour
         timerRunning = true;
         timerCoroutine = StartCoroutine(UpdateTimer());
         soundEffectSource.PlayOneShot(startTimerSound);
+        if (raceWithMusic) BeginMusicSequence(defaultRaceClip);
     }
 
     bool menuShown;
@@ -142,6 +146,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void StopTimer(bool finished = true) {
+        musicSequenceSource.Stop();
         if (timerRunning) {
             timerRunning = false;
             if (timerCoroutine != null) StopCoroutine(timerCoroutine);
@@ -201,6 +206,11 @@ public class GameManager : MonoBehaviour
 #else
             Application.Quit();
 #endif
+    }
+
+    public void BeginMusicSequence(AudioClip clip) {
+        musicSequenceSource.clip = clip;
+        musicSequenceSource.Play();
     }
 
     public void LoadNextScene() {

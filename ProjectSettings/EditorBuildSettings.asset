@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Levels/Roland3.unity
     guid: 547bf2cb847eae1448f4b969ee9ea615
+  - enabled: 1
+    path: Assets/_Levels/Maxime1.unity
+    guid: 6729b4a8783d80841b3830c08a84b587
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
