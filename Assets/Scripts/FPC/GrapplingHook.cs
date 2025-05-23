@@ -236,6 +236,8 @@ namespace PrototypeFPC
                 connectedObject1 = hit.transform.gameObject,
                 connectedObject2 = rb.transform.gameObject,
             };
+
+            rope.connectedObject1.GetComponent<Hookable>().isHooked = true;
             RegisterResetCallback(rope, ropes.Count);
 
             SetupHook(rope);
@@ -358,6 +360,7 @@ namespace PrototypeFPC
             UpdateRopeProperties(rope);
             CreatePlank(rope);
 
+            rope.connectedObject2.GetComponent<Hookable>().isHooked = true;
             hooked = false;
             audioSource.PlayOneShot(grapplingSound);
 
@@ -641,6 +644,8 @@ namespace PrototypeFPC
             if (rope.hookLatch) Destroy(rope.hookLatch.gameObject);
             if (rope.ropeCollider) Destroy(rope.ropeCollider.gameObject);
             if (rope.plank) Destroy(rope.plank);
+            rope.connectedObject1.GetComponent<Hookable>().isHooked = false;
+            if (rope.connectedObject2.GetComponent<Hookable>()) rope.connectedObject2.GetComponent<Hookable>().isHooked = false;
 
             foreach (var model in rope.hookModels) {
                 Destroy(model);

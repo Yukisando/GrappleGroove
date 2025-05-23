@@ -5,9 +5,10 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Moves an object from A to B (-1 = A->B->A forever, 0 = A->B, 1+ = ping-pong loops)")]
+[InfoBox("Moves an object from A to B (-1 = infinite ping-pong, 0 = A->B, 1 = A->B->A, etc.)")]
 public class Move : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public bool showGizmos = true;
     public bool useLocalPosition = true;
     public Vector3 destination = new Vector3(1, 0, 0);
@@ -19,14 +20,16 @@ public class Move : MonoBehaviour
     [SerializeField] [Range(0, 1)] float startOffset;
     [SerializeField] AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    Vector3 initialPosition;
-    Vector3 offsetStartPosition;
+    Vector3 startPos;
+    Vector3 endPos;
     LTDescr tween;
-    int loopsRemaining;
-    bool isFirstRun = true;
+    int currentLoop;
+    bool isPaused;
 
     void Awake() {
-        initialPosition = GetCurrentPosition();
+        startPos = GetCurrentPosition();
+        endPos = useLocalPosition ? startPos + transform.TransformDirection(destination) : startPos + destination;
+        SetStartOffset();
     }
 
     void Start() {
@@ -34,120 +37,93 @@ public class Move : MonoBehaviour
             StartMoving();
     }
 
+    public void StartMoving() {
+        if (isPaused) {
+            Resume();
+            return;
+        }
+
+        StopMovement();
+
+        currentLoop = loopCount == -1 ? -1 : loopCount * 2;
+        MoveToTarget(endPos);
+    }
+
     public void Pause() {
-        if (tween != null && LeanTween.isTweening(tween.uniqueId)) LeanTween.pause(tween.uniqueId);
+        isPaused = true;
+        if (tween != null && LeanTween.isTweening(tween.uniqueId))
+            LeanTween.pause(tween.uniqueId);
     }
 
     public void Resume() {
-        if (tween != null && LeanTween.isTweening(tween.uniqueId)) LeanTween.resume(tween.uniqueId);
+        isPaused = false;
+        if (tween != null && LeanTween.isTweening(tween.uniqueId))
+            LeanTween.resume(tween.uniqueId);
     }
 
-    public void StartMoving() {
-        Pause();
-        isFirstRun = true;
-
-        CacheOffsetStartPosition();
-        ApplyStartOffset();
-
-        if (loopCount == 0)
-            MoveOnce();
-        else {
-            if (loopCount > 0)
-                loopsRemaining = loopCount * 2;
-
-            MovePingPong();
-        }
+    public void StopMovement() {
+        isPaused = false;
+        if (tween != null && LeanTween.isTweening(tween.uniqueId))
+            LeanTween.cancel(tween.uniqueId);
     }
 
-    public void ResetObject() {
-        Pause();
-        CacheOffsetStartPosition();
-        ApplyStartOffset();
+    void MoveToTarget(Vector3 target) {
+        float distanceRatio = Vector3.Distance(GetCurrentPosition(), target) / Vector3.Distance(startPos, endPos);
+        float adjustedDuration = duration * distanceRatio;
 
-        if (startMovingOnStart)
-            StartMoving();
+        tween = (useLocalPosition
+                ? LeanTween.moveLocal(gameObject, target, adjustedDuration)
+                : LeanTween.move(gameObject, target, adjustedDuration))
+            .setEase(animationCurve)
+            .setOnComplete(OnMoveComplete);
     }
 
-    void MoveOnce() {
-        var end = GetTargetPosition();
-        tween = CreateMoveTween(end, duration);
-    }
+    void OnMoveComplete() {
+        if (loopCount == 0) return;
 
-    void MovePingPong() {
-        var currentPos = GetCurrentPosition();
-        var target = isFirstRun ? GetTargetPosition() : GetNextPingPongTarget(currentPos);
+        if (loopCount > 0 && --currentLoop <= 0) return;
 
-        float totalDist = Vector3.Distance(initialPosition, GetTargetPosition());
-        float remainDist = Vector3.Distance(currentPos, target);
-        float adjustedDuration = totalDist > 0 ? duration * (remainDist / totalDist) : duration;
-
-        tween = CreateMoveTween(target, adjustedDuration).setOnComplete(() => {
-            if (!isFirstRun && loopCount > 0)
-                loopsRemaining--;
-
-            if (loopCount == -1 || loopsRemaining > 0) {
-                if (delayBetweenLoops > 0)
-                    LeanTween.delayedCall(gameObject, delayBetweenLoops, MovePingPong);
-                else
-                    MovePingPong();
-            }
+        LeanTween.delayedCall(gameObject, delayBetweenLoops, () => {
+            var nextTarget = GetCurrentPosition() == endPos ? startPos : endPos;
+            MoveToTarget(nextTarget);
         });
-
-        isFirstRun = false;
     }
 
-    LTDescr CreateMoveTween(Vector3 target, float time) {
-        return useLocalPosition
-            ? LeanTween.moveLocal(gameObject, target, time).setEase(animationCurve)
-            : LeanTween.move(gameObject, target, time).setEase(animationCurve);
-    }
-
-    void CacheOffsetStartPosition() {
-        var direction = useLocalPosition
-            ? transform.TransformDirection(destination)
-            : destination;
-
-        offsetStartPosition = Vector3.Lerp(initialPosition, initialPosition + direction, startOffset);
-    }
-
-    void ApplyStartOffset() {
+    void SetStartOffset() {
+        var offset = Vector3.Lerp(startPos, endPos, startOffset);
         if (useLocalPosition)
-            transform.localPosition = offsetStartPosition;
+            transform.localPosition = offset;
         else
-            transform.position = offsetStartPosition;
+            transform.position = offset;
     }
 
     Vector3 GetCurrentPosition() {
         return useLocalPosition ? transform.localPosition : transform.position;
     }
 
-    Vector3 GetTargetPosition() {
-        return useLocalPosition
-            ? initialPosition + transform.TransformDirection(destination)
-            : initialPosition + destination;
-    }
+    public void ResetObject() {
+        StopMovement(); // Stop any ongoing tweens and clear pause state
 
-    Vector3 GetNextPingPongTarget(Vector3 current) {
-        var end = GetTargetPosition();
-        float distToStart = Vector3.Distance(current, initialPosition);
-        float distToEnd = Vector3.Distance(current, end);
+        // Reset the position based on the offset
+        SetStartOffset();
 
-        return distToStart < distToEnd ? end : initialPosition;
+        // Reset loop count
+        currentLoop = loopCount == -1 ? -1 : loopCount * 2;
+
+        if (startMovingOnStart)
+            StartMoving();
     }
 
     void OnDrawGizmos() {
         if (!showGizmos) return;
 
-        var start = useLocalPosition ? transform.localPosition : transform.position;
-        var end = useLocalPosition
-            ? start + transform.TransformDirection(destination)
-            : start + destination;
+        var a = useLocalPosition ? transform.localPosition : transform.position;
+        var b = useLocalPosition ? a + transform.TransformDirection(destination) : a + destination;
 
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(start, end);
+        Gizmos.DrawLine(a, b);
 
-        var offset = Vector3.Lerp(start, end, startOffset);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(offset, 0.2f);
+        Gizmos.DrawSphere(Vector3.Lerp(a, b, startOffset), 0.2f);
     }
 }

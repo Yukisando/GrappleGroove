@@ -2,6 +2,7 @@
 
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
@@ -9,4 +10,25 @@ using UnityEngine;
 public class Hookable : MonoBehaviour
 {
     public bool connectable = true;
+    [ReadOnly] public bool isHooked;
+
+    public UnityEvent onHooked = new UnityEvent();
+    public UnityEvent onUnhooked = new UnityEvent();
+
+    bool hookState;
+
+    void Update() {
+        switch (isHooked) {
+            case true when hookState != isHooked:
+                Debug.Log("Hooked!");
+                hookState = isHooked;
+                onHooked?.Invoke();
+                break;
+            case false when hookState != isHooked:
+                Debug.Log("Unhooked!");
+                hookState = isHooked;
+                onUnhooked?.Invoke();
+                break;
+        }
+    }
 }
