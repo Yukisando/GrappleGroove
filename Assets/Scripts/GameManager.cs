@@ -188,7 +188,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(clearAllSaveKey)) saveManager.DeleteSaveFile();
         if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
-        if (Input.GetKeyDown(restartKey)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (Input.GetKeyDown(restartKey)) Restart();
+    }
+
+    public void Restart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame() {
@@ -199,7 +203,7 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    void LoadNextScene() {
+    public void LoadNextScene() {
         int i = SceneManager.GetActiveScene().buildIndex + 1;
         if (i >= SceneManager.sceneCountInBuildSettings) i = 0;
         SceneManager.LoadScene(i);
