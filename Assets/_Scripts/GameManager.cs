@@ -7,7 +7,6 @@ using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 #endregion
 
@@ -16,9 +15,8 @@ public class GameManager : MonoBehaviour
     public static GameManager I;
 
     [Header("Game dependencies")]
-    PlayerDependencies playerDependencies;
-    [FormerlySerializedAs("checkpointManager")] [SerializeField]
-    SaveManager saveManager;
+    [SerializeField] SaveManager saveManager;
+    public PlayerDependencies playerDependencies;
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject crosshairUI;
@@ -39,12 +37,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool raceWithMusic = true;
     [SerializeField] AudioSource soundEffectSource;
     [SerializeField] AudioSource musicSequenceSource;
-    public AudioClip defaultRaceClip;
-    public AudioClip resetSound;
-    public AudioClip checkpointSound;
-    public AudioClip startTimerSound;
-    public AudioClip stopTimerSound;
-    public AudioClip timerTickSound;
 
     [Header("Performance")]
     [SerializeField] int targetFrameRate = 120;
@@ -63,8 +55,8 @@ public class GameManager : MonoBehaviour
     public bool checkpointsActive;
 
     void Awake() {
-        if (I == null) I = this;
-        else Destroy(gameObject);
+        I = this;
+        playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         Application.targetFrameRate = targetFrameRate;
     }
 
@@ -83,7 +75,6 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
-        playerDependencies = FindAnyObjectByType<PlayerDependencies>();
         InitializeWorldObjects();
 
         // Check if teleport on play is enabled in editor preferences
@@ -118,8 +109,8 @@ public class GameManager : MonoBehaviour
         ResetTimer();
         timerRunning = true;
         timerCoroutine = StartCoroutine(UpdateTimer());
-        soundEffectSource.PlayOneShot(startTimerSound);
-        if (raceWithMusic) BeginMusicSequence(defaultRaceClip);
+        soundEffectSource.PlayOneShot(AssetManager.I.startTimerSound);
+        if (raceWithMusic) BeginMusicSequence(AssetManager.I.defaultRaceClip);
     }
 
     bool menuShown;
@@ -153,7 +144,7 @@ public class GameManager : MonoBehaviour
         if (timerRunning) {
             timerRunning = false;
             if (timerCoroutine != null) StopCoroutine(timerCoroutine);
-            soundEffectSource.PlayOneShot(stopTimerSound);
+            soundEffectSource.PlayOneShot(AssetManager.I.stopTimerSound);
             if (finished)
                 if (!PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}") || elapsedTime < PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}"))
                     PlayerPrefs.SetFloat($"best_{SceneManager.GetActiveScene().name}", elapsedTime);
@@ -179,7 +170,7 @@ public class GameManager : MonoBehaviour
             // Check if we've crossed into a new second
             int currentSecond = Mathf.FloorToInt(elapsedTime);
             if (currentSecond > lastSecond) {
-                soundEffectSource.PlayOneShot(timerTickSound);
+                soundEffectSource.PlayOneShot(AssetManager.I.timerTickSound);
                 lastSecond = currentSecond;
             }
 
@@ -293,7 +284,7 @@ public class GameManager : MonoBehaviour
     void ResetGameState(bool _playSound = true) {
         StopTimer();
         if (_playSound)
-            playerDependencies.audioSourceTop.PlayOneShot(resetSound);
+            playerDependencies.audioSourceTop.PlayOneShot(AssetManager.I.resetSound);
 
         SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
 
@@ -329,7 +320,7 @@ public class GameManager : MonoBehaviour
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
-        playerDependencies.audioSourceTop.PlayOneShot(checkpointSound);
+        playerDependencies.audioSourceTop.PlayOneShot(AssetManager.I.checkpointSound);
         saveManager.SaveCheckpoint(_spawnPoint);
         spawnPoint.position = _spawnPoint.position;
         spawnPoint.rotation = _spawnPoint.rotation;

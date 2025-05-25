@@ -79,6 +79,10 @@ namespace PrototypeFPC
             Setup();
         }
 
+        float lastSpeed;
+        float bumpCooldownTimer;
+        const float bumpCooldown = 0.5f; // Prevents repeated bumps
+
         void Update() {
             GroundCheck();
             CalculateDirection();
@@ -87,18 +91,31 @@ namespace PrototypeFPC
             ControlDrag();
             StrafeTilt();
             Footsteps();
-            Wind();
+            MovementEffects();
         }
 
-        void Wind() {
-            float velocitySquared = rb.linearVelocity.sqrMagnitude;
+        void MovementEffects() {
+            float velocity = rb.linearVelocity.magnitude;
 
-            // Only update volume if there's a significant change
+            // Wind sound volume update
+            float velocitySquared = velocity * velocity;
             float newVolume = Mathf.Clamp01(velocitySquared / maxWindVelocitySquared);
             if (Mathf.Abs(newVolume - previousVolume) > 0.01f) {
                 audioSourceWind.volume = newVolume;
                 previousVolume = newVolume;
             }
+
+            // Bump detection
+            bumpCooldownTimer -= Time.deltaTime;
+
+            // Check for drop from high (>400) to low (<50)
+            if (lastSpeed > 400f && velocity < 50f && bumpCooldownTimer <= 0f) {
+                AssetManager.I.PlayClip(AssetManager.I.bumpSound);
+                bumpCooldownTimer = bumpCooldown;
+            }
+
+            // Update last speed for next frame
+            lastSpeed = velocity;
         }
 
         void FixedUpdate() {

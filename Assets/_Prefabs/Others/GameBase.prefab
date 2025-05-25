@@ -873,6 +873,7 @@ GameObject:
   - component: {fileID: 1617838702512332325}
   - component: {fileID: 3357019124213751804}
   - component: {fileID: 8768992807551303706}
+  - component: {fileID: 3206311899960457222}
   - component: {fileID: 1025100940826383899}
   - component: {fileID: 415400225988307756}
   - component: {fileID: 6689186725310685807}
@@ -917,6 +918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveManager: {fileID: 8768992807551303706}
+  playerDependencies: {fileID: 0}
   spawnPoint: {fileID: 321564022778021474}
   infoPopup: {fileID: 4377344527624188865}
   crosshairUI: {fileID: 6112996217231031090}
@@ -933,12 +935,6 @@ MonoBehaviour:
   raceWithMusic: 1
   soundEffectSource: {fileID: 415400225988307756}
   musicSequenceSource: {fileID: 6689186725310685807}
-  defaultRaceClip: {fileID: 8300000, guid: 0f7d61faae5d12a449619239c43b6faf, type: 3}
-  resetSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}
-  checkpointSound: {fileID: 8300000, guid: 3ae142e68f6eb1b45bb3bebf47d1d3c6, type: 3}
-  startTimerSound: {fileID: 8300000, guid: ba3d33391dcef4288a8ab5210877f166, type: 3}
-  stopTimerSound: {fileID: 8300000, guid: ddb932091cbb9474f8b38bf2491cc9de, type: 3}
-  timerTickSound: {fileID: 8300000, guid: 5dfcc66e1eb58a645b907a3297f8782c, type: 3}
   targetFrameRate: 60
   checkpointsActive: 0
 --- !u!114 &8768992807551303706
@@ -954,6 +950,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastCheckpointTransform: {fileID: 321564022778021474}
+--- !u!114 &3206311899960457222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479892816280032150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a66933696bc4d29b0b293c0385640be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnClip: {fileID: 8300000, guid: 81aa19699455c0c4f9dd8d95ec0de826, type: 3}
+  defaultRaceClip: {fileID: 8300000, guid: 0f7d61faae5d12a449619239c43b6faf, type: 3}
+  resetSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}
+  checkpointSound: {fileID: 8300000, guid: 44371b3a333ee44a1a98d55d464d0db8, type: 3}
+  startTimerSound: {fileID: 8300000, guid: c0ec0f215d91a4056b5f9f5532f8a6a6, type: 3}
+  stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
+  timerTickSound: {fileID: 8300000, guid: 52f2dda63dc1e0244b39ae9075007d4e, type: 3}
+  splashSound: {fileID: 0}
+  bumpSound: {fileID: 0}
 --- !u!82 &1025100940826383899
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3377,7 +3394,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1254
+  m_VersionIndex: 1257
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class PlayerDependencies : MonoBehaviour
 {
+    public static PlayerDependencies I;
     public float worldGravity = -20f;
     public int physicsIterations = 12;
     public float timeStep = 0.003f;
