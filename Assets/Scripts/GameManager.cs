@@ -1,6 +1,8 @@
 #region
 
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using PrototypeFPC;
 using UnityEditor;
 using UnityEngine;
@@ -48,12 +50,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] int targetFrameRate = 120;
 
     //Volumes
-    CheckpointVolume[] checkpointVolumes;
-    RopeEmancipationVolume[] emancipationVolumes;
-    Grabbable[] grabbableObjects;
-    KillVolume[] killVolumes;
-    Move[] movingObjects;
-    ResetVolume[] resetVolumes;
+    List<ID> allIds;
+    List<CheckpointVolume> checkpointVolumes;
+    List<RopeEmancipationVolume> emancipationVolumes;
+    List<KillVolume> killVolumes;
+    List<ResetVolume> resetVolumes;
 
     //timer
     float elapsedTime;
@@ -222,12 +223,11 @@ public class GameManager : MonoBehaviour
     }
 
     void InitializeWorldObjects() {
-        checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        emancipationVolumes = FindObjectsByType<RopeEmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        movingObjects = FindObjectsByType<Move>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        grabbableObjects = FindObjectsByType<Grabbable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        checkpointVolumes = FindObjectsByType<CheckpointVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        resetVolumes = FindObjectsByType<ResetVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        killVolumes = FindObjectsByType<KillVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        emancipationVolumes = FindObjectsByType<RopeEmancipationVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        allIds = FindObjectsByType<ID>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
 
         foreach (var checkpointVolume in checkpointVolumes) {
             checkpointVolume.onEnterVolume += OnPlayerEnteredCheckpointVolume;
@@ -297,12 +297,9 @@ public class GameManager : MonoBehaviour
 
         SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
 
-        foreach (var movingObject in movingObjects) {
-            movingObject.ResetObject();
-        }
-
-        foreach (var grabbableObject in grabbableObjects) {
-            grabbableObject.ResetObject();
+        foreach (var id in allIds) {
+            if (id.id == "Player") continue; // Skip player ID
+            id.ResetObject();
         }
     }
 

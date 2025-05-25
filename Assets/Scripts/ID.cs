@@ -13,7 +13,6 @@ using UnityEngine;
 public class ID : MonoBehaviour
 {
     public string id;
-    bool initActiveState;
 
     public List<string> IDs => id?.Contains(",") == true
         ? id.Split(',').Select(s => s.Trim()).ToList()
@@ -26,14 +25,7 @@ public class ID : MonoBehaviour
     TransformData transformData;
     public event Action<bool> onReset;
 
-    void OnEnable() {
-        if (id.IsNullOrWhitespace()) id = name;
-        initActiveState = !(Time.timeSinceLevelLoad > 0.1f);
-
-        Debug.Log($"{id} - {initActiveState}");
-    }
-
-    void Start() {
+    void Awake() {
         transformData = new TransformData(transform.position, transform.rotation, transform.localScale);
     }
 
@@ -42,34 +34,31 @@ public class ID : MonoBehaviour
     }
 
     public void ResetObject() {
-        Debug.Log($"RESET {name} - {initActiveState}");
-        gameObject.SetActive(initActiveState);
-        if (GetComponent<Move>()) return;
+        if (transformData == null) return;
+        gameObject.SetActive(!SceneObjectTracker.WasOriginallyInactive(gameObject));
+
+        if (TryGetComponent<Move>(out var moveComponent)) moveComponent.ResetObject(); // Special case for Move component
         onReset?.Invoke(spawned);
 
-        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
-            if (spawned) {
-                onReset?.Invoke(spawned);
-                Destroy(gameObject);
-                return;
-            }
+        if (spawned) {
+            Destroy(gameObject);
+            return;
+        }
 
-            // Reset position and rotation
-            var rb = GetComponent<Rigidbody>();
-            if (rb) {
-                // Reset physics if object has Rigidbody
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                rb.MovePosition(transformData.Position);
-                rb.MoveRotation(transformData.Rotation);
-            }
-            else {
-                // Direct transform reset if no Rigidbody
-                transform.position = transformData.Position;
-                transform.rotation = transformData.Rotation;
-            }
-            transform.LeanScale(transformData.Scale, .2f);
-        });
+        // Reset position and rotation
+        var rb = GetComponent<Rigidbody>();
+        if (rb) {
+            // Reset physics if object has Rigidbody
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.MovePosition(transformData.Position);
+            rb.MoveRotation(transformData.Rotation);
+        }
+        else {
+            // Direct transform reset if no Rigidbody
+            transform.position = transformData.Position;
+            transform.rotation = transformData.Rotation;
+        }
     }
 
     public void Despawn() {

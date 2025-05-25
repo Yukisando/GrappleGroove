@@ -3034,6 +3034,7 @@ GameObject:
   - component: {fileID: 212529579985619308}
   - component: {fileID: 3854614312509471743}
   - component: {fileID: 2068688171612396249}
+  - component: {fileID: 1571347709980908794}
   m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
@@ -3376,7 +3377,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1251
+  m_VersionIndex: 1254
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3402,6 +3403,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.8571303, y: 5, z: 1}
   m_Center: {x: -0.42856514, y: -2, z: -0.000000029802322}
+--- !u!114 &1571347709980908794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5797980924294902640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: Water
+  spawned: 0
 --- !u!1 &5836559749641441757
 GameObject:
   m_ObjectHideFlags: 0
