@@ -969,8 +969,8 @@ MonoBehaviour:
   startTimerSound: {fileID: 8300000, guid: c0ec0f215d91a4056b5f9f5532f8a6a6, type: 3}
   stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
   timerTickSound: {fileID: 8300000, guid: 52f2dda63dc1e0244b39ae9075007d4e, type: 3}
-  splashSound: {fileID: 0}
-  bumpSound: {fileID: 0}
+  bumpSound: {fileID: 8300000, guid: e680bdab2c6324e47aace87b5b4bcf7f, type: 3}
+  objectSpawn: {fileID: 8300000, guid: 1f3ddd93a29900d4ab0f9b69bf02d29e, type: 3}
 --- !u!82 &1025100940826383899
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3158,6 +3158,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3206311899960457222}
+        m_TargetAssemblyTypeName: AssetManager, Assembly-CSharp
+        m_MethodName: PlayClip
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 6d55888e6190b4ecd9d69a9120fbc7a3, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onAllExit:
     m_PersistentCalls:
       m_Calls: []
@@ -5288,10 +5300,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
-      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3357019124213751804}
@@ -5312,15 +5320,7 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
-      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EndReached
-      objectReference: {fileID: 0}
-    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
-      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: EndReached
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
@@ -5329,10 +5329,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
-      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
@@ -5353,10 +5349,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 9035261798015051531, guid: 2d7ec9432b6c6984dbe77ee0c0fa970d, type: 3}
-      propertyPath: onAnyEnter.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents:
