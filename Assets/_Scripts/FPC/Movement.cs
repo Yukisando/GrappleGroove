@@ -60,7 +60,6 @@ namespace PrototypeFPC
 
         Vector3 moveDirection;
         Transform orientation;
-        [Header("PlayerDependencies")]
         PlayerDependencies playerDependencies;
         int randomNum;
         Rigidbody rb;
@@ -68,6 +67,9 @@ namespace PrototypeFPC
         RaycastHit slopeHit;
         Vector3 slopeMoveDirection;
         float verticalMovement;
+        float lastSpeed;
+        float bumpCooldownTimer;
+        const float bumpCooldown = .5f;
 
         //-----------------------
 
@@ -78,10 +80,6 @@ namespace PrototypeFPC
         void Start() {
             Setup();
         }
-
-        float lastSpeed;
-        float bumpCooldownTimer;
-        const float bumpCooldown = 0.5f; // Prevents repeated bumps
 
         void Update() {
             GroundCheck();
@@ -109,7 +107,7 @@ namespace PrototypeFPC
             bumpCooldownTimer -= Time.deltaTime;
 
             // Check for drop from high (>400) to low (<50)
-            if (lastSpeed > 400f && velocity < 50f && bumpCooldownTimer <= 0f) {
+            if (lastSpeed > 20f && velocity < 3f && bumpCooldownTimer <= 0f) {
                 AssetManager.I.PlayClip(AssetManager.I.bumpSound);
                 bumpCooldownTimer = bumpCooldown;
             }

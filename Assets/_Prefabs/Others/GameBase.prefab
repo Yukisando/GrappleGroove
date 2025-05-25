@@ -969,8 +969,8 @@ MonoBehaviour:
   startTimerSound: {fileID: 8300000, guid: c0ec0f215d91a4056b5f9f5532f8a6a6, type: 3}
   stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
   timerTickSound: {fileID: 8300000, guid: 52f2dda63dc1e0244b39ae9075007d4e, type: 3}
-  bumpSound: {fileID: 8300000, guid: e680bdab2c6324e47aace87b5b4bcf7f, type: 3}
-  objectSpawn: {fileID: 8300000, guid: 1f3ddd93a29900d4ab0f9b69bf02d29e, type: 3}
+  bumpSound: {fileID: 8300000, guid: c8b1946ab32d54d3f985fb8cb5873b5a, type: 3}
+  objectSpawn: {fileID: 8300000, guid: 0fe455473679d4d6a85db8a2f9330cbf, type: 3}
 --- !u!82 &1025100940826383899
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3431,7 +3431,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.8571303, y: 5, z: 1}
-  m_Center: {x: -0.42856514, y: -2, z: -0.000000029802322}
+  m_Center: {x: -0.42856514, y: -4, z: -0.000000029802322}
 --- !u!114 &1571347709980908794
 MonoBehaviour:
   m_ObjectHideFlags: 0
