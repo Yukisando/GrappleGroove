@@ -9,21 +9,30 @@ using UnityEngine.SceneManagement;
 public class EndOverlay : MonoBehaviour
 {
     public static EndOverlay I;
-    [SerializeField] TextMeshProUGUI time;
-    [SerializeField] TextMeshProUGUI bestTime;
+
+    [SerializeField] TextMeshProUGUI timeText;
+    [SerializeField] TextMeshProUGUI bestTimeText;
 
     void Awake() {
-        if (I == null) I = this;
-        else Destroy(gameObject);
+        I = this;
     }
 
     public void Populate() {
-        time.text = "Time: " + PlayerOverlay.I.GetTimeString();
+        timeText.text = $"Time: {PlayerOverlay.I.GetTimeString()}";
 
-        if (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}")) {
-            bestTime.enabled = true;
-            bestTime.text = "Best: " + PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}");
+        var key = $"best_{SceneManager.GetActiveScene().name}";
+        if (PlayerPrefs.HasKey(key)) {
+            float bestTime = PlayerPrefs.GetFloat(key);
+            bestTimeText.enabled = true;
+            bestTimeText.text = $"Best: {FormatTime(bestTime)}";
         }
-        else bestTime.enabled = false;
+        else
+            bestTimeText.enabled = false;
+    }
+
+    string FormatTime(float seconds) {
+        int minutes = Mathf.FloorToInt(seconds / 60f);
+        float remainingSeconds = seconds % 60f;
+        return $"{minutes:00}:{remainingSeconds:00.000}";
     }
 }

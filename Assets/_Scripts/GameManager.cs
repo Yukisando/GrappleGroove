@@ -313,7 +313,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitInputNextLevel_() {
         while (!Input.GetKeyDown(KeyCode.F)) {
-            if (Input.GetKeyDown(KeyCode.R)) PlayerPrefs.DeleteKey("best_" + SceneManager.GetActiveScene().name);
+            if (Input.GetKeyDown(KeyCode.X)) {
+                PlayerPrefs.DeleteKey("best_" + SceneManager.GetActiveScene().name);
+                EndOverlay.I.Populate();
+            }
+            if (Input.GetKeyDown(KeyCode.R)) Restart();
             yield return null;
         }
         LoadNextScene();
