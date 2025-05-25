@@ -9564,15 +9564,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 459f50b3c1964a048b1f49389f98e361, type: 2}
     - target: {fileID: 5721881576558190396, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.9145947
+      value: 1.1991326
       objectReference: {fileID: 0}
     - target: {fileID: 5721881576558190396, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 58.54023
+      value: 252.60316
       objectReference: {fileID: 0}
     - target: {fileID: 5721881576558190396, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 84.17944
+      value: 307.15106
       objectReference: {fileID: 0}
     - target: {fileID: 5721881576558190396, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
       propertyPath: m_LocalPosition.x
