@@ -12,7 +12,7 @@ public class PlayerOverlay : MonoBehaviour
     [SerializeField] TextMeshProUGUI speedText;
     [SerializeField] TextMeshProUGUI timerText;
 
-    string timeString = "NaN";
+    string timeString = "Never timed";
 
     void Awake() {
         if (I == null) I = this;

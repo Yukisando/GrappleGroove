@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     float elapsedTime;
     bool timerRunning;
     Coroutine timerCoroutine;
+    public bool checkpointsActive;
 
     void Awake() {
         if (I == null) I = this;
@@ -104,6 +105,7 @@ public class GameManager : MonoBehaviour
         foreach (var cv in checkpointVolumes) {
             cv.gameObject.SetActive(state);
         }
+        checkpointsActive = state;
     }
 
     void Update() {
@@ -242,6 +244,8 @@ public class GameManager : MonoBehaviour
         foreach (var emancipationVolume in emancipationVolumes) {
             emancipationVolume.onEnterVolume += OnPlayerEnterEmancipationVolume;
         }
+
+        ActivateCheckpoints(true);
     }
 
     void LoadLastCheckpoint() {
@@ -287,6 +291,7 @@ public class GameManager : MonoBehaviour
     }
 
     void ResetGameState(bool _playSound = true) {
+        StopTimer();
         if (_playSound)
             playerDependencies.audioSourceTop.PlayOneShot(resetSound);
 

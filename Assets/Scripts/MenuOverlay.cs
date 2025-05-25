@@ -3,12 +3,15 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 #endregion
 
 public class MenuOverlay : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI bestTimeText;
+
+    [SerializeField] Toggle checkpointToggle;
 
     void OnEnable() {
         if (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}")) {
@@ -17,5 +20,7 @@ public class MenuOverlay : MonoBehaviour
         }
         else
             bestTimeText.enabled = false;
+
+        checkpointToggle.SetIsOnWithoutNotify(GameManager.I.checkpointsActive);
     }
 }

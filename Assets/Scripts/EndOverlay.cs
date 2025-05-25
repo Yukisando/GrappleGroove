@@ -18,7 +18,12 @@ public class EndOverlay : MonoBehaviour
     }
 
     public void Populate() {
-        time.text = "Current: " + PlayerOverlay.I.GetTimeString();
-        bestTime.text = "Best: " + (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}") ? PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}") : "NaN");
+        time.text = "Time: " + PlayerOverlay.I.GetTimeString();
+
+        if (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}")) {
+            bestTime.enabled = true;
+            bestTime.text = "Best: " + PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}");
+        }
+        else bestTime.enabled = false;
     }
 }

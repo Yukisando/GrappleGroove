@@ -940,6 +940,7 @@ MonoBehaviour:
   stopTimerSound: {fileID: 8300000, guid: ddb932091cbb9474f8b38bf2491cc9de, type: 3}
   timerTickSound: {fileID: 8300000, guid: 5dfcc66e1eb58a645b907a3297f8782c, type: 3}
   targetFrameRate: 60
+  checkpointsActive: 0
 --- !u!114 &8768992807551303706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4653,6 +4654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bestTimeText: {fileID: 9025343746292223869}
+  checkpointToggle: {fileID: 1321358625582487861}
 --- !u!223 &2738689463877500110
 Canvas:
   m_ObjectHideFlags: 0

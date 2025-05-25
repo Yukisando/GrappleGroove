@@ -11,8 +11,6 @@ public class GameButton : MonoBehaviour
     [FoldoutGroup("Assignements")]
     [SerializeField] Transform button;
     [FoldoutGroup("Assignements")]
-    [SerializeField] KeyCode activationKey = KeyCode.E;
-    [FoldoutGroup("Assignements")]
     [SerializeField] public float interactionDistance = 3f;
     [FoldoutGroup("Assignements")]
     [SerializeField] AudioClip buttonPressSound;
@@ -40,8 +38,8 @@ public class GameButton : MonoBehaviour
             // Check if we hit this button
             if (hit.collider.gameObject == gameObject || hit.collider.transform == button)
 
-                // If player presses the activation key
-                if (Input.GetKeyDown(activationKey)) {
+                // If player right-clicks
+                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
                     PressButton();
                     onPress?.Invoke();
                 }
