@@ -89,7 +89,7 @@ Material:
     - _SrcBlend: 1
     - _SurfaceDistortionAmount: 0.327
     - _SurfaceNoiseCutoff: 0.5
-    - _TilingScale: 1.2
+    - _TilingScale: 0.2
     - _UVSec: 0
     - _WaveAmplitude: 0.5
     - _WaveFrequency: 5
