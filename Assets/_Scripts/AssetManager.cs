@@ -8,6 +8,7 @@ public class AssetManager : MonoBehaviour
 {
     public static AssetManager I;
 
+    public AudioClip notificationClip;
     public AudioClip spawnClip;
     public AudioClip defaultRaceClip;
     public AudioClip resetSound;
@@ -22,8 +23,8 @@ public class AssetManager : MonoBehaviour
         I = this;
     }
 
-    public void PlayClip(AudioClip clip) {
-        if (clip == null) return;
+    public void PlayClip(AudioClip clip = null) {
+        if (clip == null) clip = notificationClip;
 
         var sourceGo = new GameObject("TempAudio") {
             transform = {
@@ -34,6 +35,7 @@ public class AssetManager : MonoBehaviour
         var audioSource = sourceGo.AddComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.volume = 1f;
+        audioSource.pitch = Random.Range(0.9f, 1.1f); // Random pitch for variation
         audioSource.spatialBlend = 1f; // 3D sound
         audioSource.minDistance = 3f; // Louder when close
         audioSource.maxDistance = 50f; // Still audible farther away

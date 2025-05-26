@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a66933696bc4d29b0b293c0385640be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notificationClip: {fileID: 8300000, guid: 4cb634cd904754615b18e24545da86ab, type: 3}
   spawnClip: {fileID: 8300000, guid: 81aa19699455c0c4f9dd8d95ec0de826, type: 3}
   defaultRaceClip: {fileID: 8300000, guid: 0f7d61faae5d12a449619239c43b6faf, type: 3}
   resetSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}

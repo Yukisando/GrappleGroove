@@ -32,5 +32,6 @@ public class InfoPopup : MonoBehaviour
         text.text = _info;
         Debug.Log($"Popup: {_info}");
         rectTransform.LeanMoveY(height, duration).setEaseOutBounce().setOnComplete(Init);
+        AssetManager.I.PlayClip();
     }
 }
