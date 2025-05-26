@@ -10,6 +10,8 @@ public class AssetManager : MonoBehaviour
 
     public AudioClip notificationClip;
     public AudioClip spawnClip;
+    public AudioClip onClip;
+    public AudioClip offClip;
     public AudioClip defaultRaceClip;
     public AudioClip resetSound;
     public AudioClip checkpointSound;

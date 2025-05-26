@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour
         Application.runInBackground = _show;
         playerDependencies.grapplingHook.enabled = !_show;
         if (_show) {
+            AssetManager.I.PlayClip(AssetManager.I.onClip);
             menuShown = true;
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
             menuUI.SetActive(true);
         }
         else {
+            AssetManager.I.PlayClip(AssetManager.I.offClip);
             menuShown = false;
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
@@ -284,7 +286,7 @@ public class GameManager : MonoBehaviour
     void ResetGameState(bool _playSound = true) {
         StopTimer();
         if (_playSound)
-            playerDependencies.audioSourceTop.PlayOneShot(AssetManager.I.resetSound);
+            AssetManager.I.PlayClip(AssetManager.I.spawnClip);
 
         SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
 

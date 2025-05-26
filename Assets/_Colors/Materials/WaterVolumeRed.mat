@@ -80,6 +80,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _JellyFrequency: 1
+    - _JellySpeed: 1
+    - _JellyStrength: 0.05
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -89,8 +92,9 @@ Material:
     - _SrcBlend: 1
     - _SurfaceDistortionAmount: 0.327
     - _SurfaceNoiseCutoff: 0.5
-    - _TilingScale: 0.2
+    - _TilingScale: 0.5
     - _UVSec: 0
+    - _VisualizeBlend: 0.297
     - _WaveAmplitude: 0.5
     - _WaveFrequency: 5
     - _WaveSpeed: 1

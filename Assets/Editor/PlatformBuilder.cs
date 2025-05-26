@@ -5,244 +5,289 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 #endregion
 
+/// <summary>
+/// A Unity Editor Window to simplify building the game for different platforms.
+/// It provides a single interface to select the platform, build options, and app name.
+/// </summary>
 public class PlatformBuilder : EditorWindow
 {
-    static Action<string, BuildTarget, BuildOptions> onNameConfirmed;
-    string appName;
-    BuildTarget target;
-    BuildOptions options;
-
-    static void ShowDialog(string defaultName, BuildTarget target, BuildOptions options, Action<string, BuildTarget, BuildOptions> onConfirm) {
-        var window = GetWindow<PlatformBuilder>(true, "Enter App Name", true);
-        window.appName = defaultName;
-        window.target = target;
-        window.options = options;
-        onNameConfirmed = onConfirm;
-        window.minSize = new Vector2(300, 100);
-        window.ShowUtility();
+    // Enum to define the target platforms for easier selection.
+    enum BuildPlatform
+    {
+        Windows,
+        MacOS,
+        Android,
+        WebGL,
     }
 
-    void OnGUI() {
-        GUILayout.Label("Name of the app will be: (Avoid spaces)", EditorStyles.boldLabel);
-        appName = EditorGUILayout.TextField(appName);
+    // Fields to store the user's selections in the popup window.
+    BuildPlatform selectedPlatform = BuildPlatform.Windows;
+    bool isDebugBuild;
+    bool autoRunPlayer;
+    bool buildAllScenes;
+    string appName = "";
 
-        GUILayout.Space(10);
-        GUILayout.BeginHorizontal();
+    #region Menu Items
 
-        if (GUILayout.Button("OK")) {
-            if (!string.IsNullOrEmpty(appName)) onNameConfirmed?.Invoke(appName, target, options);
-            Close();
-        }
-
-        if (GUILayout.Button("Cancel")) Close();
-
-        GUILayout.EndHorizontal();
+    /// <summary>
+    /// Creates a menu item to open the main build window.
+    /// </summary>
+    [MenuItem("Tools/Build Game/Build Game &#B", priority = 0)] // Added hotkey Alt+Shift+B
+    public static void ShowBuildWindow() {
+        // Get existing open window or if none, make a new one.
+        var window = GetWindow<PlatformBuilder>(true, "Build Game", true);
+        window.minSize = new Vector2(350, 280); // <-- MODIFIED: Increased height
+        window.maxSize = new Vector2(350, 280); // <-- MODIFIED: Increased height
+        window.appName = GetDefaultAppName(); // Set a default name when opening
+        window.ShowUtility(); // Show as a floating utility window.
     }
 
-    // --------------------------- BUILD SYSTEM ---------------------------
-
-    static void BuildForPlatform(BuildTarget target, BuildOptions options, string extension) {
-        string defaultAppName = GetSceneNameDecorated();
-        ShowDialog(defaultAppName, target, options, (appName, buildTarget, buildOptions) => {
-            if (string.IsNullOrEmpty(appName)) return;
-
-            PlayerSettings.productName = appName;
-
-            // Get a more user-friendly platform name
-            string platformName = GetFriendlyPlatformName(buildTarget);
-
-            string buildPath = Path.GetFullPath($"./Builds/{platformName}/");
-            string appFolder = Path.Combine(buildPath, appName);
-            Directory.CreateDirectory(appFolder);
-
-            string outputPath = buildTarget == BuildTarget.WebGL
-                ? appFolder
-                : Path.Combine(appFolder, appName + extension);
-
-            string[] scenes = {
-                SceneManager.GetActiveScene().path,
-            };
-
-            if (buildTarget == BuildTarget.WebGL) {
-                // Warn if scene isn't in Build Settings
-                if (!EditorBuildSettings.scenes.Any(s => s.enabled && s.path == scenes[0])) Debug.LogWarning("The active scene is not listed/enabled in Build Settings. WebGL build may fail.");
-
-                // AutoRunPlayer is not supported in WebGL
-                buildOptions &= ~BuildOptions.AutoRunPlayer;
-            }
-
-            BuildPipeline.BuildPlayer(scenes, outputPath, buildTarget, buildOptions);
-            OpenBuildLocation(buildPath);
-        });
-    }
-
-    static void BuildAllSelectedScenesForPlatform(BuildTarget target, string extension) {
-        string defaultAppName = Directory.GetParent(Application.dataPath).Name;
-
-        ShowDialog(defaultAppName, target, BuildOptions.None, (appName, buildTarget, buildOptions) => {
-            if (string.IsNullOrEmpty(appName)) return;
-
-            PlayerSettings.productName = appName;
-
-            if (buildTarget == BuildTarget.StandaloneOSX)
-                EditorUserBuildSettings.SetPlatformSettings(
-                    "Standalone",
-                    "OSXUniversal",
-                    "Architecture",
-                    "x64ARM64"
-                );
-
-            // Get a more user-friendly platform name
-            string platformName = GetFriendlyPlatformName(buildTarget);
-
-            string buildPath = Path.GetFullPath($"./Builds/{platformName}/");
-            string appFolder = Path.Combine(buildPath, appName);
-            Directory.CreateDirectory(appFolder);
-
-            string outputPath = buildTarget == BuildTarget.WebGL
-                ? appFolder
-                : Path.Combine(appFolder, appName + extension);
-
-            string[] scenes = EditorBuildSettings.scenes
-                .Where(s => s.enabled)
-                .Select(s => s.path)
-                .ToArray();
-
-            if (scenes.Length == 0) {
-                Debug.LogWarning("No scenes selected in Build Settings!");
-                return;
-            }
-
-            if (buildTarget == BuildTarget.WebGL) buildOptions &= ~BuildOptions.AutoRunPlayer;
-
-            BuildPipeline.BuildPlayer(scenes, outputPath, buildTarget, buildOptions);
-            OpenBuildLocation(buildPath);
-        });
-    }
-
-    // ---- Windows ----
-    [MenuItem("Tools/Platform Builder/Windows/Current scene", priority = 0)]
-    static void Windows() {
-        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.None, ".exe");
-    }
-
-    [MenuItem("Tools/Platform Builder/Windows/Current scene (autostart)", priority = 1)]
-    static void WindowsAutostart() {
-        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.AutoRunPlayer, ".exe");
-    }
-
-    [MenuItem("Tools/Platform Builder/Windows/Current scene (dev autostart)", priority = 2)]
-    static void WindowsDevAutostart() {
-        BuildForPlatform(BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".exe");
-    }
-
-    [MenuItem("Tools/Platform Builder/Windows/Build All Selected scenes", priority = 11)]
-    static void WindowsAllScenes() {
-        BuildAllSelectedScenesForPlatform(BuildTarget.StandaloneWindows64, ".exe");
-    }
-
-    // ---- MacOS ----
-    [MenuItem("Tools/Platform Builder/MacOS/Current scene", priority = 3)]
-    static void MacOS() {
-        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.None, ".app");
-    }
-
-    [MenuItem("Tools/Platform Builder/MacOS/Current scene (autostart)", priority = 4)]
-    static void MacOSAutostart() {
-        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer, ".app");
-    }
-
-    [MenuItem("Tools/Platform Builder/MacOS/Current scene (dev autostart)", priority = 5)]
-    static void MacOSDevAutostart() {
-        BuildForPlatform(BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".app");
-    }
-
-    [MenuItem("Tools/Platform Builder/MacOS/Build All Selected scenes", priority = 12)]
-    static void MacOSAllScenes() {
-        BuildAllSelectedScenesForPlatform(BuildTarget.StandaloneOSX, ".app");
-    }
-
-    // ---- Android ----
-    [MenuItem("Tools/Platform Builder/Android/Current scene", priority = 6)]
-    static void Android() {
-        PlayerSettings.Android.bundleVersionCode++;
-        BuildForPlatform(BuildTarget.Android, BuildOptions.None, ".apk");
-    }
-
-    [MenuItem("Tools/Platform Builder/Android/Current scene (autostart)", priority = 7)]
-    static void AndroidAutostart() {
-        PlayerSettings.Android.bundleVersionCode++;
-        BuildForPlatform(BuildTarget.Android, BuildOptions.AutoRunPlayer, ".apk");
-    }
-
-    [MenuItem("Tools/Platform Builder/Android/Current scene (dev autostart)", priority = 8)]
-    static void AndroidDevAutostart() {
-        PlayerSettings.Android.bundleVersionCode++;
-        BuildForPlatform(BuildTarget.Android, BuildOptions.Development | BuildOptions.AutoRunPlayer, ".apk");
-    }
-
-    [MenuItem("Tools/Platform Builder/Android/Build All Selected scenes", priority = 13)]
-    static void AndroidAllScenes() {
-        PlayerSettings.Android.bundleVersionCode++;
-        BuildAllSelectedScenesForPlatform(BuildTarget.Android, ".apk");
-    }
-
-    // ---- WebGL ----
-    [MenuItem("Tools/Platform Builder/WebGL/Current scene", priority = 9)]
-    static void WebGL() {
-        BuildForPlatform(BuildTarget.WebGL, BuildOptions.None, "");
-    }
-
-    [MenuItem("Tools/Platform Builder/WebGL/Build All Selected scenes", priority = 14)]
-    static void WebGLAllScenes() {
-        BuildAllSelectedScenesForPlatform(BuildTarget.WebGL, "");
-    }
-
-    // --------------------------- HELPER FUNCTIONS ---------------------------
-
-    static void OpenBuildLocation(string path) {
-        string normalizedPath = Path.GetFullPath(path);
-        Process.Start(new ProcessStartInfo {
-            FileName = normalizedPath,
-            UseShellExecute = true,
-            Verb = "open",
-        });
-    }
-
-    [MenuItem("Tools/Platform Builder/Open build folder", priority = 100)]
-    public static void OpenBuildFolder() {
+    /// <summary>
+    /// Creates a menu item to directly open the main 'Builds' folder.
+    /// </summary>
+    [MenuItem("Tools/Build Game/Open Build Folder", priority = 100)]
+    public static void OpenBuildFolderMenu() {
         OpenBuildLocation("./Builds/");
     }
 
-    static string GetSceneName() {
-        return SceneManager.GetActiveScene().name;
+    #endregion
+
+    #region Editor Window GUI
+
+    /// <summary>
+    /// Renders the GUI for the build window.
+    /// This is where we draw the dropdowns, toggles, text fields, and buttons.
+    /// </summary>
+    void OnGUI() {
+        GUILayout.Label("Build Settings", EditorStyles.boldLabel);
+        EditorGUILayout.Space(5);
+
+        // Platform Selection Dropdown
+        selectedPlatform = (BuildPlatform)EditorGUILayout.EnumPopup("Platform:", selectedPlatform);
+
+        // App Name Input
+        appName = EditorGUILayout.TextField("App Name:", appName);
+        EditorGUILayout.HelpBox("Avoid spaces in the app name for best results.", MessageType.Info);
+
+        EditorGUILayout.Space(10);
+
+        // Build Options Toggles
+        buildAllScenes = EditorGUILayout.Toggle("Build All Scenes", buildAllScenes);
+        isDebugBuild = EditorGUILayout.Toggle("Debug Build", isDebugBuild);
+        autoRunPlayer = EditorGUILayout.Toggle("Auto Start Game", autoRunPlayer);
+
+        EditorGUILayout.Space(15);
+
+        // Build Button
+        GUI.backgroundColor = new Color(0.6f, 1f, 0.6f); // Make the build button green!
+        if (GUILayout.Button("Build Game", GUILayout.Height(30))) {
+            if (string.IsNullOrEmpty(appName))
+                EditorUtility.DisplayDialog("Error", "App Name cannot be empty.", "OK");
+            else {
+                TriggerBuild(); // Start the build process
+                Close(); // Close the popup window after starting the build
+            }
+        }
+        GUI.backgroundColor = Color.white; // Reset background color
+
+        EditorGUILayout.Space(5);
+
+        // Cancel Button
+        if (GUILayout.Button("Cancel")) Close(); // Simply close the window.
     }
 
-    static string GetSceneNameDecorated() {
-        string name = GetSceneName();
-        return char.ToUpper(name[0]) + name[1..];
+    #endregion
+
+    #region Build Logic
+
+    /// <summary>
+    /// Gathers all selected options and initiates the build process.
+    /// </summary>
+    void TriggerBuild() {
+        // Convert our enum selection to Unity's BuildTarget.
+        var target = GetBuildTarget(selectedPlatform);
+
+        // Determine the file extension based on the platform.
+        string extension = GetExtension(selectedPlatform);
+
+        // Set up the build options based on toggles.
+        var options = BuildOptions.None;
+        if (isDebugBuild) options |= BuildOptions.Development;
+        if (autoRunPlayer) options |= BuildOptions.AutoRunPlayer;
+
+        // Call the main build function.
+        BuildGame(target, options, buildAllScenes, appName, extension);
     }
 
-    // Helper method to convert BuildTarget to a friendly name
+    /// <summary>
+    /// The core build function that configures and runs the Unity Build Pipeline.
+    /// </summary>
+    /// <param name="target">The target platform (Windows, MacOS, etc.).</param>
+    /// <param name="options">Build options (Debug, Autostart).</param>
+    /// <param name="buildAll">Whether to build all scenes or just the current one.</param>
+    /// <param name="name">The name for the application executable/folder.</param>
+    /// <param name="extension">The file extension for the build (e.g., .exe, .app).</param>
+    static void BuildGame(BuildTarget target, BuildOptions options, bool buildAll, string name, string extension) {
+        PlayerSettings.productName = name; // Set the product name in Player Settings.
+
+        // Platform-specific adjustments
+        if (target == BuildTarget.Android)
+            PlayerSettings.Android.bundleVersionCode++; // Increment Android version code.
+        else if (target == BuildTarget.StandaloneOSX)
+
+            // Ensure MacOS builds support both x64 and ARM64.
+            EditorUserBuildSettings.SetPlatformSettings(
+                "Standalone",
+                "OSXUniversal",
+                "Architecture",
+                "x64ARM64"
+            );
+        else if (target == BuildTarget.WebGL)
+
+            // WebGL doesn't support AutoRunPlayer, so remove it if set.
+            options &= ~BuildOptions.AutoRunPlayer;
+
+        // Get a friendly name for the platform to use in the build path.
+        string platformName = GetFriendlyPlatformName(target);
+
+        // Define the base path for our builds.
+        string buildPath = Path.GetFullPath($"./Builds/{platformName}/");
+
+        // Define the specific folder for this app build.
+        string appFolder = Path.Combine(buildPath, name);
+
+        // Create the directory if it doesn't exist.
+        Directory.CreateDirectory(appFolder);
+
+        // Define the final output path/file.
+        string outputPath = target == BuildTarget.WebGL
+            ? appFolder // WebGL builds output to a folder.
+            : Path.Combine(appFolder, name + extension); // Other platforms output an executable.
+
+        // Get the list of scenes to build.
+        string[] scenes = buildAll
+            ? GetEnabledScenes() // Get all scenes from Build Settings.
+            : new[] {
+                SceneManager.GetActiveScene().path,
+            }; // Get only the current active scene.
+
+        // Check if any scenes were found.
+        if (scenes.Length == 0) {
+            Debug.LogError("No scenes found to build. Ensure scenes are added and enabled in Build Settings, or that a scene is active.");
+            return;
+        }
+
+        // Log the scenes being built for clarity.
+        Debug.Log($"Starting build for {name} on {platformName} with scenes: {string.Join(", ", scenes)}");
+
+        // Run the build!
+        var report = BuildPipeline.BuildPlayer(scenes, outputPath, target, options);
+
+        // Check the build result and open the folder if successful.
+        if (report.summary.result == BuildResult.Succeeded) {
+            Debug.Log($"Build successful! Output: {outputPath}");
+            OpenBuildLocation(buildPath); // Open the folder containing the build.
+        }
+        else
+            Debug.LogError($"Build failed: {report.summary.result}");
+    }
+
+    #endregion
+
+    #region Helper Functions
+
+    /// <summary>
+    /// Opens the specified folder path in the system's file explorer.
+    /// </summary>
+    /// <param name="path">The folder path to open.</param>
+    static void OpenBuildLocation(string path) {
+        string normalizedPath = Path.GetFullPath(path);
+
+        // Ensure the directory exists before trying to open it.
+        if (Directory.Exists(normalizedPath))
+            Process.Start(new ProcessStartInfo {
+                FileName = normalizedPath,
+                UseShellExecute = true,
+                Verb = "open",
+            });
+        else
+            Debug.LogWarning($"Build folder not found at: {normalizedPath}");
+    }
+
+    /// <summary>
+    /// Gets the default application name, either from the active scene or the project folder.
+    /// </summary>
+    /// <returns>A default application name.</returns>
+    static string GetDefaultAppName() {
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (!string.IsNullOrEmpty(sceneName)) return char.ToUpper(sceneName[0]) + sceneName[1..];
+
+        // Fallback to project folder name if scene name is empty.
+        return Directory.GetParent(Application.dataPath).Name;
+    }
+
+    /// <summary>
+    /// Gets all scenes that are added and enabled in the Build Settings.
+    /// </summary>
+    /// <returns>An array of scene paths.</returns>
+    static string[] GetEnabledScenes() {
+        return EditorBuildSettings.scenes
+            .Where(s => s.enabled)
+            .Select(s => s.path)
+            .ToArray();
+    }
+
+    /// <summary>
+    /// Converts our BuildPlatform enum to Unity's BuildTarget enum.
+    /// </summary>
+    static BuildTarget GetBuildTarget(BuildPlatform platform) {
+        switch (platform) {
+            case BuildPlatform.Windows: return BuildTarget.StandaloneWindows64;
+            case BuildPlatform.MacOS: return BuildTarget.StandaloneOSX;
+            case BuildPlatform.Android: return BuildTarget.Android;
+            case BuildPlatform.WebGL: return BuildTarget.WebGL;
+            default: throw new ArgumentOutOfRangeException(nameof(platform), platform, null);
+        }
+    }
+
+    /// <summary>
+    /// Gets the file extension for the build based on the platform.
+    /// </summary>
+    static string GetExtension(BuildPlatform platform) {
+        switch (platform) {
+            case BuildPlatform.Windows: return ".exe";
+            case BuildPlatform.MacOS: return ".app";
+            case BuildPlatform.Android: return ".apk";
+            case BuildPlatform.WebGL: return ""; // WebGL doesn't have a single file extension.
+            default: return "";
+        }
+    }
+
+    /// <summary>
+    /// Gets a user-friendly name for the platform, used for folder creation.
+    /// </summary>
     static string GetFriendlyPlatformName(BuildTarget target) {
         switch (target) {
             case BuildTarget.StandaloneWindows:
             case BuildTarget.StandaloneWindows64:
                 return "Windows";
             case BuildTarget.StandaloneOSX:
-                return "OSX";
+                return "MacOS";
             case BuildTarget.Android:
                 return "Android";
             case BuildTarget.WebGL:
                 return "WebGL";
             default:
-                return target.ToString();
+                return target.ToString(); // Fallback to the standard name.
         }
     }
+
+    #endregion
 }

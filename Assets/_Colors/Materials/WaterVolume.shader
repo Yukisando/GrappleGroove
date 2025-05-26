@@ -1,4 +1,4 @@
-Shader "Unlit/WaterVolumeWorldTilingTriplanar"
+Shader "Unlit/WaterVolumeWorldTilingTriplanarJelly"
 {
     Properties
     {
@@ -13,6 +13,9 @@ Shader "Unlit/WaterVolumeWorldTilingTriplanar"
         _FoamMinDistance("Foam Minimum Distance", Float) = 0.04
         _TilingScale("World Tiling Scale", Float) = 1.0
         _BlendSharpness("Triplanar Blend Sharpness", Float) = 1.0 // Controls how sharp the blend is
+        _JellyStrength("Jelly Strength", Float) = 0.05
+        _JellySpeed("Jelly Speed", Float) = 1.0
+        _JellyFrequency("Jelly Frequency", Float) = 1.0
     }
     SubShader
     {
@@ -52,12 +55,27 @@ Shader "Unlit/WaterVolumeWorldTilingTriplanar"
             float _TilingScale;
             float _BlendSharpness; // Declare blend sharpness
 
+            float _JellyStrength;
+            float _JellySpeed;
+            float _JellyFrequency;
+
             v2f vert(appdata v)
             {
                 v2f o;
 
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+
+                // Jelly-like vertex displacement
+                float time = _Time.y * _JellySpeed;
+                float displacementX = sin((worldPos.x + time) * _JellyFrequency);
+                float displacementY = cos((worldPos.y + time * 1.1) * _JellyFrequency * 0.9);
+                float displacementZ = sin((worldPos.z + time * 1.2) * _JellyFrequency * 1.1);
+
+                float3 displacement = float3(displacementX, displacementY, displacementZ) * _JellyStrength;
+                float4 worldVertex = mul(unity_ObjectToWorld, v.vertex) + float4(displacement, 0);
+                o.vertex = UnityWorldToClipPos(worldVertex);
+
+                o.worldPos = worldVertex.xyz;
                 o.screenPosition = ComputeScreenPos(o.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(v.normal); // Calculate world normal
 
