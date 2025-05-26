@@ -71,7 +71,6 @@ namespace PrototypeFPC
         PlayerDependencies playerDependencies;
         Ray ray;
         Rigidbody rb;
-        bool ropeCut;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -106,30 +105,41 @@ namespace PrototypeFPC
                 // Try to get the rope's endpoints
                 if (GetRopePoints(rope, out var startPoint, out var endPoint)) {
                     float ropeLength = Vector3.Distance(startPoint, endPoint);
-
                     if (ropeLength > maxAllowedLength) DestroyRope(i);
                 }
             }
         }
 
         void ApplyRopePullPush() {
+            // Exit if there are no ropes
             if (ropes.Count == 0) return;
 
+            // Iterate through the ropes in reverse (safe for removal)
             for (int i = ropes.Count - 1; i >= 0; i--) {
                 var rope = ropes[i];
+
+                // --- Safety Check: Ensure rope and connected objects are valid ---
+                if (rope == null || !rope.connectedObject1 || !rope.connectedObject2) {
+                    // If something is wrong, try to destroy this rope and continue
+                    DestroyRope(i);
+                    continue;
+                }
+
                 rope.connectedObject1.TryGetComponent<Rigidbody>(out var rb1);
                 rope.connectedObject2.TryGetComponent<Rigidbody>(out var rb2);
 
-                DestroyRope(ropes.IndexOf(rope));
+                var pos1 = rb1 ? rb1.position : rope.connectedObject1.transform.position;
+                var pos2 = rb2 ? rb2.position : rope.connectedObject2.transform.position;
 
-                var mid = (rb1.position + rb2.position) / 2;
+                // --- Calculate Midpoint and Directions ---
+                var mid = (pos1 + pos2) / 2;
+                var dir1 = (mid - pos1).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
+                var dir2 = (mid - pos2).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
 
-                var dir1 = (mid - rb1.position).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
-                var dir2 = (mid - rb2.position).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
+                DestroyRope(i); // We use 'i' directly now.
 
-
-                rb1.AddForce(dir1 * objectPushPullRatio, ForceMode.Impulse);
-                if (!rope.connectedObject2.CompareTag("Player")) rb2.AddForce(dir2 * objectPushPullRatio, ForceMode.Impulse);
+                if (rb1 && !rope.connectedObject1.CompareTag("Player")) rb1.AddForce(dir1 * objectPushPullRatio, ForceMode.Impulse);
+                if (rb2 && !rope.connectedObject2.CompareTag("Player")) rb2.AddForce(dir2 * objectPushPullRatio, ForceMode.Impulse);
 
                 audioSource.PlayOneShot(pushPullClip);
             }
@@ -145,10 +155,7 @@ namespace PrototypeFPC
             bool controlNotHeld = !Input.GetKey(KeyCode.LeftControl);
             bool notInspecting = !playerDependencies.isInspecting;
 
-            if (mouseDown && controlNotHeld && notInspecting) {
-                hookRelease = false;
-                ropeCut = false;
-            }
+            if (mouseDown && controlNotHeld && notInspecting) hookRelease = false;
 
             if (mouseUp && controlNotHeld && notInspecting && hooked) TryLatchOrDestroy();
         }
@@ -197,9 +204,8 @@ namespace PrototypeFPC
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
-            if (hookable == null) return;
+            if (!hookable) return;
 
-            EnsureRigidbodyOnHitObject();
 
             if (!hooked)
                 CreateInitialHook(mouseButton);
@@ -218,11 +224,6 @@ namespace PrototypeFPC
             // Failed to find valid second connection
             ApplyReleaseImpulse();
             DestroyGrappleRope();
-        }
-
-        void EnsureRigidbodyOnHitObject() {
-            if (hit.transform.gameObject.GetComponent<Rigidbody>() == null)
-                hit.transform.gameObject.AddComponent<Rigidbody>().isKinematic = true;
         }
 
         void CreateInitialHook(int mouseButton) {
@@ -524,7 +525,6 @@ namespace PrototypeFPC
         void RopeCutCheck() {
             if ((Input.GetKey(cutRopeKey) || hookRelease) && hooked) {
                 hookRelease = false;
-                ropeCut = true;
                 DestroyGrappleRope();
                 return;
             }
@@ -548,8 +548,6 @@ namespace PrototypeFPC
                 // First check if we hit a plank
                 var plank = hitInfo.collider.GetComponent<Plank>();
                 if (!plank) continue;
-
-                ropeCut = true;
                 plank.Cut();
                 return;
             }
@@ -562,7 +560,6 @@ namespace PrototypeFPC
                 if (ropeIndex == -1) continue;
 
                 Debug.Log($"Found rope with index {ropeIndex}");
-                ropeCut = true;
                 DestroyRope(ropeIndex);
                 return;
             }
