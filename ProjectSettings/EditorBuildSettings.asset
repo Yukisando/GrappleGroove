@@ -29,7 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Levels/Roland.unity
     guid: f699bb5c776545743bf67bd44ceecf64
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Levels/Roland2.unity
     guid: 05231ee11c122d54e8d617c45875d907
   - enabled: 1
