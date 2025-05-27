@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject crosshairUI;
     [SerializeField] GameObject playerUI;
-    [SerializeField] GameObject menuUI;
-    [SerializeField] GameObject endUI;
+    [SerializeField] MenuOverlay menuUI;
+    [SerializeField] EndOverlay endUI;
 
     [Header("Settings")]
     [SerializeField] KeyCode respawnKey = KeyCode.Q;
@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] KeyCode menuKey = KeyCode.Escape;
     [SerializeField] KeyCode clearAllSaveKey = KeyCode.F6;
     [SerializeField] KeyCode continueKey = KeyCode.F;
-    [SerializeField] KeyCode resetHSKey = KeyCode.R;
 
     [Header("Audio")]
     [SerializeField] bool raceWithMusic = true;
@@ -124,7 +123,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            menuUI.SetActive(true);
+            menuUI.Populate();
+            menuUI.gameObject.SetActive(true);
         }
         else {
             AssetManager.I.PlayClip(AssetManager.I.offClip);
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            menuUI.SetActive(false);
+            menuUI.gameObject.SetActive(false);
         }
     }
 
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
 
     void CheckInputs() {
         if (Input.GetKeyDown(menuKey)) ShowMenu(!menuShown);
-        if (Input.GetKeyDown(clearAllSaveKey)) saveManager.DeleteSaveFile();
+        if (Input.GetKeyDown(clearAllSaveKey)) saveManager.DeleteAllSaveFiles();
         if (Input.GetKeyDown(respawnKey)) ResetGameState();
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) Restart();
@@ -305,17 +305,17 @@ public class GameManager : MonoBehaviour
 
     public void EndReached() {
         crosshairUI.SetActive(false);
-        endUI.SetActive(true);
-        EndOverlay.I.Populate();
+        endUI.Populate();
+        endUI.gameObject.SetActive(true);
         playerDependencies.rb.gameObject.SetActive(false);
         StartCoroutine(WaitInputNextLevel_());
     }
 
     IEnumerator WaitInputNextLevel_() {
-        while (!Input.GetKeyDown(KeyCode.F)) {
+        while (!Input.GetKeyDown(continueKey)) {
             if (Input.GetKeyDown(KeyCode.X)) {
                 PlayerPrefs.DeleteKey("best_" + SceneManager.GetActiveScene().name);
-                EndOverlay.I.Populate();
+                endUI.Populate();
             }
             if (Input.GetKeyDown(KeyCode.R)) Restart();
             yield return null;

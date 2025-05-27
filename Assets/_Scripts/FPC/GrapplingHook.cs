@@ -27,11 +27,8 @@ namespace PrototypeFPC
         [SerializeField] float minimumRopeLength = 1f;
         [SerializeField] float releaseJumpForce = 10f;
         [SerializeField] float upwardForceRatio = 0.5f;
-        [SerializeField] float forwardForceRatio = 0.5f;
-        [SerializeField] float holdDelayToSwing = 0.2f;
         [SerializeField] float connectionSpringStrength = 10000f;
         [SerializeField] float connectionDamperStrength = 1000f;
-        [SerializeField] float latchOnImpulse = 200f;
         public float hookDistance = 50f;
 
         [Header("Rope Properties")]
@@ -58,7 +55,6 @@ namespace PrototypeFPC
 
         [Header("Settings")]
         [SerializeField] float reelSpeed = 20f;
-        [SerializeField] float playerPushPullRatio = 80f;
         [SerializeField] float objectPushPullRatio = 60f;
 
         AudioSource audioSource;

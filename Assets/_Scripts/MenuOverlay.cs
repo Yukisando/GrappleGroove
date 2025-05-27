@@ -13,7 +13,7 @@ public class MenuOverlay : MonoBehaviour
 
     [SerializeField] Toggle checkpointToggle;
 
-    void OnEnable() {
+    public void Populate() {
         if (PlayerPrefs.HasKey($"best_{SceneManager.GetActiveScene().name}")) {
             bestTimeText.enabled = true;
             bestTimeText.text = "Best on track: " + PlayerPrefs.GetFloat($"best_{SceneManager.GetActiveScene().name}");

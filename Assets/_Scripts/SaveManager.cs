@@ -36,14 +36,16 @@ public class SaveManager : MonoBehaviour
             File.Delete(path);
             Debug.Log($"Checkpoint deleted for scene: {SceneManager.GetActiveScene().name}");
         }
-        PlayerPrefs.DeleteAll();
     }
 
     public void DeleteAllSaveFiles() {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        Debug.Log("Cleared player preferences");
         string directory = Path.Combine(Application.persistentDataPath, SaveFolderName);
         if (Directory.Exists(directory)) {
             Directory.Delete(directory, true);
-            Debug.Log("All checkpoint saves deleted");
+            Debug.Log("Save data deleted");
         }
     }
 
