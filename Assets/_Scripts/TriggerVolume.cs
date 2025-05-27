@@ -79,7 +79,7 @@ public class TriggerVolume : MonoBehaviour
         other.TryGetComponent<ID>(out var triggerObject);
         if (triggerObject != null && ids.Contains(triggerObject.id)) {
             onAnyEnter?.Invoke();
-            GameManager.I.PopupMessage(message);
+            if (!string.IsNullOrEmpty(message)) GameManager.I.PopupMessage(message);
             if (destroyObjectOnTrigger) triggerObject.Despawn();
             else idsInside.Add(triggerObject);
             if (destroyVolumeOnTrigger) gameObject.SetActive(false);

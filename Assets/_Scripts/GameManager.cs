@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Game dependencies")]
     [SerializeField] SaveManager saveManager;
-    public PlayerDependencies playerDependencies;
     [SerializeField] Transform spawnPoint;
     [SerializeField] InfoPopup infoPopup;
     [SerializeField] GameObject crosshairUI;
@@ -52,6 +51,8 @@ public class GameManager : MonoBehaviour
     bool timerRunning;
     Coroutine timerCoroutine;
     public bool checkpointsActive;
+
+    [HideInInspector] public PlayerDependencies playerDependencies;
 
     void Awake() {
         I = this;

@@ -2753,7 +2753,7 @@ MonoBehaviour:
   destroyObjectOnTrigger: 0
   ids:
   - Player
-  message: Tada!
+  message: 
   onAnyEnter:
     m_PersistentCalls:
       m_Calls:
