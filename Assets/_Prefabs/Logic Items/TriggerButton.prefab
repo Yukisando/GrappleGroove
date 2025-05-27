@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 9192677689010709569}
-  activationKey: 101
   interactionDistance: 3
   buttonPressSound: {fileID: 8300000, guid: 2022dcb1a6b4a7f49ba4f9de4ef3f48e, type: 3}
   onPress:
@@ -168,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 4053949033014341655}
   serializedVersion: 2
   m_LocalRotation: {x: -0.4999985, y: 0.50000006, z: -0.49999997, w: 0.50000155}
-  m_LocalPosition: {x: 0.6, y: 0.4, z: 0.01}
+  m_LocalPosition: {x: 0.49, y: 0.4, z: 0.01}
   m_LocalScale: {x: 0.1, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
