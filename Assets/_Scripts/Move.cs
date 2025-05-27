@@ -16,6 +16,7 @@ public class Move : MonoBehaviour
     [SerializeField] int loopCount = -1;
     [SerializeField] float duration = 5f;
     [SerializeField] float delayBetweenLoops;
+    [SerializeField] float returnSpeedMultiplier = 1f;
     [SerializeField] bool startMovingOnStart;
     [SerializeField] [Range(0, 1)] float startOffset;
     [SerializeField] AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -25,6 +26,7 @@ public class Move : MonoBehaviour
     LTDescr tween;
     int currentLoop;
     bool isPaused;
+    bool isReturning; // To track if the current movement is a return trip
 
     void Awake() {
         startPos = GetCurrentPosition();
@@ -46,6 +48,7 @@ public class Move : MonoBehaviour
         StopMovement();
 
         currentLoop = loopCount == -1 ? -1 : loopCount * 2;
+        isReturning = false;
         MoveToTarget(endPos);
     }
 
@@ -69,11 +72,14 @@ public class Move : MonoBehaviour
 
     void MoveToTarget(Vector3 target) {
         float distanceRatio = Vector3.Distance(GetCurrentPosition(), target) / Vector3.Distance(startPos, endPos);
-        float adjustedDuration = duration * distanceRatio;
+        float currentDuration = duration * distanceRatio;
+
+        // Apply speed multiplier for return trips
+        if (isReturning) currentDuration /= returnSpeedMultiplier;
 
         tween = (useLocalPosition
-                ? LeanTween.moveLocal(gameObject, target, adjustedDuration)
-                : LeanTween.move(gameObject, target, adjustedDuration))
+                ? LeanTween.moveLocal(gameObject, target, currentDuration)
+                : LeanTween.move(gameObject, target, currentDuration))
             .setEase(animationCurve)
             .setOnComplete(OnMoveComplete);
     }
@@ -84,8 +90,14 @@ public class Move : MonoBehaviour
         if (loopCount > 0 && --currentLoop <= 0) return;
 
         LeanTween.delayedCall(gameObject, delayBetweenLoops, () => {
-            var nextTarget = GetCurrentPosition() == endPos ? startPos : endPos;
-            MoveToTarget(nextTarget);
+            if (GetCurrentPosition() == endPos) {
+                isReturning = true; // Now we are returning
+                MoveToTarget(startPos);
+            }
+            else {
+                isReturning = false; // Now we are going to the destination
+                MoveToTarget(endPos);
+            }
         });
     }
 
@@ -102,12 +114,10 @@ public class Move : MonoBehaviour
     }
 
     public void ResetObject() {
-        StopMovement(); // Stop any ongoing tweens and clear pause state
+        StopMovement();
 
-        // Reset the position based on the offset
         SetStartOffset();
 
-        // Reset loop count
         currentLoop = loopCount == -1 ? -1 : loopCount * 2;
 
         if (startMovingOnStart)
