@@ -27,11 +27,11 @@ public class InfoPopup : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, startY);
     }
 
-    public void ShowPopup(string _info = "New info!") {
+    public void ShowPopup(string _info = "New info!", bool playAudio = true) {
         Init();
         text.text = _info;
         Debug.Log($"Popup: {_info}");
         rectTransform.LeanMoveY(height, duration).setEaseOutBounce().setOnComplete(Init);
-        AssetManager.I.PlayClip();
+        if (playAudio) AssetManager.I.PlayClip();
     }
 }

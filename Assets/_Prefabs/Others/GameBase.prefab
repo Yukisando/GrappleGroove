@@ -507,8 +507,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationClip: {fileID: 8300000, guid: 4cb634cd904754615b18e24545da86ab, type: 3}
   spawnClip: {fileID: 8300000, guid: 81aa19699455c0c4f9dd8d95ec0de826, type: 3}
-  onClip: {fileID: 8300000, guid: 57cff1058f5757b45960fef0b09b8e94, type: 3}
-  offClip: {fileID: 8300000, guid: 4ede2b3a9ded5ff43aa7b33d97a610d5, type: 3}
+  onClip: {fileID: 8300000, guid: 5dfcc66e1eb58a645b907a3297f8782c, type: 3}
+  offClip: {fileID: 8300000, guid: c2956f3f175c9314194b29c26207d202, type: 3}
   defaultRaceClip: {fileID: 8300000, guid: 0f7d61faae5d12a449619239c43b6faf, type: 3}
   resetSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}
   checkpointSound: {fileID: 8300000, guid: 44371b3a333ee44a1a98d55d464d0db8, type: 3}

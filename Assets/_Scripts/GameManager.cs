@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
     void CheckInputs() {
         if (Input.GetKeyDown(menuKey)) ShowMenu(!menuShown);
         if (Input.GetKeyDown(clearAllSaveKey)) saveManager.DeleteSaveFile();
-        if (Input.GetKeyDown(respawnKey)) ResetGameState(false);
+        if (Input.GetKeyDown(respawnKey)) ResetGameState();
         if (Input.GetKeyDown(skipLevel)) LoadNextScene();
         if (Input.GetKeyDown(restartKey)) Restart();
     }
@@ -257,7 +257,6 @@ public class GameManager : MonoBehaviour
             // Find and deactivate the checkpoint at this position before resetting
             DeactivateCheckpointAtPosition(checkpointPosition);
 
-            // Use ResetGameState instead of SafeTeleportToCheckpoint
             ResetGameState(false); // Don't play sound when loading checkpoint
 
             Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
@@ -270,7 +269,6 @@ public class GameManager : MonoBehaviour
             saveManager.lastCheckpointTransform.position = spawnPoint.position;
             saveManager.lastCheckpointTransform.rotation = spawnPoint.rotation;
 
-            // Use ResetGameState instead of SafeTeleportToCheckpoint
             ResetGameState(false); // Don't play sound when loading checkpoint
         }
     }
@@ -326,11 +324,11 @@ public class GameManager : MonoBehaviour
     }
 
     void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
-        playerDependencies.audioSourceTop.PlayOneShot(AssetManager.I.checkpointSound);
+        AssetManager.I.PlayClip(AssetManager.I.checkpointSound);
         saveManager.SaveCheckpoint(_spawnPoint);
         spawnPoint.position = _spawnPoint.position;
         spawnPoint.rotation = _spawnPoint.rotation;
-        infoPopup.ShowPopup("Checkpoint reached!");
+        infoPopup.ShowPopup("Checkpoint reached!", false);
     }
 
     void OnPlayerEnteredKillVolume() {

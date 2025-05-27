@@ -37,7 +37,7 @@ public class AssetManager : MonoBehaviour
         var audioSource = sourceGo.AddComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.volume = 1f;
-        audioSource.pitch = Random.Range(0.9f, 1.1f); // Random pitch for variation
+        audioSource.pitch = Random.Range(0.95f, 1.05f); // Random pitch for variation
         audioSource.spatialBlend = 1f; // 3D sound
         audioSource.minDistance = 3f; // Louder when close
         audioSource.maxDistance = 50f; // Still audible farther away

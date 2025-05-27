@@ -16,12 +16,14 @@ public class GameButton : MonoBehaviour
     [SerializeField] AudioClip buttonPressSound;
 
     Camera playerCamera;
+    int raycastMask;
 
     public UnityEvent onPress;
     Vector3 buttonInitPosition;
 
     void Awake() {
-        playerCamera = Camera.main;
+        playerCamera = GameManager.I.playerDependencies.cam;
+        raycastMask = ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox", "Plank"); // Fallback mask
         buttonInitPosition = button.localPosition;
     }
 
@@ -30,16 +32,16 @@ public class GameButton : MonoBehaviour
     }
 
     void CheckButtonInteraction() {
-        // Cast ray from camera center
-        var ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        // Use the same ray origin and direction as the Crosshair
+        var ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
-        if (Physics.Raycast(ray, out var hit, interactionDistance))
+        if (Physics.Raycast(ray, out var hit, interactionDistance, raycastMask, QueryTriggerInteraction.Ignore))
 
             // Check if we hit this button
             if (hit.collider.gameObject == gameObject || hit.collider.transform == button)
 
-                // If player right-clicks
-                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                // If player left-clicks
+                if (Input.GetMouseButtonDown(0)) {
                     PressButton();
                     onPress?.Invoke();
                 }

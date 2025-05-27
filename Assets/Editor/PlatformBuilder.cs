@@ -46,6 +46,7 @@ public class PlatformBuilder : EditorWindow
         window.minSize = new Vector2(350, 280); // <-- MODIFIED: Increased height
         window.maxSize = new Vector2(350, 280); // <-- MODIFIED: Increased height
         window.appName = GetDefaultAppName(); // Set a default name when opening
+        window.LoadPreferences(); // <-- Load saved settings
         window.ShowUtility(); // Show as a floating utility window.
     }
 
@@ -111,18 +112,15 @@ public class PlatformBuilder : EditorWindow
     /// Gathers all selected options and initiates the build process.
     /// </summary>
     void TriggerBuild() {
-        // Convert our enum selection to Unity's BuildTarget.
         var target = GetBuildTarget(selectedPlatform);
-
-        // Determine the file extension based on the platform.
         string extension = GetExtension(selectedPlatform);
 
-        // Set up the build options based on toggles.
         var options = BuildOptions.None;
         if (isDebugBuild) options |= BuildOptions.Development;
         if (autoRunPlayer) options |= BuildOptions.AutoRunPlayer;
 
-        // Call the main build function.
+        SavePreferences(); // <-- Save settings before building
+
         BuildGame(target, options, buildAllScenes, appName, extension);
     }
 
@@ -287,6 +285,20 @@ public class PlatformBuilder : EditorWindow
             default:
                 return target.ToString(); // Fallback to the standard name.
         }
+    }
+
+    void SavePreferences() {
+        EditorPrefs.SetInt("PlatformBuilder_SelectedPlatform", (int)selectedPlatform);
+        EditorPrefs.SetBool("PlatformBuilder_IsDebugBuild", isDebugBuild);
+        EditorPrefs.SetBool("PlatformBuilder_AutoRunPlayer", autoRunPlayer);
+        EditorPrefs.SetBool("PlatformBuilder_BuildAllScenes", buildAllScenes);
+    }
+
+    void LoadPreferences() {
+        selectedPlatform = (BuildPlatform)EditorPrefs.GetInt("PlatformBuilder_SelectedPlatform", (int)BuildPlatform.Windows);
+        isDebugBuild = EditorPrefs.GetBool("PlatformBuilder_IsDebugBuild", false);
+        autoRunPlayer = EditorPrefs.GetBool("PlatformBuilder_AutoRunPlayer", false);
+        buildAllScenes = EditorPrefs.GetBool("PlatformBuilder_BuildAllScenes", false);
     }
 
     #endregion
