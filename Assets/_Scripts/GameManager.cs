@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ActivateCheckpoints(bool state) {
+        if(checkpointsActive == state) return; // No change needed
         foreach (var cv in checkpointVolumes) {
             cv.gameObject.SetActive(state);
         }
@@ -254,7 +255,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        bool validCheckpointLoaded = saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation, out var loadedCheckpointId);
+        bool validCheckpointLoaded = saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation, out string loadedCheckpointId);
 
         if (validCheckpointLoaded) {
             // Valid checkpoint found, use it
@@ -342,18 +343,12 @@ public class GameManager : MonoBehaviour
         LoadNextScene();
     }
 
-    void OnPlayerEnteredCheckpointVolume(Transform _checkpointTransform) {
+    void OnPlayerEnteredCheckpointVolume(CheckpointVolume _checkpoint) {
         AssetManager.I.PlayClip(AssetManager.I.checkpointSound);
-        var checkpointVolume = _checkpointTransform.GetComponent<CheckpointVolume>();
-        if (checkpointVolume != null) {
-            Debug.Log($"Saving checkpoint: {checkpointVolume.checkpointId} at {_checkpointTransform.position}");
-            saveManager.SaveCheckpoint(_checkpointTransform, checkpointVolume.checkpointId); // Save the transform and ID
-            spawnPoint.position = _checkpointTransform.position;
-            spawnPoint.rotation = _checkpointTransform.rotation;
-            infoPopup.ShowPopup("Checkpoint reached!", false);
-        }
-        else
-            Debug.LogError("CheckpointVolume component not found on the checkpoint transform!");
+        saveManager.SaveCheckpoint(_checkpoint.transform, _checkpoint.checkpointId); // Save the transform and ID
+        spawnPoint.position = _checkpoint.transform.position;
+        spawnPoint.rotation = _checkpoint.transform.rotation;
+        infoPopup.ShowPopup("Checkpoint reached!", false);
     }
 
     void OnPlayerEnteredKillVolume() {

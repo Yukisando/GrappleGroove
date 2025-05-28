@@ -13,7 +13,7 @@ public class CheckpointVolume : MonoBehaviour
     [ReadOnly] public string checkpointId; // Unique ID for this checkpoint
     [SerializeField] Vector3 spawnOffset = Vector3.zero;
     [SerializeField] bool deactivateOnEnter = true;
-    public Action<Transform> onEnterVolume;
+    public Action<CheckpointVolume> onEnterVolume;
 
     void Awake() {
         if (string.IsNullOrEmpty(checkpointId)) checkpointId = "checkpoint_" + Random.Range(100000, 999999);
@@ -30,8 +30,7 @@ public class CheckpointVolume : MonoBehaviour
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        var checkpointTransform = transform; // Pass the transform directly
         if (deactivateOnEnter) gameObject.SetActive(false);
-        onEnterVolume?.Invoke(checkpointTransform);
+        onEnterVolume?.Invoke(this);
     }
 }
