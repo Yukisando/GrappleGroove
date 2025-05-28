@@ -12,6 +12,7 @@ namespace PrototypeFPC
         [SerializeField] float fov = 60f;
         [SerializeField] float minRotationLimit = -90f;
         [SerializeField] float maxRotationLimit = 90f;
+        public float inertia = 0.3f;
         public float sensitivity = 180f;
         [SerializeField] float lookTiltAmount = 6f;
         [SerializeField] float lookTiltSpeed = 12f;
@@ -68,7 +69,7 @@ namespace PrototypeFPC
 
         void ApplyRotation() {
             playerDependencies.cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, playerDependencies.tilt);
-            playerDependencies.orientation.rotation = Quaternion.Slerp(playerDependencies.orientation.rotation, Quaternion.Euler(0, yRotation, 0), 0.1f);
+            playerDependencies.orientation.rotation = Quaternion.Slerp(playerDependencies.orientation.rotation, Quaternion.Euler(0, yRotation, 0), inertia);
         }
 
         void UpdateTilt() {

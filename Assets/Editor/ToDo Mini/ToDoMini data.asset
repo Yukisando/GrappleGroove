@@ -19,10 +19,10 @@ MonoBehaviour:
   - task: EmancipationObjects
     isComplete: 1
   - task: Improve black texture
-    isComplete: 0
+    isComplete: 1
   - task: fix spawnner not seting id
     isComplete: 1
   - task: I would like the spawner to have a spawn count limit
     isComplete: 1
   - task: path for objects to follow
-    isComplete: 0
+    isComplete: 1
