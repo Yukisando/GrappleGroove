@@ -5,7 +5,7 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Moves an object from A to B (-1 = infinite ping-pong, 0 = A->B, 1 = A->B->A, etc.)")]
+[InfoBox("Moves an object from A to B (-1 = infinite ping-pong, 0 = A->B, 1 = A->B->A, etc.)")][RequireComponent(typeof(ID))]
 public class Move : MonoBehaviour
 {
     [Header("Movement Settings")]

@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ActivateCheckpoints(bool state) {
-        if(checkpointsActive == state) return; // No change needed
+        if (checkpointsActive == state) return; // No change needed
         foreach (var cv in checkpointVolumes) {
             cv.gameObject.SetActive(state);
         }
@@ -291,6 +291,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetGameState(bool _playSound = true) {
         StopTimer();
+
         if (_playSound)
             AssetManager.I.PlayClip(AssetManager.I.spawnClip);
 

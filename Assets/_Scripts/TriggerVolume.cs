@@ -14,9 +14,9 @@ public class TriggerVolume : MonoBehaviour
     [SerializeField] bool destroyObjectOnTrigger;
     [SerializeField] List<string> ids = new List<string>();
     [SerializeField] string message = "Tada!";
-    [SerializeField] UnityEvent<Vector3> onAnyEnter;
+    [SerializeField] UnityEvent onAnyEnter;
     [HideIf("@this.destroyObjectOnTrigger || this.destroyVolumeOnTrigger")]
-    [SerializeField] UnityEvent<Vector3> onAllExit;
+    [SerializeField] UnityEvent onAllExit;
 
     [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = 0.2f;
@@ -76,8 +76,8 @@ public class TriggerVolume : MonoBehaviour
 
     void HandleObjectEnter(GameObject other) {
         other.TryGetComponent<ID>(out var triggerObject);
-        if (triggerObject != null && ids.Contains(triggerObject.id)) {
-            onAnyEnter?.Invoke(other.transform.position);
+        if (triggerObject && ids.Contains(triggerObject.id)) {
+            onAnyEnter?.Invoke();
             if (!string.IsNullOrEmpty(message)) GameManager.I.PopupMessage(message);
             if (destroyObjectOnTrigger) triggerObject.Despawn();
             else idsInside.Add(triggerObject);
@@ -87,9 +87,9 @@ public class TriggerVolume : MonoBehaviour
 
     void OnTriggerExit(Collider other) {
         other.TryGetComponent<ID>(out var triggerObject);
-        if (triggerObject != null && idsInside.Contains(triggerObject)) {
+        if (triggerObject && idsInside.Contains(triggerObject)) {
             idsInside.Remove(triggerObject);
-            if (idsInside.Count == 0) onAllExit?.Invoke(other.transform.position);
+            if (idsInside.Count == 0) onAllExit?.Invoke();
         }
     }
 }

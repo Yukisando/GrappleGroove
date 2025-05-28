@@ -67,9 +67,6 @@ namespace PrototypeFPC
         RaycastHit slopeHit;
         Vector3 slopeMoveDirection;
         float verticalMovement;
-        float lastSpeed;
-        float bumpCooldownTimer;
-        const float bumpCooldown = .5f;
 
         //-----------------------
 
@@ -102,18 +99,6 @@ namespace PrototypeFPC
                 audioSourceWind.volume = newVolume;
                 previousVolume = newVolume;
             }
-
-            // Bump detection
-            bumpCooldownTimer -= Time.deltaTime;
-
-            // Check for drop from high (>400) to low (<50)
-            if (lastSpeed > 20f && velocity < 3f && bumpCooldownTimer <= 0f) {
-                AssetManager.I.PlayClip(AssetManager.I.bumpSound);
-                bumpCooldownTimer = bumpCooldown;
-            }
-
-            // Update last speed for next frame
-            lastSpeed = velocity;
         }
 
         void FixedUpdate() {

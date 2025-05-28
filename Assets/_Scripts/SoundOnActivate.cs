@@ -7,8 +7,14 @@ using UnityEngine;
 
 public class SoundOnActivate : MonoBehaviour
 {
-    [Optional] AudioClip clip;
+    [SerializeField] [InfoBox("Optional")] AudioClip clip;
+
     void OnEnable() {
-        AssetManager.I.PlayClip(clip?? AssetManager.I.objectSpawn);
+        var clipPoint = new ClipPoint {
+            clip = clip ?? AssetManager.I.objectSpawn,
+            transform = transform,
+        };
+
+        AssetManager.I.PlayClipAt(clipPoint);
     }
 }

@@ -2982,6 +2982,7 @@ MonoBehaviour:
   idsToReset:
   - Player
   - Box
+  - Ball
   yMovement: 0.2
   xMovement: 0.1
   updateFrameInterval: 2
