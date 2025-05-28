@@ -3,15 +3,21 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random; // Explicitly use UnityEngine.Random
 
 #endregion
 
 [InfoBox("Sets a checkpoint for the player when they enter the volume")]
 public class CheckpointVolume : MonoBehaviour
 {
+    [ReadOnly] public string checkpointId; // Unique ID for this checkpoint
     [SerializeField] Vector3 spawnOffset = Vector3.zero;
     [SerializeField] bool deactivateOnEnter = true;
     public Action<Transform> onEnterVolume;
+
+    void Awake() {
+        if (string.IsNullOrEmpty(checkpointId)) checkpointId = "checkpoint_" + Random.Range(100000, 999999);
+    }
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.green;
@@ -24,9 +30,8 @@ public class CheckpointVolume : MonoBehaviour
 
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
-        var spawnPoint = transform;
-        spawnPoint.position += spawnOffset;
+        var checkpointTransform = transform; // Pass the transform directly
         if (deactivateOnEnter) gameObject.SetActive(false);
-        onEnterVolume?.Invoke(spawnPoint);
+        onEnterVolume?.Invoke(checkpointTransform);
     }
 }

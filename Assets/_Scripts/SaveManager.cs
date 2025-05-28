@@ -15,8 +15,8 @@ public class SaveManager : MonoBehaviour
     // Folder name to store checkpoints
     const string SaveFolderName = "Checkpoints";
 
-    public void SaveCheckpoint(Transform checkpointTransform) {
-        var data = CheckpointData.FromTransform(checkpointTransform, SceneManager.GetActiveScene().name);
+    public void SaveCheckpoint(Transform checkpointTransform, string checkpointId) {
+        var data = CheckpointData.FromTransform(checkpointTransform, SceneManager.GetActiveScene().name, checkpointId);
         string json = JsonUtility.ToJson(data);
 
         // Create directory if it doesn't exist
@@ -26,7 +26,16 @@ public class SaveManager : MonoBehaviour
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         File.WriteAllText(Path.Combine(directory, fileName), json);
 
-        Debug.Log($"Checkpoint saved for scene: {SceneManager.GetActiveScene().name}");
+        Debug.Log($"Checkpoint saved for scene: {SceneManager.GetActiveScene().name} with ID: {checkpointId}");
+    }
+
+// Overload the old SaveCheckpoint method for compatibility if needed
+    public void SaveCheckpoint(Transform checkpointTransform) {
+        var checkpointVolume = checkpointTransform.GetComponent<CheckpointVolume>();
+        if (checkpointVolume != null)
+            SaveCheckpoint(checkpointTransform, checkpointVolume.checkpointId);
+        else
+            Debug.LogError("CheckpointVolume component not found on the transform to save!");
     }
 
     public void DeleteSaveFile() {
@@ -49,10 +58,10 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    // Returns true if a valid checkpoint was loaded, false otherwise
-    public bool TryLoadCheckpoint(out Vector3 position, out Quaternion rotation) {
+    public bool TryLoadCheckpoint(out Vector3 position, out Quaternion rotation, out string checkpointId) {
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, SaveFolderName, fileName);
+        checkpointId = null; // Initialize the out parameter
 
         if (File.Exists(path))
             try {
@@ -64,6 +73,7 @@ public class SaveManager : MonoBehaviour
                     rotation = data.ToRotation();
                     lastCheckpointTransform.position = position;
                     lastCheckpointTransform.rotation = rotation;
+                    checkpointId = data.checkpointId;
                     return true;
                 }
             }
@@ -75,6 +85,11 @@ public class SaveManager : MonoBehaviour
         position = Vector3.zero;
         rotation = Quaternion.identity;
         return false;
+    }
+
+// Overload the old TryLoadCheckpoint method for compatibility
+    public bool TryLoadCheckpoint(out Vector3 position, out Quaternion rotation) {
+        return TryLoadCheckpoint(out position, out rotation, out string _);
     }
 
     // Get the save directory path
@@ -89,9 +104,9 @@ public class CheckpointData
     public float x, y, z; // Position of the checkpoint
     public float rotX, rotY, rotZ; // Rotation of the checkpoint (Euler angles)
     public string sceneName; // Name of the scene
-    public string timestamp; // When the checkpoint was saved
+    public string checkpointId; // Unique ID of the checkpoint
 
-    public static CheckpointData FromTransform(Transform transform, string scene) {
+    public static CheckpointData FromTransform(Transform transform, string scene, string id) {
         return new CheckpointData {
             x = transform.position.x,
             y = transform.position.y,
@@ -100,7 +115,7 @@ public class CheckpointData
             rotY = transform.eulerAngles.y,
             rotZ = transform.eulerAngles.z,
             sceneName = scene,
-            timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            checkpointId = id,
         };
     }
 

@@ -210,6 +210,12 @@ public class GameManager : MonoBehaviour
         musicSequenceSource.Play();
     }
 
+    public void LoadPreviousScene() {
+        int i = SceneManager.GetActiveScene().buildIndex - 1;
+        if (i < 0) i = SceneManager.sceneCountInBuildSettings - 1;
+        SceneManager.LoadScene(i);
+    }
+
     public void LoadNextScene() {
         int i = SceneManager.GetActiveScene().buildIndex + 1;
         if (i >= SceneManager.sceneCountInBuildSettings) i = 0;
@@ -248,19 +254,19 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        bool validCheckpointLoaded = saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation);
+        bool validCheckpointLoaded = saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation, out var loadedCheckpointId);
 
         if (validCheckpointLoaded) {
             // Valid checkpoint found, use it
             spawnPoint.position = checkpointPosition;
             spawnPoint.rotation = checkpointRotation;
 
-            // Find and deactivate the checkpoint at this position before resetting
-            DeactivateCheckpointAtPosition(checkpointPosition);
+            // Find and deactivate the checkpoint with this ID
+            DeactivateCheckpointAtPosition(loadedCheckpointId);
 
             ResetGameState(false); // Don't play sound when loading checkpoint
 
-            Debug.Log($"Loaded checkpoint at {checkpointPosition}!");
+            Debug.Log($"Loaded checkpoint {loadedCheckpointId} at {checkpointPosition}!");
         }
         else {
             // No valid checkpoint found, use the existing spawnPoint
@@ -282,12 +288,24 @@ public class GameManager : MonoBehaviour
         playerDependencies.perspective.ForceOrientation(rotation);
     }
 
-    void ResetGameState(bool _playSound = true) {
+    public void ResetGameState(bool _playSound = true) {
         StopTimer();
         if (_playSound)
             AssetManager.I.PlayClip(AssetManager.I.spawnClip);
 
-        SafeTeleportToCheckpoint(spawnPoint.position, spawnPoint.rotation);
+        var targetPosition = spawnPoint.position;
+        var targetRotation = spawnPoint.rotation;
+
+        // Try to load the last saved checkpoint
+        if (saveManager.TryLoadCheckpoint(out var checkpointPosition, out var checkpointRotation)) {
+            targetPosition = checkpointPosition;
+            targetRotation = checkpointRotation;
+            Debug.Log("Resetting to last checkpoint.");
+        }
+        else
+            Debug.Log("No checkpoint saved, resetting to default spawn point.");
+
+        SafeTeleportToCheckpoint(targetPosition, targetRotation);
 
         foreach (var id in allIds) {
             if (id.id == "Player") continue; // Skip player ID
@@ -324,12 +342,18 @@ public class GameManager : MonoBehaviour
         LoadNextScene();
     }
 
-    void OnPlayerEnteredCheckpointVolume(Transform _spawnPoint) {
+    void OnPlayerEnteredCheckpointVolume(Transform _checkpointTransform) {
         AssetManager.I.PlayClip(AssetManager.I.checkpointSound);
-        saveManager.SaveCheckpoint(_spawnPoint);
-        spawnPoint.position = _spawnPoint.position;
-        spawnPoint.rotation = _spawnPoint.rotation;
-        infoPopup.ShowPopup("Checkpoint reached!", false);
+        var checkpointVolume = _checkpointTransform.GetComponent<CheckpointVolume>();
+        if (checkpointVolume != null) {
+            Debug.Log($"Saving checkpoint: {checkpointVolume.checkpointId} at {_checkpointTransform.position}");
+            saveManager.SaveCheckpoint(_checkpointTransform, checkpointVolume.checkpointId); // Save the transform and ID
+            spawnPoint.position = _checkpointTransform.position;
+            spawnPoint.rotation = _checkpointTransform.rotation;
+            infoPopup.ShowPopup("Checkpoint reached!", false);
+        }
+        else
+            Debug.LogError("CheckpointVolume component not found on the checkpoint transform!");
     }
 
     void OnPlayerEnteredKillVolume() {
@@ -341,17 +365,11 @@ public class GameManager : MonoBehaviour
     }
 
     // Helper method to find and deactivate the checkpoint at a specific position
-    void DeactivateCheckpointAtPosition(Vector3 position) {
-        const float positionTolerance = 0.5f; // Adjust this value based on your needs
-
+    void DeactivateCheckpointAtPosition(string checkpointIdToDeactivate) {
         foreach (var checkpoint in checkpointVolumes) {
-            // Check if this checkpoint's position (plus offset) matches the spawn position
-            var checkpointPos = checkpoint.transform.position;
-
-            // Use distance check to account for small floating point differences
-            if (Vector3.Distance(checkpointPos, position) < positionTolerance) {
+            if (checkpoint.checkpointId == checkpointIdToDeactivate) {
                 checkpoint.gameObject.SetActive(false);
-                Debug.Log($"Deactivated checkpoint at {checkpointPos}");
+                Debug.Log($"Deactivated checkpoint with ID: {checkpointIdToDeactivate}");
                 break;
             }
         }
