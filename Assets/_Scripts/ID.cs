@@ -1,24 +1,16 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
 
 #endregion
 
-[InfoBox("Needed to connect objects to other logic objects (Stack IDs with a comma)")] [RequireComponent(typeof(Collider))]
+[InfoBox("Needed to connect objects to other logic objects")] [RequireComponent(typeof(Collider))]
 public class ID : MonoBehaviour
 {
     public string id;
-
-    public List<string> IDs => id?.Contains(",") == true
-        ? id.Split(',').Select(s => s.Trim()).ToList()
-        : new List<string> {
-            id,
-        };
 
     [ReadOnly] public bool spawned;
 

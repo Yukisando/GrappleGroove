@@ -63,7 +63,30 @@ namespace PrototypeFPC
             if (Input.GetKeyDown(grabThrowKey))
                 if (Physics.SphereCast(ray.origin, 0.25f, ray.direction, out hit, maxGrabDistance)) {
                     var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
-                    if (grabbable != null) GrabObject(grabbable.GetComponent<Rigidbody>());
+                    if (grabbable) {
+                        // Get the GrapplingHook component
+                        var grappling = playerDependencies.GetComponent<GrapplingHook>();
+
+                        // Check if the player is directly connected to this object via an active grapple
+                        for (int i = grappling.ropes.Count - 1; i >= 0; i--) {
+                            var rope = grappling.ropes[i];
+
+                            // Check if this rope connects the grabbed object to the player
+                            // For active grapples (not latched), connectedObject1 is the target and connectedObject2 is the player
+                            bool isPlayerDirectlyConnected = rope.connectedObject1 == hit.collider.gameObject &&
+                                                             rope.connectedObject2 &&
+                                                             rope.connectedObject2.CompareTag("Player");
+
+                            if (isPlayerDirectlyConnected) {
+                                // Cut this specific rope that connects player to target
+                                grappling.DestroyRope(i);
+                                break; // Only cut the first rope found that connects player to target
+                            }
+                        }
+
+                        // Proceed with normal grab
+                        GrabObject(grabbable.GetComponent<Rigidbody>());
+                    }
                 }
         }
 

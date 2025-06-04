@@ -46,7 +46,7 @@ namespace PrototypeFPC
         [SerializeField] float waveCount = 5;
         [SerializeField] float waveHeight = 4;
         [SerializeField] AnimationCurve affectCurve;
-        [SerializeField] List<Rope> ropes = new List<Rope>();
+        public List<Rope> ropes = new List<Rope>();
 
         [Header("Audio Properties")]
         [SerializeField] AudioClip grapplingSound;
