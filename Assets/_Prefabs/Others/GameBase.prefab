@@ -516,7 +516,6 @@ MonoBehaviour:
   startTimerSound: {fileID: 8300000, guid: c0ec0f215d91a4056b5f9f5532f8a6a6, type: 3}
   stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
   timerTickSound: {fileID: 8300000, guid: 52f2dda63dc1e0244b39ae9075007d4e, type: 3}
-  bumpSound: {fileID: 8300000, guid: c8b1946ab32d54d3f985fb8cb5873b5a, type: 3}
   objectSpawn: {fileID: 8300000, guid: 0fe455473679d4d6a85db8a2f9330cbf, type: 3}
 --- !u!82 &1025100940826383899
 AudioSource:
@@ -5828,6 +5827,10 @@ PrefabInstance:
     - target: {fileID: 5048031487047790873, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: throwForce
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048031487047790873, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: desiredHoldDistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5834872879969371512, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: amount

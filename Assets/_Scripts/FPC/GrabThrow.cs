@@ -13,8 +13,10 @@ namespace PrototypeFPC
 
         [Header("Grab/Throw Properties")]
         public float maxGrabDistance = 8f;
+        [SerializeField] [Tooltip("Distance in front of the camera to hold the object")]
+        float desiredHoldDistance = 4.5f;
         [SerializeField] float grabbingDistance = 0.3f;
-        [SerializeField] float grabSpeed = 15;
+        [SerializeField] float grabSpeed = 15f;
         [SerializeField] float throwForce = 800f;
 
         [Header("Audio Properties")]
@@ -49,14 +51,9 @@ namespace PrototypeFPC
         void GrabHoldThrow() {
             ray = playerDependencies.cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
-            switch (playerDependencies.isGrabbing) {
-                case true when grabbedObject != null && Input.GetKeyDown(grabThrowKey):
-                    ThrowObject();
-                    break;
-                case false when !playerDependencies.isInspecting:
-                    HandleGrabAttempt();
-                    break;
-            }
+            if (playerDependencies.isGrabbing && grabbedObject != null && Input.GetKeyDown(grabThrowKey))
+                ThrowObject();
+            else if (!playerDependencies.isGrabbing && !playerDependencies.isInspecting) HandleGrabAttempt();
         }
 
         void HandleGrabAttempt() {
@@ -64,39 +61,22 @@ namespace PrototypeFPC
                 if (Physics.SphereCast(ray.origin, 0.25f, ray.direction, out hit, maxGrabDistance)) {
                     var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
                     if (grabbable) {
-                        // Get the GrapplingHook component
                         var grappling = playerDependencies.GetComponent<GrapplingHook>();
-
-                        // Check if the player is directly connected to this object via an active grapple
                         for (int i = grappling.ropes.Count - 1; i >= 0; i--) {
                             var rope = grappling.ropes[i];
-
-                            // Check if this rope connects the grabbed object to the player
-                            // For active grapples (not latched), connectedObject1 is the target and connectedObject2 is the player
                             bool isPlayerDirectlyConnected = rope.connectedObject1 == hit.collider.gameObject &&
                                                              rope.connectedObject2 &&
                                                              rope.connectedObject2.CompareTag("Player");
 
                             if (isPlayerDirectlyConnected) {
-                                // Cut this specific rope that connects player to target
                                 grappling.DestroyRope(i);
-                                break; // Only cut the first rope found that connects player to target
+                                break;
                             }
                         }
 
-                        // Proceed with normal grab
                         GrabObject(grabbable.GetComponent<Rigidbody>());
                     }
                 }
-        }
-
-        void ThrowObject(bool drop = false) {
-            if (drop == false) grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
-            grabbedObject = null;
-            if (grabbedID) grabbedID.onReset -= OnGrabbedObjectReset;
-            grabbedID = null;
-            playerDependencies.isGrabbing = false;
-            audioSource.PlayOneShot(throwSound);
         }
 
         void GrabObject(Rigidbody hitRigidbody) {
@@ -105,10 +85,31 @@ namespace PrototypeFPC
 
             grabPoint.position = hit.point;
             grabbedObject = hitRigidbody;
+
             grabbedObject.linearVelocity = Vector3.zero;
             grabbedObject.angularVelocity = Vector3.zero;
+
+            // Disable collision with player
+            Physics.IgnoreCollision(grabbedObject.GetComponent<Collider>(), playerDependencies.cc, true);
+
             playerDependencies.isGrabbing = true;
             audioSource.PlayOneShot(grabSound);
+        }
+
+        void ThrowObject(bool drop = false) {
+            if (grabbedObject) {
+                // Re-enable collision with player
+                Physics.IgnoreCollision(grabbedObject.GetComponent<Collider>(), playerDependencies.cc, false);
+
+                if (!drop)
+                    grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);
+            }
+
+            grabbedObject = null;
+            if (grabbedID) grabbedID.onReset -= OnGrabbedObjectReset;
+            grabbedID = null;
+            playerDependencies.isGrabbing = false;
+            audioSource.PlayOneShot(throwSound);
         }
 
         void OnGrabbedObjectReset(bool wasSpawned) {
@@ -117,9 +118,34 @@ namespace PrototypeFPC
 
         void Hold() {
             if (playerDependencies.isGrabbing && grabbedObject != null) {
-                var targetPosition = grabPoint.position + grabPoint.forward * (grabbedObject.transform.localScale.magnitude * grabbingDistance);
-                grabbedObject.linearVelocity = grabSpeed * (targetPosition - grabbedObject.transform.position);
+                // Move toward camera forward position
+                var targetPosition = playerDependencies.cam.transform.position + playerDependencies.cam.transform.forward * desiredHoldDistance;
+                var moveDirection = targetPosition - grabbedObject.position;
+                grabbedObject.linearVelocity = moveDirection.normalized * Mathf.Min(moveDirection.magnitude * grabSpeed, grabSpeed);
+
+                // Torque-based rotation alignment to grabPoint.forward
+                AlignGrabbedObjectRotation();
             }
+        }
+
+        // Aligns the grabbed object's rotation to the grab point's forward.
+        void AlignGrabbedObjectRotation() {
+            if (grabbedObject == null) return;
+
+            var targetForward = grabPoint.forward;
+            var currentRotation = grabbedObject.rotation;
+            var targetRotation = Quaternion.LookRotation(targetForward, Vector3.up);
+
+            // Calculate shortest rotation
+            var deltaRotation = targetRotation * Quaternion.Inverse(currentRotation);
+            deltaRotation.ToAngleAxis(out float angle, out var axis);
+            if (angle > 180f) angle -= 360f;
+
+            var alignTorque = 500f; // Adjust for snappiness
+            var torque = axis * (angle * Mathf.Deg2Rad * alignTorque);
+
+            // Apply torque with damping
+            grabbedObject.AddTorque(torque - grabbedObject.angularVelocity * 10f, ForceMode.Acceleration);
         }
     }
 }
