@@ -9,7 +9,8 @@ namespace PrototypeFPC
     public class GrabThrow : MonoBehaviour
     {
         [Header("Input Properties")]
-        [SerializeField] KeyCode grabThrowKey = KeyCode.G;
+        [SerializeField] KeyCode grabDropKey = KeyCode.E;
+        [SerializeField] KeyCode throwKey = KeyCode.F;
 
         [Header("Grab/Throw Properties")]
         public float maxGrabDistance = 8f;
@@ -51,13 +52,17 @@ namespace PrototypeFPC
         void GrabHoldThrow() {
             ray = playerDependencies.cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
-            if (playerDependencies.isGrabbing && grabbedObject != null && Input.GetKeyDown(grabThrowKey))
-                ThrowObject();
+            if (playerDependencies.isGrabbing && grabbedObject != null) {
+                if (Input.GetKeyDown(throwKey))
+                    ThrowObject(); // Throw
+                else if (Input.GetKeyDown(grabDropKey))
+                    ThrowObject(true); // Release
+            }
             else if (!playerDependencies.isGrabbing && !playerDependencies.isInspecting) HandleGrabAttempt();
         }
 
         void HandleGrabAttempt() {
-            if (Input.GetKeyDown(grabThrowKey))
+            if (Input.GetKeyDown(grabDropKey))
                 if (Physics.SphereCast(ray.origin, 0.25f, ray.direction, out hit, maxGrabDistance)) {
                     var grabbable = hit.collider.gameObject.GetComponent<Grabbable>();
                     if (grabbable) {
