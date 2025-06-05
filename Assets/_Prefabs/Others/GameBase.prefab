@@ -1301,12 +1301,7 @@ MonoBehaviour:
     F: Pull/Push connections
 
     X:
-    Shoot
-
-
-    F6: Clear saves
-
-    F9: Skip level'
+    Shoot'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2483,7 +2478,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5128054893552354216}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.25000006, y: 0.25000006, z: -0.06698733, w: 0.9330127}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2493,7 +2488,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 15, y: 15}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2663501865207622046
 CanvasRenderer:
@@ -2516,7 +2511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5771,7 +5766,7 @@ PrefabInstance:
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: pushPullClip
       value: 
-      objectReference: {fileID: 8300000, guid: 2a93dd26bf7998b44b0cf62c437a6454, type: 3}
+      objectReference: {fileID: 8300000, guid: 68df58ea6f2ba3f499c2cf3d66acfe11, type: 3}
     - target: {fileID: 4584123976848407548, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: latchOnImpulse
       value: 0

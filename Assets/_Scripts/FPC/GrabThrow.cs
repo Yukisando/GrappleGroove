@@ -14,8 +14,7 @@ namespace PrototypeFPC
 
         [Header("Grab/Throw Properties")]
         public float maxGrabDistance = 8f;
-        [SerializeField] [Tooltip("Distance in front of the camera to hold the object")]
-        float desiredHoldDistance = 4.5f;
+        [SerializeField] float desiredHoldDistance = 4.5f;
         [SerializeField] float grabbingDistance = 0.3f;
         [SerializeField] float grabSpeed = 15f;
         [SerializeField] float throwForce = 800f;
@@ -31,6 +30,7 @@ namespace PrototypeFPC
         PlayerDependencies playerDependencies;
         Ray ray;
         ID grabbedID;
+        int originalLayer = -1;
 
         void Awake() {
             playerDependencies = GetComponent<PlayerDependencies>();
@@ -94,6 +94,10 @@ namespace PrototypeFPC
             grabbedObject.linearVelocity = Vector3.zero;
             grabbedObject.angularVelocity = Vector3.zero;
 
+            // Store original layer and change to "Slip"
+            originalLayer = grabbedObject.gameObject.layer;
+            grabbedObject.gameObject.layer = LayerMask.NameToLayer("Grabbed");
+
             // Disable collision with player
             Physics.IgnoreCollision(grabbedObject.GetComponent<Collider>(), playerDependencies.cc, true);
 
@@ -105,6 +109,10 @@ namespace PrototypeFPC
             if (grabbedObject) {
                 // Re-enable collision with player
                 Physics.IgnoreCollision(grabbedObject.GetComponent<Collider>(), playerDependencies.cc, false);
+
+                // Restore original layer
+                if (originalLayer != -1)
+                    grabbedObject.gameObject.layer = originalLayer;
 
                 if (!drop)
                     grabbedObject.AddForce(playerDependencies.cam.transform.forward * throwForce, ForceMode.Impulse);

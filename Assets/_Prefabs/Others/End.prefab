@@ -352,6 +352,10 @@ PrefabInstance:
       value: TriggerVolume
       objectReference: {fileID: 0}
     - target: {fileID: 7290837577431988933, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
+      propertyPath: message
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7290837577431988933, guid: ae29f5eccc2ec3f49bb7163a0bd1b93e, type: 3}
       propertyPath: destroyOnTrigger
       value: 1
       objectReference: {fileID: 0}

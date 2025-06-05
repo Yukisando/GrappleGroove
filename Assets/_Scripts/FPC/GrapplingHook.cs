@@ -55,6 +55,7 @@ namespace PrototypeFPC
 
         [Header("Settings")]
         [SerializeField] float reelSpeed = 20f;
+        [SerializeField] float objectReelSpeed = 10f;
 
         AudioSource audioSource;
         bool executeHookSwing;
@@ -107,7 +108,7 @@ namespace PrototypeFPC
                 switch (rope.type) {
                     // Pull (shorten)
                     case RopeType.LEFT: {
-                        float newLength = Mathf.Max(currentLength - reelSpeed * Time.deltaTime, minimumRopeLength);
+                        float newLength = Mathf.Max(currentLength - objectReelSpeed * Time.deltaTime, minimumRopeLength);
                         if (!Mathf.Approximately(newLength, currentLength)) {
                             targetLength = newLength;
                             anyRopeAdjusted = true;
@@ -117,7 +118,7 @@ namespace PrototypeFPC
 
                     // Push (extend)
                     case RopeType.RIGHT: {
-                        float newLength = Mathf.Min(currentLength + reelSpeed * Time.deltaTime, maxRopeLength);
+                        float newLength = Mathf.Min(currentLength + objectReelSpeed * Time.deltaTime, maxRopeLength);
                         if (!Mathf.Approximately(newLength, currentLength)) {
                             targetLength = newLength;
                             anyRopeAdjusted = true;
