@@ -24,12 +24,12 @@ namespace PrototypeFPC
         [SerializeField] GameObject plankPrefab;
 
         [Header("Settings")]
+        public float maxRopeLength = 50f;
         [SerializeField] float minimumRopeLength = 1f;
         [SerializeField] float releaseJumpForce = 10f;
         [SerializeField] float upwardForceRatio = 0.5f;
         [SerializeField] float connectionSpringStrength = 10000f;
         [SerializeField] float connectionDamperStrength = 1000f;
-        public float hookDistance = 50f;
 
         [Header("Rope Properties")]
         [SerializeField] Material leftRopeMaterial;
@@ -55,7 +55,6 @@ namespace PrototypeFPC
 
         [Header("Settings")]
         [SerializeField] float reelSpeed = 20f;
-        [SerializeField] float objectPushPullRatio = 60f;
 
         AudioSource audioSource;
         bool executeHookSwing;
@@ -85,15 +84,59 @@ namespace PrototypeFPC
                 CreateHooks(0);
                 CreateHooks(1);
                 RopeCutCheck();
+
+                if (Input.GetKey(pullKey)) HandleRopeLengthControl();
+            }
+        }
+
+        void HandleRopeLengthControl() {
+            if (ropes.Count == 0) return;
+
+            var anyRopeAdjusted = false;
+
+            foreach (var rope in ropes) {
+                if (rope == null || rope.hook == null || rope.hookLatch == null)
+                    continue;
+
+                var springJoint = rope.hook.GetComponent<SpringJoint>();
+                if (!springJoint) continue;
+
+                float currentLength = springJoint.maxDistance;
+                float targetLength = currentLength;
+
+                switch (rope.type) {
+                    // Pull (shorten)
+                    case RopeType.LEFT: {
+                        float newLength = Mathf.Max(currentLength - reelSpeed * Time.deltaTime, minimumRopeLength);
+                        if (!Mathf.Approximately(newLength, currentLength)) {
+                            targetLength = newLength;
+                            anyRopeAdjusted = true;
+                        }
+                        break;
+                    }
+
+                    // Push (extend)
+                    case RopeType.RIGHT: {
+                        float newLength = Mathf.Min(currentLength + reelSpeed * Time.deltaTime, maxRopeLength);
+                        if (!Mathf.Approximately(newLength, currentLength)) {
+                            targetLength = newLength;
+                            anyRopeAdjusted = true;
+                        }
+                        break;
+                    }
+                }
+
+                springJoint.maxDistance = targetLength;
+                springJoint.minDistance = targetLength;
             }
 
-            if (Input.GetKeyDown(pullKey)) ApplyRopePullPush();
+            if (anyRopeAdjusted && !audioSource.isPlaying) audioSource.PlayOneShot(pushPullClip);
         }
 
         void SnapRopesExceedingMaxLimit() {
             if (ropes.Count == 0) return;
 
-            float maxAllowedLength = hookDistance + 5f;
+            float maxAllowedLength = maxRopeLength + 3f;
 
             for (int i = ropes.Count - 1; i >= 0; i--) {
                 var rope = ropes[i];
@@ -103,41 +146,6 @@ namespace PrototypeFPC
                     float ropeLength = Vector3.Distance(startPoint, endPoint);
                     if (ropeLength > maxAllowedLength) DestroyRope(i);
                 }
-            }
-        }
-
-        void ApplyRopePullPush() {
-            // Exit if there are no ropes
-            if (ropes.Count == 0) return;
-
-            // Iterate through the ropes in reverse (safe for removal)
-            for (int i = ropes.Count - 1; i >= 0; i--) {
-                var rope = ropes[i];
-
-                // --- Safety Check: Ensure rope and connected objects are valid ---
-                if (rope == null || !rope.connectedObject1 || !rope.connectedObject2) {
-                    // If something is wrong, try to destroy this rope and continue
-                    DestroyRope(i);
-                    continue;
-                }
-
-                rope.connectedObject1.TryGetComponent<Rigidbody>(out var rb1);
-                rope.connectedObject2.TryGetComponent<Rigidbody>(out var rb2);
-
-                var pos1 = rb1 ? rb1.position : rope.connectedObject1.transform.position;
-                var pos2 = rb2 ? rb2.position : rope.connectedObject2.transform.position;
-
-                // --- Calculate Midpoint and Directions ---
-                var mid = (pos1 + pos2) / 2;
-                var dir1 = (mid - pos1).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
-                var dir2 = (mid - pos2).normalized * (rope.type == RopeType.RIGHT ? -1 : 1);
-
-                DestroyRope(i); // We use 'i' directly now.
-
-                if (rb1 && !rope.connectedObject1.CompareTag("Player")) rb1.AddForce(dir1 * objectPushPullRatio, ForceMode.Impulse);
-                if (rb2 && !rope.connectedObject2.CompareTag("Player")) rb2.AddForce(dir2 * objectPushPullRatio, ForceMode.Impulse);
-
-                audioSource.PlayOneShot(pushPullClip);
             }
         }
 
@@ -196,7 +204,7 @@ namespace PrototypeFPC
 
 
             var r = GetCameraRay();
-            if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
+            if (!Physics.Raycast(r, out hit, maxRopeLength, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
@@ -209,7 +217,7 @@ namespace PrototypeFPC
 
         void TryLatchOrDestroy() {
             var r = GetCameraRay();
-            if (Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore)) {
+            if (Physics.Raycast(r, out hit, maxRopeLength, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore)) {
                 var hookable = hit.collider.GetComponent<Hookable>();
                 if (hookable != null) {
                     CreateHookLatch(); // Success: connect second end
@@ -341,7 +349,7 @@ namespace PrototypeFPC
 
         void CreateHookLatch() {
             var r = GetCameraRay();
-            if (!Physics.Raycast(r, out hit, hookDistance, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
+            if (!Physics.Raycast(r, out hit, maxRopeLength, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
@@ -532,10 +540,10 @@ namespace PrototypeFPC
 
         void CutRopeWithRaycast() {
             var r = playerDependencies.cam.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(r.origin, r.direction * hookDistance, Color.red, 1f); // Debug ray visualization
+            Debug.DrawRay(r.origin, r.direction * maxRopeLength, Color.red, 1f); // Debug ray visualization
 
             // Use Physics.RaycastAll to see everything the ray hits
-            var hits = Physics.RaycastAll(r.origin, r.direction, hookDistance);
+            var hits = Physics.RaycastAll(r.origin, r.direction, maxRopeLength);
 
             if (hits.Length <= 0) return;
 

@@ -88,7 +88,7 @@ public class Crosshair : MonoBehaviour
         }
 
         if (hit.collider.TryGetComponent(out Hookable hookable) &&
-            grapplingHookComponent.hookDistance >= hit.distance) {
+            grapplingHookComponent.maxRopeLength >= hit.distance) {
             targetCrosshair = grapple;
             return;
         }
