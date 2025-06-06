@@ -7,13 +7,13 @@ using Debug = UnityEngine.Debug;
 
 #endregion
 
-public class GitSimpleWindow : EditorWindow
+public class GitCommandsMenu : EditorWindow
 {
     string commitMessage = "";
 
     [MenuItem("Git/Quick Commit %#s")] // Ctrl+Shift+S
     public static void ShowWindow() {
-        var window = GetWindow<GitSimpleWindow>("Git Commit");
+        var window = GetWindow<GitCommandsMenu>("Git Commit");
         window.minSize = new Vector2(400, 150);
         window.maxSize = new Vector2(400, 150);
         window.Show();
