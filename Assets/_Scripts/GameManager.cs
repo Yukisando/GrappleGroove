@@ -195,6 +195,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void Restart() {
+        saveManager.DeleteSaveFile();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
