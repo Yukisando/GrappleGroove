@@ -201,16 +201,14 @@ namespace PrototypeFPC
 
             // Cancel the opposite rope if it's held
             var oppositeType = mouseButton == 0 ? RopeType.RIGHT : RopeType.LEFT;
-            if (hooked && ropes.Count > 0 && ropes[^1].type == oppositeType) DestroyGrappleRope(); // only cancel the held rope (if it's the opposite type)
-
+            if (hooked && ropes.Count > 0 && ropes[^1].type == oppositeType) DestroyGrappleRope();
 
             var r = GetCameraRay();
             if (!Physics.Raycast(r, out hit, maxRopeLength, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore))
                 return;
 
             var hookable = hit.collider.GetComponent<Hookable>();
-            if (!hookable) return;
-
+            if (!hookable) return; // Only check for Hookable, not connectable
 
             if (!hooked)
                 CreateInitialHook(mouseButton);
@@ -221,8 +219,12 @@ namespace PrototypeFPC
             if (Physics.Raycast(r, out hit, maxRopeLength, ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox"), QueryTriggerInteraction.Ignore)) {
                 var hookable = hit.collider.GetComponent<Hookable>();
                 if (hookable != null) {
-                    CreateHookLatch(); // Success: connect second end
-                    return;
+                    // Check both ends: the first hooked object and the new one must be connectable
+                    var firstHookable = ropes.Count > 0 ? ropes[^1].connectedObject1.GetComponent<Hookable>() : null;
+                    if (firstHookable != null && firstHookable.connectable && hookable.connectable) {
+                        CreateHookLatch(); // Success: connect second end
+                        return;
+                    }
                 }
             }
 

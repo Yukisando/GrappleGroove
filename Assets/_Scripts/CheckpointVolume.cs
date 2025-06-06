@@ -3,6 +3,7 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random; // Explicitly use UnityEngine.Random
 
 #endregion
@@ -13,6 +14,8 @@ public class CheckpointVolume : MonoBehaviour
     [ReadOnly] public string checkpointId; // Unique ID for this checkpoint
     [SerializeField] Vector3 spawnOffset = Vector3.zero;
     [SerializeField] bool deactivateOnEnter = true;
+    [FoldoutGroup("Extra")] [SerializeField]
+    UnityEvent onPlayerEnter;
     public Action<CheckpointVolume> onEnterVolume;
 
     void Awake() {
@@ -31,6 +34,7 @@ public class CheckpointVolume : MonoBehaviour
     void OnTriggerEnter(Collider _other) {
         if (!_other.CompareTag("PlayerHitbox")) return;
         if (deactivateOnEnter) gameObject.SetActive(false);
+        onPlayerEnter?.Invoke();
         onEnterVolume?.Invoke(this);
     }
 }
