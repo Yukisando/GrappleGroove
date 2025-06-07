@@ -38,6 +38,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Levels/Maxime1.unity
     guid: 6729b4a8783d80841b3830c08a84b587
+  - enabled: 1
+    path: Assets/_Levels/Level 4.unity
+    guid: 1c2837c97db5ace4aa51eb6e2824e544
+  - enabled: 1
+    path: Assets/_Levels/Level 5.unity
+    guid: d4375e34472c2d3409dcc64f3bbec577
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
