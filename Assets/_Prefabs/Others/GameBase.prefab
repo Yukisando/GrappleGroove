@@ -5850,13 +5850,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5598964053201595400, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2637273027178335816}
-    - targetCorrespondingSourceObject: {fileID: 5598964053201595400, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4993528809758090332}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
 --- !u!4 &1290229815315683825 stripped
 Transform:
@@ -5873,45 +5867,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7643533470452205149, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
   m_PrefabInstance: {fileID: 3735439911265100145}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &9107816571296206201 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5598964053201595400, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
-  m_PrefabInstance: {fileID: 3735439911265100145}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2637273027178335816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9107816571296206201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: b7b056e1a07efeb4384a9da3c8e3dfee, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 1
---- !u!114 &4993528809758090332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9107816571296206201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: b7b056e1a07efeb4384a9da3c8e3dfee, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 1
 --- !u!1001 &4999575566359413609
 PrefabInstance:
   m_ObjectHideFlags: 0
