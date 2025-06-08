@@ -1,6 +1,5 @@
 #region
 
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,32 +20,25 @@ public class AssetManager : MonoBehaviour
     public AudioClip stopTimerSound;
     public AudioClip timerTickSound;
     public AudioClip objectSpawn;
+    public AudioClip splashClip;
 
     void Awake() {
         I = this;
     }
 
-    public void PlayClip(AudioClip _clip = null) {
-        PlayClipAt(new ClipPoint {
-            clip = _clip ?? notificationClip,
-            transform = GameManager.I.playerDependencies.transform,
-        });
+    public void PlayClip(AudioClip clip = null) {
+        PlayClipAt(clip ?? notificationClip, GameManager.I.playerDependencies.transform.position);
     }
 
-    public void PlayClipAt(ClipPoint clipPoint = null) {
-        clipPoint ??= new ClipPoint {
-            clip = notificationClip,
-            transform = GameManager.I.playerDependencies.transform,
-        };
-
+    public void PlayClipAt(AudioClip clip, Vector3 position) {
         var sourceGo = new GameObject("TempAudio") {
             transform = {
-                position = clipPoint.transform.position,
+                position = position,
             },
         };
 
         var audioSource = sourceGo.AddComponent<AudioSource>();
-        audioSource.clip = clipPoint.clip;
+        audioSource.clip = clip;
         audioSource.volume = 1f;
         audioSource.pitch = Random.Range(0.95f, 1.05f); // Random pitch for variation
         audioSource.spatialBlend = 1f; // 3D sound
@@ -55,13 +47,6 @@ public class AssetManager : MonoBehaviour
         audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.Play();
 
-        Destroy(sourceGo, clipPoint.clip.length);
+        Destroy(sourceGo, clip.length);
     }
-}
-
-[Serializable]
-public class ClipPoint
-{
-    public AudioClip clip;
-    public Transform transform;
 }

@@ -517,6 +517,7 @@ MonoBehaviour:
   stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
   timerTickSound: {fileID: 8300000, guid: 52f2dda63dc1e0244b39ae9075007d4e, type: 3}
   objectSpawn: {fileID: 8300000, guid: 0fe455473679d4d6a85db8a2f9330cbf, type: 3}
+  splashClip: {fileID: 8300000, guid: 6d55888e6190b4ecd9d69a9120fbc7a3, type: 3}
 --- !u!82 &1025100940826383899
 AudioSource:
   m_ObjectHideFlags: 0

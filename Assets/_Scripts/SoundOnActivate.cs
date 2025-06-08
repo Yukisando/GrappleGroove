@@ -10,11 +10,6 @@ public class SoundOnActivate : MonoBehaviour
     [SerializeField] [InfoBox("Optional")] AudioClip clip;
 
     void OnEnable() {
-        var clipPoint = new ClipPoint {
-            clip = clip ?? AssetManager.I.objectSpawn,
-            transform = transform,
-        };
-
-        AssetManager.I.PlayClipAt(clipPoint);
+        AssetManager.I.PlayClipAt(clip ?? AssetManager.I.objectSpawn, transform.position);
     }
 }
