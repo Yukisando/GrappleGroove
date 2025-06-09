@@ -2,6 +2,7 @@
 
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 #endregion
 
@@ -22,12 +23,11 @@ public class HitSound : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision col) {
-        if (col.gameObject.name == "Water") {
-            AssetManager.I.PlayClipAt(AssetManager.I.splashClip, transform.position);
-            return;
-        }
-
         audioSource.pitch = Random.Range(1 - pitchRange, 1 + pitchRange);
         audioSource.PlayOneShot(hitSound);
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.name == "Water") AssetManager.I.PlayClipAt(AssetManager.I.splashClip, transform.position);
     }
 }
