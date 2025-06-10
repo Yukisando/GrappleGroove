@@ -305,8 +305,6 @@ public class GameManager : MonoBehaviour
             targetRotation = checkpointRotation;
             Debug.Log("Resetting to last checkpoint.");
         }
-        else
-            Debug.Log("No checkpoint saved, resetting to default spawn point.");
 
         SafeTeleportToCheckpoint(targetPosition, targetRotation);
 
