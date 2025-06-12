@@ -72,7 +72,7 @@ Material:
     - _BlendSharpness: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 50
+    - _DepthMaxDistance: 5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FoamMaxDistance: 1
@@ -80,6 +80,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _JellyFrequency: 1
+    - _JellySpeed: 1
+    - _JellyStrength: 0.05
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -97,7 +100,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DepthGradientDeep: {r: 0.735849, g: 0.7015271, b: 0.46164113, a: 0.8}
+    - _DepthGradientDeep: {r: 1, g: 0.9215687, b: 0.19215688, a: 0.5019608}
     - _DepthGradientShallow: {r: 1, g: 0.9210209, b: 0.19215685, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
