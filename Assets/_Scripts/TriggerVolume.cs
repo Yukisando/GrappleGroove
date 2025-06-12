@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 #endregion
 
-[InfoBox("Trigger specified events when objects with specified IDs enters or collides")]
+[InfoBox("Trigger specified events when objects with specified IDs enters or collides")] [RequireComponent(typeof(ID))]
 public class TriggerVolume : MonoBehaviour
 {
     [SerializeField] bool destroyVolumeOnTrigger;
@@ -81,7 +81,7 @@ public class TriggerVolume : MonoBehaviour
             if (!string.IsNullOrEmpty(message)) GameManager.I.PopupMessage(message);
             if (destroyObjectOnTrigger) triggerObject.Despawn();
             else idsInside.Add(triggerObject);
-            if (destroyVolumeOnTrigger) gameObject.SetActive(false);
+            if (destroyVolumeOnTrigger) GetComponent<ID>().Despawn();
         }
     }
 

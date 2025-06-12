@@ -25,8 +25,23 @@ public class ID : MonoBehaviour
         if (id.IsNullOrWhitespace()) id = name;
     }
 
+    public void Despawn() {
+        // Cancel any active tweens on this object
+        LeanTween.cancel(gameObject);
+
+        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
+            onReset?.Invoke(spawned);
+            gameObject.SetActive(false);
+        });
+    }
+
     public void ResetObject() {
         if (transformData == null) return;
+
+        // Cancel any active tweens on this object
+        LeanTween.cancel(gameObject);
+
+        Debug.Log($"Reseting : {id} was originally inactive: {SceneObjectTracker.WasOriginallyInactive(gameObject)}");
         gameObject.SetActive(!SceneObjectTracker.WasOriginallyInactive(gameObject));
 
         if (TryGetComponent<Move>(out var moveComponent)) moveComponent.ResetObject(); // Special case for Move component
@@ -37,27 +52,20 @@ public class ID : MonoBehaviour
             return;
         }
 
-        // Reset position and rotation
+        // Reset position, rotation, and scale
         var rb = GetComponent<Rigidbody>();
         if (rb) {
-            // Reset physics if object has Rigidbody
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.MovePosition(transformData.Position);
             rb.MoveRotation(transformData.Rotation);
         }
         else {
-            // Direct transform reset if no Rigidbody
             transform.position = transformData.Position;
             transform.rotation = transformData.Rotation;
         }
-    }
 
-    public void Despawn() {
-        transform.LeanScale(Vector3.zero, .2f).setOnComplete(() => {
-            onReset?.Invoke(spawned);
-            Destroy(gameObject);
-        });
+        transform.localScale = transformData.Scale; // Explicitly restore scale
     }
 
     class TransformData
