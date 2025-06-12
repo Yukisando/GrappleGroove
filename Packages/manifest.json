@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.coldsnap.utilities": "https://github.com/Yukisando/com.coldsnap.utilities.git",
+    "com.coldsnap.utilities": "file:C:/Users/natha/Documents/Projects/com.coldsnap.utilities",
     "com.unity.ai.navigation": "2.0.8",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.ide.rider": "3.0.36",

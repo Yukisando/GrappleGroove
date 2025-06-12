@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.coldsnap.utilities": {
-      "version": "https://github.com/Yukisando/com.coldsnap.utilities.git",
+      "version": "file:C:/Users/natha/Documents/Projects/com.coldsnap.utilities",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "23da60855e4f28b4130d86dc9a3bef707cf83608"
+      "source": "local",
+      "dependencies": {}
     },
     "com.unity.ai.navigation": {
       "version": "2.0.8",
