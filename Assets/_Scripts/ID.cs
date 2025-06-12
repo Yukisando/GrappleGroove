@@ -40,8 +40,6 @@ public class ID : MonoBehaviour
 
         // Cancel any active tweens on this object
         LeanTween.cancel(gameObject);
-
-        Debug.Log($"Reseting : {id} was originally inactive: {SceneObjectTracker.WasOriginallyInactive(gameObject)}");
         gameObject.SetActive(!SceneObjectTracker.WasOriginallyInactive(gameObject));
 
         if (TryGetComponent<Move>(out var moveComponent)) moveComponent.ResetObject(); // Special case for Move component

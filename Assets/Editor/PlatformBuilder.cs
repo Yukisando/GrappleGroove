@@ -111,7 +111,8 @@ public class PlatformBuilder : EditorWindow
     }
 
     static void BuildGame(BuildTarget target, BuildOptions options, bool buildAll, string name, string extension) {
-        PlayerSettings.productName = name;
+        // Force lowercase product name for WebGL to avoid case issues with generated files
+        PlayerSettings.productName = target == BuildTarget.WebGL ? name.ToLowerInvariant() : name;
 
         if (target == BuildTarget.Android)
             PlayerSettings.Android.bundleVersionCode++;
@@ -143,10 +144,10 @@ public class PlatformBuilder : EditorWindow
         if (report.summary.result == BuildResult.Succeeded) {
             Debug.Log($"Build successful! Output: {outputPath}");
             OpenBuildLocation(buildPath);
-        }
-        else
+        } else
             Debug.LogError($"Build failed: {report.summary.result}");
     }
+
 
     #endregion
 
