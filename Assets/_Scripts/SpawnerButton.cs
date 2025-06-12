@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 #endregion
@@ -32,7 +31,7 @@ public class SpawnerButton : GameButton
             if (objToDelete) objToDelete.Despawn();
         }
         spawnedObject = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
-        spawnedObject.AddComponent<SoundOnActivate>();
+        spawnedObject.gameObject.AddComponent<SoundOnActivate>();
         spawnedObject.id = idOnSpawn;
         spawnedObject.spawned = true;
         spawnedIDs.Add(spawnedObject);
