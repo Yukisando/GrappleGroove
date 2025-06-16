@@ -290,11 +290,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -402,6 +406,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &17674113 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 17674109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &18473766
 Mesh:
   m_ObjectHideFlags: 0
@@ -567,46 +576,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &78814628
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 400, g: 60, b: 50, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &94040243
 Mesh:
   m_ObjectHideFlags: 0
@@ -937,46 +906,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &119926012
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &129697010
 Mesh:
   m_ObjectHideFlags: 0
@@ -1148,11 +1077,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1240,6 +1173,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &155009043 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 155009040}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &155009052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1755,46 +1693,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &214301922
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &223927910
 Mesh:
   m_ObjectHideFlags: 0
@@ -2307,11 +2205,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2419,6 +2321,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &352283746 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 352283742}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &372290728
 Mesh:
   m_ObjectHideFlags: 0
@@ -2590,11 +2497,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2644,6 +2555,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1978818131}
   m_SourcePrefab: {fileID: 100100000, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+--- !u!4 &386286044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 386286043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &411470722
 Mesh:
   m_ObjectHideFlags: 0
@@ -2980,11 +2896,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3059,6 +2979,11 @@ MonoBehaviour:
   onUnhooked:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &498832050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 498832047}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &503401669
 Mesh:
   m_ObjectHideFlags: 0
@@ -3389,17 +3314,75 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &553848730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553848731}
+  m_Layer: 0
+  m_Name: Group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &553848731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553848730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1154324624}
+  - {fileID: 155009043}
+  - {fileID: 733973565}
+  - {fileID: 386286044}
+  - {fileID: 498832050}
+  - {fileID: 2087919822}
+  - {fileID: 931729118}
+  - {fileID: 1773672391}
+  - {fileID: 352283746}
+  - {fileID: 1615515426}
+  - {fileID: 1259090570}
+  - {fileID: 1098663218}
+  - {fileID: 1987073579}
+  - {fileID: 1067616756}
+  - {fileID: 1045857686}
+  - {fileID: 1389149941}
+  - {fileID: 1325454196}
+  - {fileID: 1057480266}
+  - {fileID: 17674113}
+  - {fileID: 715005324}
+  - {fileID: 1702827480}
+  - {fileID: 1457904888}
+  - {fileID: 559556015}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &559556011
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3507,6 +3490,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &559556015 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 559556011}
+  m_PrefabAsset: {fileID: 0}
+--- !u!21 &586173853
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!43 &590193846
 Mesh:
   m_ObjectHideFlags: 0
@@ -4338,11 +4366,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4430,6 +4462,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &715005324 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 715005321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &715005333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4621,11 +4658,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4733,6 +4774,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &733973565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 733973561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &735260467
 Mesh:
   m_ObjectHideFlags: 0
@@ -5558,46 +5604,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &836090381
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 304, g: 44, b: 25, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &854459767
 Mesh:
   m_ObjectHideFlags: 0
@@ -6099,11 +6105,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6211,6 +6221,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &931729118 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 931729114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &934148348
 Mesh:
   m_ObjectHideFlags: 0
@@ -7537,11 +7552,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7649,6 +7668,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1045857686 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1045857682}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1051055422
 Mesh:
   m_ObjectHideFlags: 0
@@ -7985,11 +8009,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8097,17 +8125,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1057480266 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1057480262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1067616752
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8215,17 +8252,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1067616756 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1067616752}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1098663214
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8333,6 +8379,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1098663218 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1098663214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1116800488
 Mesh:
   m_ObjectHideFlags: 0
@@ -8663,7 +8714,7 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &1143190619
+--- !u!21 &1143000858
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -8709,7 +8760,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 1165241782540655194, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: id
@@ -8718,6 +8769,10 @@ PrefabInstance:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8829,6 +8884,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1154324624 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1154324620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1154765802
 Mesh:
   m_ObjectHideFlags: 0
@@ -8994,6 +9054,46 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!21 &1175784412
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!43 &1183988589
 Mesh:
   m_ObjectHideFlags: 0
@@ -9825,11 +9925,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9937,6 +10041,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1259090570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1259090566}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1263965015
 Mesh:
   m_ObjectHideFlags: 0
@@ -10768,11 +10877,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10880,17 +10993,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1325454196 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1325454192}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1389149937
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10998,6 +11120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1389149941 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1389149937}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1434595387
 Mesh:
   m_ObjectHideFlags: 0
@@ -11169,11 +11296,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11261,6 +11392,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1457904888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1457904885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1457904897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13102,11 +13238,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13214,6 +13354,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1615515426 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1615515422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1669531387
 Mesh:
   m_ObjectHideFlags: 0
@@ -13550,11 +13695,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13662,6 +13811,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1702827480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1702827476}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1717717768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13737,7 +13891,7 @@ PrefabInstance:
     - target: {fileID: 1092591068760412887, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 214301922}
+      objectReference: {fileID: 586173853}
     - target: {fileID: 1617838702512332325, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -13781,11 +13935,35 @@ PrefabInstance:
     - target: {fileID: 2079567331608431121, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2080455182}
+      objectReference: {fileID: 1175784412}
     - target: {fileID: 2677106151721621307, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1299298777}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058963312759579007, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3168922540967017188, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Name
       value: SpawnPoint
@@ -13829,7 +14007,31 @@ PrefabInstance:
     - target: {fileID: 4759179911050211714, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 78814628}
+      objectReference: {fileID: 1143000858}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782746463076820646, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6112996217231031090, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Name
       value: PlayerUI
@@ -13873,7 +14075,31 @@ PrefabInstance:
     - target: {fileID: 6971188987110070145, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2011821964}
+      objectReference: {fileID: 1949188423}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983559096019154337, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7107842545010150517, guid: 6b829bfae1f5460409242a81da9a828c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -14794,11 +15020,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14886,6 +15116,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &1773672391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1773672388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1773672400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16989,6 +17224,7 @@ GameObject:
   - component: {fileID: 1908057631}
   - component: {fileID: 1908057638}
   - component: {fileID: 1908057637}
+  - component: {fileID: 1908057639}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -17469,6 +17705,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1908057639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908057630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: Door
+  spawned: 0
 --- !u!43 &1921462976
 Mesh:
   m_ObjectHideFlags: 0
@@ -17964,7 +18214,7 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &1961321757
+--- !u!21 &1949188423
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -18001,7 +18251,7 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
+    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1964142013
@@ -18530,11 +18780,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18642,46 +18896,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
---- !u!21 &2011821964
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!4 &1987073579 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 1987073575}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 404, g: 64, b: 50, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &2077494801
 Mesh:
   m_ObjectHideFlags: 0
@@ -18847,46 +19066,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &2080455182
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 300, g: 40, b: 25, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!43 &2084498403
 Mesh:
   m_ObjectHideFlags: 0
@@ -19058,11 +19237,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 553848731}
     m_Modifications:
     - target: {fileID: 4519377251956510237, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_Name
       value: Box (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19150,6 +19333,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Box
   spawned: 0
+--- !u!4 &2087919822 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6410789163889928548, guid: 424a1174a14c31a45aecedb1ba8193e4, type: 3}
+  m_PrefabInstance: {fileID: 2087919819}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2087919831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19694,10 +19882,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146821495}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -20318,10 +20506,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013163394478204013}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -22408,28 +22596,6 @@ SceneRoots:
   - {fileID: 2534473751515817231}
   - {fileID: 2146821502}
   - {fileID: 487167148732188165}
-  - {fileID: 1154324620}
-  - {fileID: 155009040}
-  - {fileID: 733973561}
-  - {fileID: 386286043}
-  - {fileID: 498832047}
-  - {fileID: 2087919819}
-  - {fileID: 931729114}
-  - {fileID: 1773672388}
-  - {fileID: 352283742}
-  - {fileID: 1615515422}
-  - {fileID: 1259090566}
-  - {fileID: 1098663214}
-  - {fileID: 1987073575}
-  - {fileID: 1067616752}
-  - {fileID: 1045857682}
-  - {fileID: 1389149937}
-  - {fileID: 1325454192}
-  - {fileID: 1057480262}
-  - {fileID: 17674109}
-  - {fileID: 715005321}
-  - {fileID: 1702827476}
-  - {fileID: 1457904885}
-  - {fileID: 559556011}
   - {fileID: 1908057636}
   - {fileID: 1827914247}
+  - {fileID: 553848731}
