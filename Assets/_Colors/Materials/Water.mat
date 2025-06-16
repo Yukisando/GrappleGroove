@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -95,8 +95,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DepthGradientDeep: {r: 0.026788909, g: 0.5344061, b: 0.8113208, a: 1}
-    - _DepthGradientShallow: {r: 0.19339621, g: 0.7764306, b: 1, a: 0.725}
+    - _DepthGradientDeep: {r: 0, g: 0.63999104, b: 1, a: 0.8}
+    - _DepthGradientShallow: {r: 0.22169808, g: 0.7846446, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}

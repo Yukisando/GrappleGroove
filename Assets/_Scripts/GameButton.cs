@@ -24,7 +24,7 @@ public class GameButton : MonoBehaviour
     void Awake() {
         playerCamera = GameManager.I.playerDependencies.cam;
         raycastMask = ~LayerMask.GetMask("IgnoreRaycast", "Player", "PlayerHitbox", "Plank"); // Fallback mask
-        buttonInitPosition = button.localPosition;
+        if (button) buttonInitPosition = button.localPosition;
     }
 
     void Update() {
@@ -38,7 +38,7 @@ public class GameButton : MonoBehaviour
         if (Physics.Raycast(ray, out var hit, interactionDistance, raycastMask, QueryTriggerInteraction.Ignore))
 
             // Check if we hit this button
-            if (hit.collider.gameObject == gameObject || hit.collider.transform == button)
+            if (hit.collider.gameObject == gameObject)
 
                 // If player left-clicks
                 if (Input.GetMouseButtonDown(0)) {
@@ -51,10 +51,8 @@ public class GameButton : MonoBehaviour
         if (buttonPressSound) AudioSource.PlayClipAtPoint(buttonPressSound, transform.position);
 
         // Press animation
+        if (!button) return;
         button.localPosition = buttonInitPosition;
         button.LeanMoveLocalX(.3f, 0.1f).setEaseInQuad().setLoopPingPong(1);
-
-        // Play sound if available
-        if (buttonPressSound) AudioSource.PlayClipAtPoint(buttonPressSound, button.transform.position);
     }
 }

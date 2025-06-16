@@ -1050,6 +1050,7 @@ MonoBehaviour:
   fov: 85
   minRotationLimit: -90
   maxRotationLimit: 95
+  inertia: 0.3
   sensitivity: 150
   lookTiltAmount: 3
   lookTiltSpeed: 12
@@ -1238,15 +1239,12 @@ MonoBehaviour:
     m_Bits: 512
   hookModel: {fileID: 4359391872139924852, guid: 3fd8c88e4bfaca34a80d6f151eab2b76, type: 3}
   plankPrefab: {fileID: 8879984836591452508, guid: f981776db1379884b8a89e09df09f061, type: 3}
+  maxRopeLength: 50
   minimumRopeLength: 0.75
   releaseJumpForce: 30
   upwardForceRatio: 10
-  forwardForceRatio: 5
-  holdDelayToSwing: 0.15
   connectionSpringStrength: 1500
   connectionDamperStrength: 1000
-  latchOnImpulse: 50
-  hookDistance: 35
   leftRopeMaterial: {fileID: 2100000, guid: 96f2a6dc0cc6ac647ad390e7bd62e2bc, type: 2}
   rightRopeMaterial: {fileID: 2100000, guid: a89a7d00e18f1e94daa0e1a461804f02, type: 2}
   startThickness: 0.02
@@ -1287,8 +1285,7 @@ MonoBehaviour:
   releaseSound: {fileID: 8300000, guid: 7a79cf881113fff43830e30bd0e4dff3, type: 3}
   pushPullClip: {fileID: 0}
   reelSpeed: 20
-  playerPushPullRatio: 0.1
-  objectPushPullRatio: 0.1
+  objectReelSpeed: 10
 --- !u!114 &9182015932909010048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1347,8 +1344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec0b077eb072e7418c534d5581977ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabThrowKey: 101
+  grabDropKey: 101
+  throwKey: 102
   maxGrabDistance: 3
+  desiredHoldDistance: 4.5
   grabbingDistance: 0.3
   grabSpeed: 15
   throwForce: 10
@@ -1988,7 +1987,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5383159507412076530}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.258819, z: 0, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2005,11 +2004,11 @@ Light:
   m_Enabled: 0
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 0
-  m_Range: 15
-  m_SpotAngle: 60
-  m_InnerSpotAngle: 4
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 120
+  m_SpotAngle: 120
+  m_InnerSpotAngle: 60
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -2753,10 +2752,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643533470452205149}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 50
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
