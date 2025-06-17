@@ -437,7 +437,7 @@ namespace PrototypeFPC
                 if (obj == null) return;
                 var idComponent = obj.GetComponent<ID>();
                 if (idComponent != null)
-                    idComponent.onReset -= spawned => DestroyRope(ropes.IndexOf(rope));
+                    idComponent.onReset.RemoveListener(_ => DestroyRope(ropes.IndexOf(rope)));
             }
 
             TryUnsubscribe(rope.connectedObject1);
@@ -596,7 +596,7 @@ namespace PrototypeFPC
                 if (obj == null) return;
                 var idComponent = obj.GetComponent<ID>();
                 if (idComponent != null)
-                    idComponent.onReset += spawned => DestroyRope(ropeIndex);
+                    idComponent.onReset.AddListener(_ => DestroyRope(ropeIndex));
             }
 
             TrySubscribe(rope.connectedObject1);

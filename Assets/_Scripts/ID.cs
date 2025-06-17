@@ -1,13 +1,13 @@
 ﻿#region
 
-using System;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
-[InfoBox("Needed to connect objects to other logic objects")] [RequireComponent(typeof(Collider))]
+[InfoBox("Needed to connect objects to other logic objects")]
 public class ID : MonoBehaviour
 {
     public string id;
@@ -15,7 +15,7 @@ public class ID : MonoBehaviour
     [ReadOnly] public bool spawned;
 
     TransformData transformData;
-    public event Action<bool> onReset;
+    public UnityEvent<bool> onReset;
 
     void Awake() {
         transformData = new TransformData(transform.position, transform.rotation, transform.localScale);
@@ -43,7 +43,6 @@ public class ID : MonoBehaviour
         gameObject.SetActive(!SceneObjectTracker.WasOriginallyInactive(gameObject));
 
         if (TryGetComponent<Move>(out var moveComponent)) moveComponent.ResetObject(); // Special case for Move component
-        onReset?.Invoke(spawned);
 
         if (spawned) {
             Destroy(gameObject);
@@ -64,6 +63,7 @@ public class ID : MonoBehaviour
         }
 
         transform.localScale = transformData.Scale; // Explicitly restore scale
+        onReset?.Invoke(spawned);
     }
 
     class TransformData

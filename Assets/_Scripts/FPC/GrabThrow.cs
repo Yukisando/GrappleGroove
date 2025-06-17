@@ -86,7 +86,7 @@ namespace PrototypeFPC
 
         void GrabObject(Rigidbody hitRigidbody) {
             hitRigidbody.TryGetComponent(out grabbedID);
-            if (grabbedID) grabbedID.onReset += OnGrabbedObjectReset;
+            if (grabbedID) grabbedID.onReset.AddListener(OnGrabbedObjectReset);
 
             grabPoint.position = hit.point;
             grabbedObject = hitRigidbody;
@@ -119,7 +119,7 @@ namespace PrototypeFPC
             }
 
             grabbedObject = null;
-            if (grabbedID) grabbedID.onReset -= OnGrabbedObjectReset;
+            if (grabbedID) grabbedID.onReset.RemoveListener(OnGrabbedObjectReset);
             grabbedID = null;
             playerDependencies.isGrabbing = false;
             audioSource.PlayOneShot(throwSound);
