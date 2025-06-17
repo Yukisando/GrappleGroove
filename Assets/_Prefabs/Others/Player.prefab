@@ -81,7 +81,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667686560443176830}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2786,6 +2786,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Player
   spawned: 0
+  onReset:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7753466973429341682
 GameObject:
   m_ObjectHideFlags: 0
