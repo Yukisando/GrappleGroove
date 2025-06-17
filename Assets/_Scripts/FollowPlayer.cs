@@ -12,6 +12,7 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] float followSpeed = 2f;
     [SerializeField] Vector3 offset;
     [SerializeField] float followDistance = 3f;
+    [SerializeField] float bufferDistance = 1f; // Distance the player must move away before following resumes
     [SerializeField] UnityEvent onPlayerReached;
 
     Transform player;
@@ -31,20 +32,26 @@ public class FollowPlayer : MonoBehaviour
     }
 
     IEnumerator FollowPlayer_() {
-        var wasInRange = false;
+        var hasReached = false;
         while (player) {
-            bool inRange = Vector3.Distance(transform.position, player.position + offset) < followDistance;
-            if (inRange && !wasInRange) {
-                onPlayerReached?.Invoke();
-                wasInRange = true;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position + offset);
+            if (distanceToPlayer < followDistance) {
+                if (!hasReached) {
+                    onPlayerReached?.Invoke();
+                    hasReached = true;
+                    following = false;
+                }
             }
-            else if (!inRange) {
+            else if (hasReached && distanceToPlayer > followDistance + bufferDistance) hasReached = false;
+
+            if (!hasReached) {
                 following = true;
                 transform.LookAt(player.position + offset);
                 transform.position = Vector3.MoveTowards(transform.position, player.position + offset, followSpeed * Time.deltaTime);
-                wasInRange = false;
             }
+
             yield return null;
         }
+        following = false;
     }
 }

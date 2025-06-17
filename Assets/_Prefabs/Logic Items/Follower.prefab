@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7463519074129959163}
   - component: {fileID: 5035171913710262463}
   - component: {fileID: 7577576931968705100}
+  - component: {fileID: 2963457108177426866}
   m_Layer: 0
   m_Name: Follower
   m_TagString: Untagged
@@ -125,6 +126,24 @@ MonoBehaviour:
   followSpeed: 6
   offset: {x: 0, y: 1, z: 0}
   followDistance: 3
+  bufferDistance: 3
   onPlayerReached:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2963457108177426866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8892430342972755724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a128fcbe00a4d1a889b49072484be4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: Follower
+  spawned: 0
+  onReset:
     m_PersistentCalls:
       m_Calls: []
