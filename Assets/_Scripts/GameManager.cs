@@ -127,6 +127,7 @@ public class GameManager : MonoBehaviour
             Cursor.visible = true;
             menuUI.Populate();
             menuUI.gameObject.SetActive(true);
+            musicSequenceSource.pitch = .8f;
         }
         else {
             AssetManager.I.PlayClip(AssetManager.I.offClip);
@@ -135,6 +136,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             menuUI.gameObject.SetActive(false);
+            musicSequenceSource.pitch = 1f;
         }
     }
 
