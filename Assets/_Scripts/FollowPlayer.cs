@@ -10,6 +10,7 @@ public class FollowPlayer : MonoBehaviour
 {
     [SerializeField] bool followOnStart = true;
     [SerializeField] float followSpeed = 2f;
+    [SerializeField] Vector3 offset;
     [SerializeField] UnityEvent onPlayerReached;
 
     Transform player;
@@ -30,9 +31,9 @@ public class FollowPlayer : MonoBehaviour
 
     IEnumerator FollowPlayer_() {
         following = true;
-        while (Vector3.Distance(transform.position, player.position) > 1f) {
-            transform.LookAt(player.position);
-            transform.position = Vector3.MoveTowards(transform.position, player.position, followSpeed * Time.deltaTime);
+        while (Vector3.Distance(transform.position, player.position + offset) > 1f) {
+            transform.LookAt(player.position + offset);
+            transform.position = Vector3.MoveTowards(transform.position, player.position + offset, followSpeed * Time.deltaTime);
             yield return null;
         }
         onPlayerReached?.Invoke();
