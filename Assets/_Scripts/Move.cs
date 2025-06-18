@@ -5,7 +5,7 @@ using UnityEngine;
 
 #endregion
 
-[InfoBox("Moves an object from A to B (-1 = infinite ping-pong, 0 = A->B, 1 = A->B->A, etc.)")][RequireComponent(typeof(ID))]
+[InfoBox("Moves an object from A to B (-1 = infinite ping-pong, 0 = A->B, 1 = A->B->A, etc.)")] [RequireComponent(typeof(ID))]
 public class Move : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -40,6 +40,7 @@ public class Move : MonoBehaviour
     }
 
     public void StartMoving() {
+        ResetObject(); // Ensure the object is reset before starting movement
         if (isPaused) {
             Resume();
             return;
@@ -115,13 +116,9 @@ public class Move : MonoBehaviour
 
     public void ResetObject() {
         StopMovement();
-
-        SetStartOffset();
-
+        isReturning = false;
         currentLoop = loopCount == -1 ? -1 : loopCount * 2;
-
-        if (startMovingOnStart)
-            StartMoving();
+        transform.localPosition = startPos;
     }
 
     void OnDrawGizmos() {
