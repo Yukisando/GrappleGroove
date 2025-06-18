@@ -29,15 +29,6 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"Checkpoint saved for scene: {SceneManager.GetActiveScene().name} with ID: {checkpointId}");
     }
 
-// Overload the old SaveCheckpoint method for compatibility if needed
-    public void SaveCheckpoint(Transform checkpointTransform) {
-        var checkpointVolume = checkpointTransform.GetComponent<CheckpointVolume>();
-        if (checkpointVolume != null)
-            SaveCheckpoint(checkpointTransform, checkpointVolume.checkpointId);
-        else
-            Debug.LogError("CheckpointVolume component not found on the transform to save!");
-    }
-
     public void DeleteSaveFile() {
         string fileName = string.Format(CheckpointFileFormat, SceneManager.GetActiveScene().name);
         string path = Path.Combine(Application.persistentDataPath, SaveFolderName, fileName);

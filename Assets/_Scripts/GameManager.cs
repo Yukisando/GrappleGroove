@@ -99,6 +99,16 @@ public class GameManager : MonoBehaviour
             cv.gameObject.SetActive(state);
         }
         checkpointsActive = state;
+
+        if (state) {
+            infoPopup.ShowPopup("Checkpoints activated!", false);
+            soundEffectSource.PlayOneShot(AssetManager.I.onClip);
+            saveManager.DeleteSaveFile();
+        }
+        else {
+            infoPopup.ShowPopup("Checkpoints deactivated!", false);
+            soundEffectSource.PlayOneShot(AssetManager.I.offClip);
+        }
     }
 
     void Update() {

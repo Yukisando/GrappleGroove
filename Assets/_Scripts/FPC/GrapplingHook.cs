@@ -266,7 +266,7 @@ namespace PrototypeFPC
             if (!joint) yield break;
 
             // Keep reeling while the joint exists and the player is far from the hook
-            while (joint && Vector3.Distance(rb.position, rope.hook.transform.position) > closeEnoughDistance) {
+            while (joint && rope.hook != null && Vector3.Distance(rb.position, rope.hook.transform.position) > closeEnoughDistance) {
                 // Reduce the max distance to pull the player in
                 joint.maxDistance = Mathf.Max(joint.maxDistance - reelSpeed * Time.deltaTime, minimumRopeLength);
 
@@ -764,3 +764,4 @@ namespace PrototypeFPC
         }
     }
 }
+
