@@ -3,20 +3,17 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Events;
 
 #endregion
 
 [InfoBox("Trigger specified events when objects with specified IDs enters or collides")] [RequireComponent(typeof(ID))]
-public class TriggerVolume : MonoBehaviour
+public class TeleporterVolume : MonoBehaviour
 {
+    [SerializeField] List<string> ids = new List<string>();
+    [SerializeField] Transform destination;
     [SerializeField] bool destroyVolumeOnTrigger;
     [SerializeField] bool destroyObjectOnTrigger;
-    [SerializeField] List<string> ids = new List<string>();
-    [SerializeField] string message = "Tada!";
-    [SerializeField] UnityEvent onAnyEnter;
-    [HideIf("@this.destroyObjectOnTrigger || this.destroyVolumeOnTrigger")]
-    [SerializeField] UnityEvent onAllExit;
+    [SerializeField] string message = "Woosh";
 
     [FoldoutGroup("Material settings")]
     [SerializeField] float yMovement = 0.2f;
@@ -32,7 +29,6 @@ public class TriggerVolume : MonoBehaviour
 
     void Awake() {
         meshRenderer = GetComponent<MeshRenderer>();
-
 
         if (meshRenderer != null && meshRenderer.material != null) {
             sharedMaterial = new Material(meshRenderer.material);
@@ -58,8 +54,6 @@ public class TriggerVolume : MonoBehaviour
         sharedMaterial.SetTextureOffset(BaseMap, offset);
     }
 
-    readonly List<ID> idsInside = new List<ID>();
-
     void OnTriggerEnter(Collider _other) {
         HandleObjectEnter(_other.gameObject);
     }
@@ -71,19 +65,24 @@ public class TriggerVolume : MonoBehaviour
     void HandleObjectEnter(GameObject other) {
         other.TryGetComponent<ID>(out var triggerObject);
         if (triggerObject && ids.Contains(triggerObject.id)) {
-            onAnyEnter?.Invoke();
+            TeleportItem(triggerObject);
+
             if (!string.IsNullOrEmpty(message)) GameManager.I.PopupMessage(message);
+
             if (destroyObjectOnTrigger) triggerObject.Despawn();
-            else idsInside.Add(triggerObject);
             if (destroyVolumeOnTrigger) GetComponent<ID>().Despawn();
         }
     }
 
-    void OnTriggerExit(Collider other) {
-        other.TryGetComponent<ID>(out var triggerObject);
-        if (triggerObject && idsInside.Contains(triggerObject)) {
-            idsInside.Remove(triggerObject);
-            if (idsInside.Count == 0) onAllExit?.Invoke();
+    void TeleportItem(ID item) {
+        item.transform.position = destination.position;
+    }
+
+    void OnDrawGizmosSelected() {
+        if (destination != null) {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, destination.position);
+            Gizmos.DrawWireSphere(destination.position, 0.5f);
         }
     }
 }
