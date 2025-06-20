@@ -511,7 +511,6 @@ MonoBehaviour:
   onClip: {fileID: 8300000, guid: 5dfcc66e1eb58a645b907a3297f8782c, type: 3}
   offClip: {fileID: 8300000, guid: c2956f3f175c9314194b29c26207d202, type: 3}
   defaultRaceClip: {fileID: 8300000, guid: 0f7d61faae5d12a449619239c43b6faf, type: 3}
-  resetSound: {fileID: 8300000, guid: 72fe66f489f67ff46897c661779d5086, type: 3}
   checkpointSound: {fileID: 8300000, guid: 44371b3a333ee44a1a98d55d464d0db8, type: 3}
   startTimerSound: {fileID: 8300000, guid: c0ec0f215d91a4056b5f9f5532f8a6a6, type: 3}
   stopTimerSound: {fileID: 8300000, guid: 6c0124a99f664c84481722e6ce386883, type: 3}
@@ -3233,6 +3232,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Water
   spawned: 0
+  onReset:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5836559749641441757
 GameObject:
   m_ObjectHideFlags: 0
@@ -5996,6 +5998,18 @@ PrefabInstance:
     - target: {fileID: 7643533470452205149, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182015932909010048, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: spotAngle
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182015932909010048, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: spotRange
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182015932909010048, guid: bfe40c624ec109942aa5f01f1b2c25df, type: 3}
+      propertyPath: spotIntensity
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
